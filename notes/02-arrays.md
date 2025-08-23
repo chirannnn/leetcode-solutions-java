@@ -4,7 +4,7 @@
 
 ## 1. Build Array from Permutation
 
-**Problem**:  
+**Problem**:  
 Given an array `nums`, construct `ans` such that `ans[i] = nums[nums[i]]`.
 
 **Approach**:
@@ -20,7 +20,7 @@ Given an array `nums`, construct `ans` such that `ans[i] = nums[nums[i]]`.
 **Example**:
 
 ```text
-Input:  nums = [0,2,1,5,3,4]  
+Input:  nums = [0,2,1,5,3,4]
 Output: ans = [0,1,2,4,5,3]
 ```
 
@@ -39,7 +39,7 @@ Output: ans = [0,1,2,4,5,3]
 **Edge Cases**:
 
 - Empty array
-- Values exceeding array bounds (shouldn’t happen if constraints are respected)
+- Values exceeding array bounds (shouldn't happen if constraints are respected)
 
 🔗 [LeetCode Link](https://leetcode.com/problems/build-array-from-permutation/)
 
@@ -47,15 +47,15 @@ Output: ans = [0,1,2,4,5,3]
 
 ## 2. Concatenation of Array
 
-**Problem**:  
+**Problem**:  
 Return an array that is the concatenation of `nums` with itself.
 
 **Approach**:
 
 - Create `ans[]` of size `2 * n`.
 - For each index `i`, set:
-    - `ans[i] = nums[i]`
-    - `ans[i + n] = nums[i]`
+  - `ans[i] = nums[i]`
+  - `ans[i + n] = nums[i]`
 
 **Complexity**:
 
@@ -65,7 +65,7 @@ Return an array that is the concatenation of `nums` with itself.
 **Example**:
 
 ```text
-Input:  nums = [1,2,1]  
+Input:  nums = [1,2,1]
 Output: ans = [1,2,1,1,2,1]
 ```
 
@@ -92,7 +92,7 @@ Output: ans = [1,2,1,1,2,1]
 
 ## 3. Running Sum of 1D Array
 
-**Problem**:  
+**Problem**:  
 Return an array where each element is the sum of all previous elements including itself.
 
 **Approach**:
@@ -108,7 +108,7 @@ Return an array where each element is the sum of all previous elements including
 **Example**:
 
 ```text
-Input:  nums = [1,2,3,4]  
+Input:  nums = [1,2,3,4]
 Output: ans = [1,3,6,10]
 ```
 
@@ -206,12 +206,10 @@ Given array `nums` of `2n` elements in form `[x1,x2,...,xn,y1,y2,...,yn]`. Retur
 Input:  nums = [2,5,1,3,4,7], n = 3
 x = [2,5,1], y = [3,4,7]
 ans[0] = nums[0] = 2, ans[1] = nums[3] = 3
-ans[2] = nums[1] = 5, ans[4] = nums[4] = 4
+ans[2] = nums[1] = 5, ans[3] = nums[4] = 4
 ans[4] = nums[2] = 1, ans[5] = nums[5] = 7
 Output: [2,3,5,4,1,7]
 ```
-
-````
 
 **Key Takeaway**:
 
@@ -236,10 +234,7 @@ Output: [2,3,5,4,1,7]
 
 🔗 [LeetCode Link](https://leetcode.com/problems/shuffle-the-array/)
 
-```
-
-```
-````
+---
 
 ## 6. Kids With the Greatest Number of Candies
 
@@ -292,3 +287,5 @@ Output: [true,true,true,false,true]
 - extraCandies = 0 → only current max holders are true
 
 🔗 [LeetCode Link](https://leetcode.com/problems/kids-with-the-greatest-number-of-candies/)
+
+---
