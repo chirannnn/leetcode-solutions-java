@@ -289,3 +289,184 @@ Output: [true,true,true,false,true]
 🔗 [LeetCode Link](https://leetcode.com/problems/kids-with-the-greatest-number-of-candies/)
 
 ---
+
+## 7. Number of Good Pairs
+
+**Problem**:  
+Given an array of integers `nums`, return the number of **good pairs**.
+
+A pair `(i, j)` is called good if:
+
+- `nums[i] == nums[j]`
+- `i < j`
+
+**Approach**:
+
+- Use two nested loops to check every possible pair `(i, j)` where `i < j`.
+- If `nums[i] == nums[j]`, increment the count.
+- Return the total number of good pairs.
+
+**Complexity**:
+
+- Time: O(n²) – brute-force comparison of all pairs
+- Space: O(1) – no extra space used
+
+**Example**:
+
+```text
+Input: nums = [1,2,3,1,1,3]
+Good pairs:
+(0,3), (0,4), (3,4), (2,5)
+Output: 4
+```
+
+**Key Takeaway**:
+
+- Brute-force is acceptable for small inputs and beginner practice.
+- Focus is on understanding nested loops and pair comparison logic.
+- Sets the stage for learning frequency-based optimizations.
+
+**Pattern**:
+
+- Pair Comparison
+- Duplicate Detection
+
+**In-Place Possibility**:
+
+- Not applicable – counting pairs, not modifying array.
+- Could optimize space if storing frequencies later.
+
+**Edge Cases**:
+
+- Empty array → 0 pairs
+- All elements same → maximum number of good pairs
+- No duplicates → 0 pairs
+- Single element → 0 pairs
+
+🔗 [LeetCode Link](https://leetcode.com/problems/number-of-good-pairs/)
+
+---
+
+## 8. Smaller Numbers Than Current
+
+**Problem**:  
+Given an array `nums`, for each `nums[i]`, count how many numbers in the array are smaller than it.  
+Return the result as an array where `result[i]` is the count of numbers smaller than `nums[i]`.
+
+**Approach**:
+
+- Use a brute-force nested loop.
+- For each `i`, loop through all `j` and count how many `nums[j] < nums[i]`.
+- Store the count in the result array.
+
+**Complexity**:
+
+- Time: O(n²) – two nested loops over the array
+- Space: O(n) – for the result array
+
+**Example**:
+
+```text
+Input: nums = [8,1,2,2,3]
+Output: [4,0,1,1,3]
+
+Explanation:
+nums[0] = 8 → smaller: [1,2,2,3] → count = 4
+nums[1] = 1 → smaller: [] → count = 0
+nums[2] = 2 → smaller: [1] → count = 1
+nums[3] = 2 → smaller: [1] → count = 1
+nums[4] = 3 → smaller: [1,2,2] → count = 3
+```
+
+**Key Takeaway**:
+
+- Brute-force is a great starting point for beginners.
+- Builds intuition for comparison-based problems.
+- Sets up for optimization using sorting or frequency arrays.
+
+**Pattern**:
+
+- Element-wise Comparison
+- Count Accumulation
+
+**In-Place Possibility**:
+
+- Not applicable – result must be stored separately.
+- Could optimize space with frequency-based tricks later.
+
+**Edge Cases**:
+
+- All elements same → all counts = 0
+- Strictly increasing array → counts = [0,1,2,...]
+- Strictly decreasing array → counts = [n-1, n-2,...]
+- Empty array → return empty array
+
+🔗 [LeetCode Link](https://leetcode.com/problems/how-many-numbers-are-smaller-than-the-current-number/)
+
+---
+
+## 9. Create Target Array in Given Order
+
+**Problem**:  
+Given two arrays `nums` and `index`, construct a target array by inserting `nums[i]` at position `index[i]` for each `i`.
+
+Rules:
+
+- Start with an empty array.
+- For each `i`, insert `nums[i]` at position `index[i]`.
+- Return the final target array.
+
+It is guaranteed that all insertions are valid.
+
+**Approach**:
+
+- Use a dynamic list (e.g. `ArrayList`) to perform insertions.
+- Loop through `nums` and `index` simultaneously.
+- Insert `nums[i]` at `index[i]` using `list.add(index[i], nums[i])`.
+- Convert the list to an array and return.
+
+**Complexity**:
+
+- Time: O(n²) – insertion at arbitrary index in ArrayList is O(n) in worst case
+- Space: O(n) – for the target array
+
+**Example**:
+
+```text
+Input: nums = [0,1,2,3,4], index = [0,1,2,2,1]
+
+Step-by-step:
+Insert 0 at index 0 → [0]
+Insert 1 at index 1 → [0,1]
+Insert 2 at index 2 → [0,1,2]
+Insert 3 at index 2 → [0,1,3,2]
+Insert 4 at index 1 → [0,4,1,3,2]
+
+Output: [0,4,1,3,2]
+```
+
+**Key Takeaway**:
+
+- This problem is about simulating array insertions.
+- ArrayList is ideal for dynamic insertions.
+- Time complexity can be improved with linked structures or preallocation.
+
+**Pattern**:
+
+- Simulation
+- Index-based Insertion
+
+**In-Place Possibility**:
+
+- Not feasible with fixed-size arrays due to shifting.
+- Requires dynamic structure like `ArrayList`.
+
+**Edge Cases**:
+
+- Empty input → return empty array
+- All index values are increasing → behaves like append
+- All index values are zero → reverse order insertion
+
+🔗 [LeetCode Link](https://leetcode.com/problems/create-target-array-in-the-given-order/)
+
+---
