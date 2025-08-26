@@ -470,3 +470,181 @@ Output: [0,4,1,3,2]
 🔗 [LeetCode Link](https://leetcode.com/problems/create-target-array-in-the-given-order/)
 
 ---
+
+## 10. Sentence Is Pangram
+
+**Problem**:  
+A **pangram** is a sentence where every letter of the English alphabet appears at least once.  
+Given a string `sentence` containing only lowercase English letters, return `true` if it is a pangram, otherwise return `false`.
+
+**Approach**:
+
+- Create a boolean array `seen[26]` to track each letter.
+- Iterate through each character in the sentence.
+- For every character `ch`, mark `seen[ch - 'a'] = true`.
+- After processing, check if all entries in `seen` are `true`.
+- If any letter is missing, return `false`; otherwise, return `true`.
+
+**Complexity**:
+
+- Time: O(n) – one pass through the sentence
+- Space: O(1) – fixed size array of 26 letters
+
+**Example**:
+
+```text
+Input: sentence = "thequickbrownfoxjumpsoverthelazydog"
+Output: true
+Explanation: Contains all 26 letters of the alphabet.
+
+Input: sentence = "leetcode"
+Output: false
+Explanation: Missing several letters.
+```
+
+**Key Takeaway**:
+
+- Pangram check is a classic character frequency problem.
+- Boolean array is efficient for fixed-size alphabet tracking.
+- Great intro to ASCII manipulation and character indexing.
+
+**Pattern**:
+
+- Character Frequency
+- Boolean Tracking
+- Set Membership Simulation
+
+**In-Place Possibility**:
+
+- Not applicable – sentence is read-only.
+- Could optimize with bitmasking for advanced versions.
+
+**Edge Cases**:
+
+- Empty string → false
+- Sentence with repeated letters but missing one → false
+- Sentence with exactly 26 unique letters → true
+
+🔗 [LeetCode Link](https://leetcode.com/problems/check-if-the-sentence-is-pangram/)
+
+---
+
+## 11. Count Items Matching a Rule
+
+**Problem**:  
+You're given a list of items, where each item is represented as a list of three strings: `[type, color, name]`.  
+You're also given a rule in the form of `ruleKey` and `ruleValue`.  
+Return the number of items that match the rule.
+
+**Matching Criteria**:
+
+- If `ruleKey == "type"`, match against `item[0]`
+- If `ruleKey == "color"`, match against `item[1]`
+- If `ruleKey == "name"`, match against `item[2]`
+
+**Approach**:
+
+- Map `ruleKey` to its corresponding index.
+- Iterate through each item and check if `item[index] == ruleValue`.
+- Count and return the number of matches.
+
+**Complexity**:
+
+- Time: O(n) – one pass through the items list
+- Space: O(1) – no extra space beyond counters
+
+**Example**:
+
+```text
+Input: items = [["phone","blue","pixel"],["computer","silver","lenovo"],["phone","gold","iphone"]]
+       ruleKey = "color", ruleValue = "silver"
+Output: 1
+
+Input: items = [["phone","blue","pixel"],["computer","silver","phone"],["phone","gold","iphone"]]
+       ruleKey = "type", ruleValue = "phone"
+Output: 2
+```
+
+**Key Takeaway**:
+
+- Simple mapping logic using index-based access.
+- Great intro to structured data filtering.
+- Can be extended to dynamic rule systems or object-based filtering.
+
+**Pattern**:
+
+- Array Filtering
+- Rule-Based Matching
+- Index Mapping
+
+**Edge Cases**:
+
+- Empty items list → return 0
+- Invalid ruleKey → not applicable (assumed valid input)
+- Multiple identical matches → all counted
+
+**Optimizations**:
+
+- Replace `if-else` with a `Map<String, Integer>` for cleaner index lookup.
+- Use enhanced `for-each` loop for readability.
+
+🔗 [LeetCode Link](https://leetcode.com/problems/count-items-matching-a-rule/)
+
+---
+
+## 12. Find the Highest Altitude
+
+**Problem**:  
+A biker starts a road trip at altitude `0`. You're given an array `gain[]` where `gain[i]` represents the net altitude change between point `i` and `i+1`.  
+Return the **highest altitude** reached during the trip.
+
+**Approach**:
+
+- Initialize `currAlt = 0` and `maxAlt = 0`.
+- Traverse the `gain[]` array:
+  - Add each `gain[i]` to `currAlt`.
+  - Update `maxAlt` if `currAlt` exceeds it.
+- Return `maxAlt` after the loop.
+
+**Complexity**:
+
+- Time: O(n) – single pass through the array
+- Space: O(1) – constant space for altitude tracking
+
+**Example**:
+
+```text
+Input: gain = [-5,1,5,0,-7]
+Altitudes: [0,-5,-4,1,1,-6]
+Output: 1
+
+Input: gain = [-4,-3,-2,-1,4,3,2]
+Altitudes: [0,-4,-7,-9,-10,-6,-3,-1]
+Output: 0
+```
+
+**Key Takeaway**:
+
+- This is a classic **prefix sum** problem.
+- Track cumulative values and update the max on-the-fly.
+- Useful pattern for elevation, temperature, or profit tracking.
+
+**Pattern**:
+
+- Prefix Sum
+- Running Maximum
+- Cumulative Tracking
+
+**Edge Cases**:
+
+- All negative gains → highest altitude is 0
+- Empty gain array → return 0 (starting point only)
+
+**Optimizations**:
+
+- Already optimal in time and space.
+- Can be extended to return the point index of highest altitude if needed.
+
+🔗 [LeetCode Link](https://leetcode.com/problems/find-the-highest-altitude/)
+
+---
