@@ -648,3 +648,206 @@ Output: 0
 🔗 [LeetCode Link](https://leetcode.com/problems/find-the-highest-altitude/)
 
 ---
+
+## 13. Flipping an Image
+
+**Problem**:  
+Given an `n x n` binary matrix `image`, perform two operations:
+
+1. **Flip horizontally** – reverse each row.
+2. **Invert** – replace every `0` with `1` and every `1` with `0`.
+
+Return the resulting image after both operations.
+
+**Approach**:
+
+- Traverse each row of the matrix.
+- Use two pointers (`start`, `end`) to reverse the row in-place.
+- While swapping, simultaneously invert each value using XOR (`^ 1`).
+- Return the modified matrix.
+
+**Complexity**:
+
+- Time: O(n²) – each element is visited once
+- Space: O(1) – in-place modification
+
+**Example**:
+
+```text
+Input: image = [[1,1,0],[1,0,1],[0,0,0]]
+
+Step 1: Flip each row
+→ [[0,1,1],[1,0,1],[0,0,0]]
+
+Step 2: Invert each value
+→ [[1,0,0],[0,1,0],[1,1,1]]
+
+Output: [[1,0,0],[0,1,0],[1,1,1]]
+```
+
+**Key Takeaway**:
+
+- Combines two operations: reversal and bit inversion.
+- XOR (`^ 1`) is a clean trick to flip binary values.
+- In-place logic avoids extra space and improves efficiency.
+
+**Pattern**:
+
+- Two-pointer reversal
+- Bit manipulation
+- Matrix transformation
+
+**In-Place Possibility**:
+
+- Fully in-place using XOR and swapping
+- No need for auxiliary arrays
+
+**Edge Cases**:
+
+- Empty matrix → return empty
+- Single row or column → still reversible and invertible
+- Already flipped/inverted → still processed normally
+
+🔗 [LeetCode Link](https://leetcode.com/problems/flipping-an-image/)
+
+---
+
+## 14. Cells with Odd Values in a Matrix
+
+**🧩 Problem Statement**  
+You're given a matrix of size `m x n`, initialized with all `0`s, and a list of `indices`. Each `[ri, ci]` in `indices` represents a location where you:
+
+- Increment all cells in row `ri`
+- Increment all cells in column `ci`
+
+Return the **number of cells with odd values** after performing all operations.
+
+---
+
+### ✅ Approach
+
+- Create a `m x n` matrix initialized to zero.
+- For each `[ri, ci]` in `indices`:
+  - Increment every cell in row `ri`
+  - Increment every cell in column `ci`
+- Count how many cells have odd values (`value % 2 == 1`)
+
+---
+
+### 🔍 Example
+
+```text
+Input: m = 2, n = 3, indices = [[0,1],[1,1]]
+
+Initial matrix:
+[[0, 0, 0],
+ [0, 0, 0]]
+
+After [0,1]:
+→ row 0: [1, 1, 1]
+→ col 1: [1, 2, 1]
+
+After [1,1]:
+→ row 1: [1, 3, 1]
+→ col 1: [1, 3, 1]
+
+Final matrix:
+[[1, 3, 1],
+ [1, 3, 1]]
+
+Odd values count = 6
+```
+
+---
+
+### 📊 Complexity
+
+| Type            | Value                  |
+| --------------- | ---------------------- |
+| Time            | O(k × (m + n) + m × n) |
+| Space           | O(m × n)               |
+| Optimized Space | O(m + n)               |
+
+---
+
+### 🧠 Optimization Insight
+
+Instead of modifying the matrix directly, you can:
+
+- Use `row[]` and `col[]` arrays to track how many times each row and column is incremented.
+- Compute each cell as `row[i] + col[j]` and check if it’s odd.
+
+---
+
+### 🔁 Pattern Recognition
+
+- Matrix manipulation
+- Row/column operations
+- Counting based on parity (odd/even)
+
+---
+
+🔗 [LeetCode Link](https://leetcode.com/problems/cells-with-odd-values-in-a-matrix/)
+
+---
+
+## 15. Matrix Diagonal Sum
+
+**Problem**:  
+Given a square matrix `mat`, return the sum of its diagonals:
+
+- Include all elements from the **primary diagonal** (`mat[i][i]`)
+- Include all elements from the **secondary diagonal** (`mat[i][n - 1 - i]`)
+- If the matrix has an odd dimension, **do not double-count** the center element
+
+**Approach**:
+
+- Loop through each row `i` of the matrix
+- Add both `mat[i][i]` (primary) and `mat[i][n - 1 - i]` (secondary) to the total
+- If `n` is odd, subtract the center element once to avoid double-counting
+
+**Complexity**:
+
+- Time: O(n) – single pass through the matrix
+- Space: O(1) – constant space used
+
+**Example**:
+
+```text
+Input: mat = [[1,2,3],
+              [4,5,6],
+              [7,8,9]]
+
+Primary diagonal: 1 + 5 + 9 = 15
+Secondary diagonal: 3 + 5 + 7 = 15
+Center element (5) is counted twice → subtract once
+
+Final sum: 15 + 15 - 5 = 25
+Output: 25
+```
+
+**Key Takeaway**:
+
+- Diagonal traversal is index-based: `i == j` for primary, `i + j == n - 1` for secondary
+- Handle the center overlap in odd-sized matrices to ensure accuracy
+
+**Pattern**:
+
+- Matrix traversal
+- Diagonal indexing
+- Conditional adjustment for overlaps
+
+**In-Place Possibility**:
+
+- No modification needed — purely read and compute
+- Efficient and clean with no extra data structures
+
+**Edge Cases**:
+
+- `mat.length == 1` → single element is both diagonals → return it once
+- Even-sized matrix → no overlap, no adjustment needed
+- Odd-sized matrix → subtract center once
+
+🔗 [LeetCode Link](https://leetcode.com/problems/matrix-diagonal-sum/)
+
+---
