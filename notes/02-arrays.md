@@ -851,3 +851,121 @@ Output: 25
 🔗 [LeetCode Link](https://leetcode.com/problems/matrix-diagonal-sum/)
 
 ---
+
+## 16. Find Numbers with Even Number of Digits
+
+**Problem**:  
+Given an array `nums` of integers, return how many of them contain an **even number of digits**.
+
+**Approach**:
+
+- Loop through each number in the array.
+- Count the number of digits by repeatedly dividing by 10.
+- If the digit count is even (`digit % 2 == 0`), increment the result counter.
+- Return the final count.
+
+**Complexity**:
+
+- Time: O(n × d) – where `n` is the number of elements and `d` is the average number of digits per number
+- Space: O(1) – constant space used
+
+**Example**:
+
+```text
+Input: nums = [12,345,2,6,7896]
+
+Digit counts:
+12 → 2 digits → even ✅
+345 → 3 digits → odd ❌
+2 → 1 digit → odd ❌
+6 → 1 digit → odd ❌
+7896 → 4 digits → even ✅
+
+Output: 2
+```
+
+**Key Takeaway**:
+
+- Digit counting via division is a classic technique.
+- Can be optimized using string conversion or logarithmic math.
+- Great intro to number manipulation and condition-based counting.
+
+**Pattern**:
+
+- Number analysis
+- Digit counting
+- Conditional filtering
+
+**In-Place Possibility**:
+
+- No modification needed — purely read and count
+- Efficient and clean with no extra data structures
+
+**Edge Cases**:
+
+- Empty array → return 0
+- All numbers with odd digits → return 0
+- All numbers with even digits → return length of array
+
+🔗 [LeetCode Link](https://leetcode.com/problems/find-numbers-with-even-number-of-digits/)
+
+---
+
+## 17. Transpose of a Matrix
+
+**Problem**:  
+Given a 2D integer array `matrix`, return the **transpose** of the matrix.  
+The transpose flips the matrix over its main diagonal, switching the row and column indices.
+
+**Approach**:
+
+- Determine the dimensions of the input matrix: `m × n`.
+- Create a new matrix of size `n × m`.
+- Loop through each element at position `(i, j)` in the original matrix.
+- Assign it to position `(j, i)` in the transposed matrix.
+- Return the new matrix.
+
+**Complexity**:
+
+- Time: O(m × n) – every element is visited once
+- Space: O(n × m) – new matrix created for the transpose
+
+**Example**:
+
+```text
+Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+
+Step-by-step transpose:
+Row 0 → [1,2,3] → becomes column 0 → [1,4,7]
+Row 1 → [4,5,6] → becomes column 1 → [2,5,8]
+Row 2 → [7,8,9] → becomes column 2 → [3,6,9]
+
+Output: [[1,4,7],[2,5,8],[3,6,9]]
+```
+
+**Key Takeaway**:
+
+- Transposing is a fundamental matrix operation.
+- Useful in linear algebra, image processing, and data reshaping.
+- Index flipping is a clean and intuitive way to remap dimensions.
+
+**Pattern**:
+
+- Matrix manipulation
+- Index transformation
+- Row-to-column mapping
+
+**In-Place Possibility**:
+
+- Only possible for square matrices (`m == n`)
+- Requires swapping elements across the diagonal without extra space
+
+**Edge Cases**:
+
+- Empty matrix → return empty
+- Single row → becomes single column
+- Non-square matrix → handled correctly with dynamic sizing
+
+🔗 [LeetCode Link](https://leetcode.com/problems/transpose-matrix/)
+
+---
