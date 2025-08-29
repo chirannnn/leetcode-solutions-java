@@ -969,3 +969,122 @@ Output: [[1,4,7],[2,5,8],[3,6,9]]
 🔗 [LeetCode Link](https://leetcode.com/problems/transpose-matrix/)
 
 ---
+
+## 18. Add to Array-Form of Integer
+
+**Problem**:  
+The array-form of an integer `num` is an array representing its digits in left-to-right order.  
+Given `num` (as an array) and an integer `k`, return the array-form of `num + k`.
+
+**Approach**:
+
+- Start from the end of the `num` array (least significant digit).
+- Add each digit of `num` to `k` from right to left.
+- Extract the last digit of the sum using `k % 10` and insert it at the front of the result list.
+- Divide `k` by 10 to move to the next digit.
+- Continue until all digits of `num` and `k` are processed.
+- Return the result list.
+
+**Complexity**:
+
+- Time: O(max(n, log₁₀k)) – depends on the length of `num` and number of digits in `k`
+- Space: O(max(n, log₁₀k)) – for the result list
+
+**Example**:
+
+```text
+Input: num = [2,1,5], k = 806
+
+Step-by-step:
+215 + 806 = 1021
+Result: [1,0,2,1]
+
+Input: num = [1,2,0,0], k = 34
+1200 + 34 = 1234
+Result: [1,2,3,4]
+```
+
+**Key Takeaway**:
+
+- This simulates manual addition from right to left.
+- Handles carry implicitly by storing the sum in `k`.
+- Efficient and avoids converting the array to an integer.
+
+**Pattern**:
+
+- Digit-wise addition
+- Carry propagation
+- Array-to-number simulation
+
+**In-Place Possibility**:
+
+- Not applicable — result must be built as a new list
+- Could optimize with a linked list or reverse insertion
+
+**Edge Cases**:
+
+- `num = [0]`, `k = 0` → return [0]
+- Large `k` → handled digit-by-digit
+- Leading zeros → not present in input or output
+
+🔗 [LeetCode Link](https://leetcode.com/problems/add-to-array-form-of-integer/)
+
+---
+
+## 19. Maximum Population Year
+
+**Problem**:  
+Given a list of birth and death years for multiple people, determine the **earliest year** with the **maximum population**.  
+A person is considered alive from `birth` to `death - 1`.
+
+**Approach**:  
+Use a **difference array** to track population changes year by year:
+
+- Create an array `years[101]` to represent years from 1950 to 2050.
+- For each person:
+  - Increment `years[birth - 1950]` to mark their birth.
+  - Decrement `years[death - 1950]` to mark the year after their death.
+- Perform a prefix sum over `years` to compute population per year.
+- Track the year with the highest population.
+
+**Complexity**:
+
+| Metric | Value      |
+| ------ | ---------- |
+| Time   | O(n + 101) |
+| Space  | O(101)     |
+
+**Example**:
+
+```text
+Input: logs = [[1950,1961],[1960,1971],[1970,1981]]
+
+Step-by-step:
+- Person 1: alive 1950–1960
+- Person 2: alive 1960–1970
+- Person 3: alive 1970–1980
+
+Years 1960 and 1970 both have population = 2
+Return earliest → 1960
+```
+
+**Key Insight**:
+
+- This is a classic **sweep line** or **prefix sum** technique.
+- Efficiently handles overlapping intervals without sorting.
+- Avoids brute-force year-by-year counting.
+
+**Pattern**:
+
+- Interval counting
+- Difference array
+- Prefix sum for cumulative effect
+
+**Edge Cases**:
+
+- All people born and die in same year → population = 0
+- Multiple years with same max population → return earliest
+
+🔗 [LeetCode Link](https://leetcode.com/problems/maximum-population-year)
+
+---
