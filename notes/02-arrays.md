@@ -1088,3 +1088,174 @@ Return earliest → 1960
 🔗 [LeetCode Link](https://leetcode.com/problems/maximum-population-year)
 
 ---
+
+## 20. Determine Whether Matrix Can Be Obtained By Rotation
+
+**Problem**:  
+Given two `n x n` binary matrices `mat` and `target`, return `true` if it is possible to make `mat` equal to `target` by rotating `mat` in 90-degree increments (clockwise), or `false` otherwise.
+
+**Approach**:
+
+- Try up to 4 rotations (0°, 90°, 180°, 270°).
+- After each rotation, check if `mat` matches `target`.
+- To rotate 90° clockwise:
+  - For each cell `(i, j)` in the original matrix, place it at `(j, n - 1 - i)` in the new matrix.
+- Use a helper function to compare two matrices for equality.
+
+**Complexity**:
+
+- Time: O(n²) – each rotation and comparison takes O(n²)
+- Space: O(n²) – for storing rotated matrix
+
+**Example**:
+
+```text
+Input: mat = [[0,0,0],[0,1,0],[1,1,1]]
+       target = [[1,1,1],[0,1,0],[0,0,0]]
+
+Rotation steps:
+→ After 90°: [[1,0,0],[1,1,0],[1,0,0]]
+→ After 180°: [[1,1,1],[0,1,0],[0,0,0]] → matches target ✅
+
+Output: true
+```
+
+**Key Takeaway**:
+
+- Matrix rotation is a common transformation in grid-based problems.
+- Comparing after each rotation avoids modifying the original matrix.
+- Rotating 4 times ensures all possible orientations are checked.
+
+**Pattern**:
+
+- Matrix transformation
+- Rotation logic
+- Equality comparison
+
+**In-Place Possibility**:
+
+- Not applicable for non-square matrix rotation
+- Requires a new matrix for each rotation
+
+**Edge Cases**:
+
+- `mat == target` initially → return true
+- No rotation matches → return false
+- Matrix size = 1 → always matches if values are equal
+
+🔗 [LeetCode Link](https://leetcode.com/problems/determine-whether-matrix-can-be-obtained-by-rotation)
+
+---
+
+## 21. Two Sum – Brute Force Approach
+
+**Problem**:  
+Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.  
+You may assume that each input has **exactly one solution**, and you **may not use the same element twice**.
+
+**Approach**:
+
+- Use a **double loop** to check every pair `(i, j)` where `i < j`.
+- For each pair, calculate `nums[i] + nums[j]`.
+- If the sum equals `target`, return the pair of indices.
+
+**Complexity**:
+
+- **Time**: O(n²) – brute force pair checking
+- **Space**: O(1) – no extra space used
+
+**Example**:
+
+```text
+Input: nums = [2,7,11,15], target = 9
+→ i = 0, j = 1 → 2 + 7 = 9 ✅
+Output: [0,1]
+
+Input: nums = [3,2,4], target = 6
+→ i = 1, j = 2 → 2 + 4 = 6 ✅
+Output: [1,2]
+
+Input: nums = [3,3], target = 6
+→ i = 0, j = 1 → 3 + 3 = 6 ✅
+Output: [0,1]
+```
+
+**Key Takeaway**:
+
+- Brute force is simple and readable.
+- Guaranteed to find the solution due to problem constraints.
+- Not optimal for large arrays, but good for understanding the logic.
+
+**Pattern**:
+
+- Array traversal
+- Pair sum check
+- Early return on match
+
+**Edge Cases**:
+
+- Duplicate values → valid if indices are different
+- Only one valid pair → problem guarantees exactly one solution
+- Small arrays → performs well
+
+🔗 [LeetCode – Two Sum](https://leetcode.com/problems/two-sum/)
+
+---
+
+## 22. Find N Unique Integers That Sum to Zero
+
+**Problem**:  
+Given an integer `n`, return any array containing `n` unique integers such that they add up to `0`.
+
+**Approach**:
+
+- Use **symmetry**: for every `+i`, include `-i`.
+- This gives `n/2` positive and `n/2` negative numbers.
+- If `n` is odd, include `0` to balance the count.
+- This guarantees:
+  - All elements are unique
+  - Total sum is zero
+
+**Complexity**:
+
+- **Time**: O(n) – single pass to fill array
+- **Space**: O(n) – output array of size `n`
+
+**Example**:
+
+```text
+Input: n = 5
+→ Pairs: [1, -1], [2, -2]
+→ Odd count → add 0
+Output: [1, -1, 2, -2, 0]
+
+Input: n = 3
+→ Pairs: [1, -1]
+→ Odd count → add 0
+Output: [1, -1, 0]
+
+Input: n = 1
+→ Just [0]
+```
+
+**Key Takeaway**:
+
+- This is a classic **constructive symmetry** problem.
+- You don’t need to generate all possible arrays — just one valid solution.
+- Works for any `n ≥ 1` as per constraints.
+
+**Pattern**:
+
+- Array construction
+- Mathematical symmetry
+- Conditional logic for odd/even
+
+**Edge Cases**:
+
+- `n = 1` → return `[0]`
+- `n` is even → no need for zero
+- `n` is odd → include zero to balance
+
+🔗 [LeetCode – Find N Unique Integers Sum up to Zero](https://leetcode.com/problems/find-n-unique-integers-sum-up-to-zero)
+
+---
