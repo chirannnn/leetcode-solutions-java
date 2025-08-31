@@ -1259,3 +1259,60 @@ Input: n = 1
 🔗 [LeetCode – Find N Unique Integers Sum up to Zero](https://leetcode.com/problems/find-n-unique-integers-sum-up-to-zero)
 
 ---
+
+## 23. Lucky Numbers in a Matrix
+
+**Problem**:  
+Given an `m x n` matrix of **distinct numbers**, return all **lucky numbers** in any order.  
+A lucky number is defined as an element that is:
+
+- The **minimum** in its row
+- The **maximum** in its column
+
+**Approach**:
+
+- For each row:
+  - Find the **minimum element** and record its column index.
+- For that column:
+  - Check if the minimum element is also the **maximum** in that column.
+- If both conditions are satisfied, add the element to the result list.
+
+**Complexity**:
+
+- **Time**: O(m × n) – each row and column is scanned once
+- **Space**: O(1) – aside from the result list
+
+**Example**:
+
+```text
+Input: matrix = [[3,7,8],[9,11,13],[15,16,17]]
+
+Step-by-step:
+Row 0 → min = 3 → column 0 → max in column = 15 ❌
+Row 1 → min = 9 → column 0 → max in column = 15 ❌
+Row 2 → min = 15 → column 0 → max in column = 15 ✅
+
+Output: [15]
+```
+
+**Key Takeaway**:
+
+- This is a **row-column intersection** problem.
+- The lucky number must satisfy **two conditions** across dimensions.
+- Efficient scanning avoids unnecessary comparisons.
+
+**Pattern**:
+
+- Matrix traversal
+- Min-max logic
+- Conditional filtering
+
+**Edge Cases**:
+
+- No lucky numbers → return empty list
+- Multiple lucky numbers → all are returned
+- Single element matrix → always lucky
+
+🔗 [LeetCode – Lucky Numbers in a Matrix](https://leetcode.com/problems/lucky-numbers-in-a-matrix/description/)
+
+---
