@@ -1316,3 +1316,125 @@ Output: [15]
 🔗 [LeetCode – Lucky Numbers in a Matrix](https://leetcode.com/problems/lucky-numbers-in-a-matrix/description/)
 
 ---
+
+## 24. Maximum Subarray
+
+**Problem**:  
+Given an integer array `nums`, find the **contiguous subarray** with the **largest sum**, and return that sum.
+
+**Approach**:
+
+- Use **Kadane’s Algorithm**:
+  - Track the current subarray sum (`currSum`)
+  - At each index, decide whether to:
+    - Extend the previous subarray (`currSum + nums[i]`)
+    - Start a new subarray from `nums[i]`
+  - Update the global maximum (`maxSum`) if `currSum` exceeds it
+
+**Complexity**:
+
+- **Time**: O(n) – single pass through the array
+- **Space**: O(1) – constant space used
+
+**Example**:
+
+```text
+Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+
+Step-by-step:
+→ Start with -2
+→ max(1, -2+1) = 1
+→ max(-3, 1-3) = -2
+→ max(4, -2+4) = 4
+→ max(-1, 4-1) = 3
+→ max(2, 3+2) = 5
+→ max(1, 5+1) = 6 ✅
+→ max(-5, 6-5) = 1
+→ max(4, 1+4) = 5
+
+Final maxSum = 6
+Output: 6
+```
+
+**Key Takeaway**:
+
+- Kadane’s Algorithm is optimal for **maximum subarray sum** problems.
+- It avoids brute-force checking of all subarrays.
+- The core idea: **extend or restart** the subarray based on whether the previous sum helps or hurts.
+
+**Pattern**:
+
+- Dynamic programming (1D)
+- Greedy decision at each step
+- Running max tracking
+
+**Edge Cases**:
+
+- All negative numbers → return the least negative
+- Single element → return that element
+- Entire array is the max subarray → handled naturally
+
+🔗 [LeetCode – Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
+
+---
+
+## 25. Reshape the Matrix
+
+**Problem**:  
+Given a 2D matrix `mat` of size `m × n`, and target dimensions `r × c`, reshape the matrix to the new dimensions **while preserving row-wise traversal order**.  
+If reshaping is **not possible**, return the original matrix.
+
+**Approach**:
+
+- Check if reshape is **valid**:
+  - Total elements must match: `m × n == r × c`
+- Traverse the original matrix in **row-major order**
+- Fill the reshaped matrix using a running pointer:
+  - Track `row` and `col` in the new matrix
+  - Reset `col` when it reaches `c`, and increment `row`
+
+**Complexity**:
+
+- **Time**: O(m × n) – every element is visited once
+- **Space**: O(r × c) – new matrix allocation
+
+**Example**:
+
+```text
+Input: mat = [[1,2],[3,4]], r = 1, c = 4
+
+Step-by-step:
+→ Flattened: [1, 2, 3, 4]
+→ Fill row 0: [1, 2, 3, 4]
+
+Output: [[1,2,3,4]]
+
+---
+
+Input: mat = [[1,2],[3,4]], r = 2, c = 4
+
+→ Total elements: 4 ≠ 8 → Invalid reshape
+→ Return original matrix: [[1,2],[3,4]]
+```
+
+**Key Takeaway**:
+
+- This is a classic **simulation** problem.
+- Reshape is only possible when the total number of elements remains unchanged.
+- The traversal order must be preserved exactly.
+
+**Pattern**:
+
+- Matrix transformation
+- Row-major traversal
+- Index mapping between 2D grids
+
+**Edge Cases**:
+
+- Invalid reshape → return original matrix
+- Single row or column → handled naturally
+- Empty matrix → return empty reshape
+
+🔗 [LeetCode – Reshape the Matrix](https://leetcode.com/problems/reshape-the-matrix/)
+
+---
