@@ -1438,3 +1438,191 @@ Input: mat = [[1,2],[3,4]], r = 2, c = 4
 🔗 [LeetCode – Reshape the Matrix](https://leetcode.com/problems/reshape-the-matrix/)
 
 ---
+
+## 26. Plus One
+
+**Problem**:  
+You are given a large integer represented as an array `digits`, where each `digits[i]` is a digit of the number from **most significant to least significant**.  
+Increment the number by one and return the resulting array of digits.
+
+**Approach**:
+
+- Traverse the array **from the end** (least significant digit).
+- If the digit is **less than 9**, increment it and return the array.
+- If the digit is **9**, set it to 0 and continue (carry over).
+- If all digits are 9 (e.g. `[9,9,9]`), create a new array of size `n+1` with `1` at the front and the rest as `0`.
+
+**Complexity**:
+
+- **Time**: O(n) – single pass from end to start
+- **Space**: O(n) or O(n+1) – depending on carry overflow
+
+**Example**:
+
+```text
+Input: digits = [1,2,3]
+
+Step-by-step:
+→ Start from end: 3 → 3 + 1 = 4 ✅
+→ No carry needed
+Output: [1,2,4]
+
+---
+
+Input: digits = [9]
+
+→ 9 + 1 = 10 → carry over
+→ Create new array: [1,0]
+Output: [1,0]
+```
+
+**Key Takeaway**:
+
+- This is a classic **carry propagation** problem.
+- Efficiently handles edge cases like `[9,9,9]` without converting to integer.
+- Avoids overflow and maintains digit-level precision.
+
+**Pattern**:
+
+- Array traversal from end
+- Carry handling
+- Digit-wise simulation
+
+**Edge Cases**:
+
+- Single digit 9 → becomes `[1,0]`
+- All digits are 9 → new array with leading 1
+- No carry needed → early return
+
+🔗 [LeetCode – Plus One](https://leetcode.com/problems/plus-one/)
+
+---
+
+## 27. Remove Duplicates from Sorted Array
+
+**Problem**:  
+Given an integer array `nums` sorted in non-decreasing order, remove the duplicates **in-place** so that each unique element appears only once.  
+Return `k`, the number of unique elements. The first `k` elements of `nums` should contain the unique values in original order.
+
+**Approach**:
+
+- Use a **two-pointer technique**:
+  - `k` tracks the position to place the next unique element.
+  - Traverse with `i` from index 1 onward.
+- If `nums[i] != nums[k - 1]`, it's a new unique → assign to `nums[k]`, then increment `k`.
+- Return `k` as the count of unique elements.
+
+**Complexity**:
+
+- **Time**: O(n) – single pass through the array
+- **Space**: O(1) – in-place modification, no extra space used
+
+**Example**:
+
+```text
+Input: nums = [0,0,1,1,1,2,2,3,3,4]
+
+Step-by-step:
+→ i = 1: nums[1] == nums[0] → skip
+→ i = 2: nums[2] != nums[0] → nums[1] = 1, k = 2
+→ i = 5: nums[5] != nums[1] → nums[2] = 2, k = 3
+→ i = 7: nums[7] != nums[2] → nums[3] = 3, k = 4
+→ i = 9: nums[9] != nums[3] → nums[4] = 4, k = 5
+
+Output: k = 5
+Modified nums = [0,1,2,3,4,...]
+```
+
+**Key Takeaway**:
+
+- Efficiently removes duplicates without extra space.
+- Leverages sorted property to detect adjacent duplicates.
+- Preserves relative order of unique elements.
+
+**Pattern**:
+
+- Two-pointer overwrite
+- In-place mutation
+- Sorted array → adjacent duplicates
+
+**Edge Cases**:
+
+- Empty array → return 0
+- All elements same → return 1
+- No duplicates → return `nums.length`
+
+🔗 [LeetCode – Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array)
+
+---
+
+## 28. Minimum Cost to Move Chips to the Same Position
+
+**Problem**:  
+You are given an array `position[]` representing the locations of `n` chips on a number line.  
+You can move a chip in two ways:
+
+- Move by ±2 → **cost = 0**
+- Move by ±1 → **cost = 1**
+
+Return the **minimum cost** to move all chips to the same position.
+
+---
+
+**Approach**:
+
+- Moving chips between **same parity positions** (even ↔ even or odd ↔ odd) is free.
+- Moving between **different parity positions** (even ↔ odd) costs 1 per chip.
+- So, group chips by parity:
+  - Count chips at **even** positions
+  - Count chips at **odd** positions
+- To minimize cost, move the **smaller group** to the larger one → cost = `min(even, odd)`
+
+---
+
+**Complexity**:
+
+- **Time**: O(n) – single pass to count parity
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: position = [2,2,2,3,3]
+
+Step-by-step:
+→ Even positions: 3 chips → [2,2,2]
+→ Odd positions: 2 chips → [3,3]
+→ Move 2 odd chips to even → cost = 2
+
+Output: 2
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a **parity-based greedy** problem.
+- Leverages cost-free movement across even/odd parity.
+- Optimal strategy: move minority group to majority.
+
+---
+
+**Pattern**:
+
+- Parity grouping
+- Greedy minimization
+- Cost-aware movement rules
+
+---
+
+**Edge Cases**:
+
+- All chips at same parity → cost = 0
+- Only two chips at opposite ends → cost = 1
+- Large values (e.g. `10⁹`) → irrelevant due to parity logic
+
+🔗 [LeetCode – Minimum Cost to Move Chips to the Same Position](https://leetcode.com/problems/minimum-cost-to-move-chips-to-the-same-position)
+
+---
