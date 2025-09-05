@@ -213,3 +213,146 @@ Output: 30 coordinates in spiral order
 🔗 [LeetCode – Spiral Matrix III](https://leetcode.com/problems/spiral-matrix-iii)
 
 ---
+
+## 4. Set Matrix Zeroes
+
+**Problem**:  
+Given an `m × n` integer matrix, if any element is `0`, set its **entire row and column** to `0`.  
+You must perform this operation **in-place**, without using extra space for tracking.
+
+---
+
+**Approach**:
+
+- Use the **first row and first column** as markers to flag which rows and columns should be zeroed.
+- Track two booleans:
+  - `firstRowZero` → whether the first row needs to be zeroed
+  - `firstColZero` → whether the first column needs to be zeroed
+- Traverse the matrix:
+  - If `matrix[i][j] == 0`, mark `matrix[i][0] = 0` and `matrix[0][j] = 0`
+- In a second pass, zero out cells based on these markers.
+- Finally, zero out the first row and column if needed.
+
+---
+
+**Complexity**:
+
+- **Time**: O(m × n) – full matrix traversal
+- **Space**: O(1) – no extra space used beyond flags
+
+---
+
+**Example**:
+
+```text
+Input: matrix = [[1,1,1],[1,0,1],[1,1,1]]
+
+Step-by-step:
+→ Mark row 1 and column 1 for zeroing
+→ Zero out row 1 and column 1
+→ Final matrix: [[1,0,1],[0,0,0],[1,0,1]]
+
+Output: [[1,0,1],[0,0,0],[1,0,1]]
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **in-place simulation** problem.
+- Using the matrix itself as a marker avoids extra space.
+- Careful handling of the first row/column is essential to avoid premature overwrites.
+
+---
+
+**Pattern**:
+
+- Matrix mutation
+- Flagging via sentinel cells
+- In-place optimization
+
+---
+
+**Edge Cases**:
+
+- Zeros in first row/column → must be tracked separately
+- Multiple zeros → all affected rows/columns must be zeroed
+- Empty matrix → return as-is
+
+🔗 [LeetCode – Set Matrix Zeroes](https://leetcode.com/problems/set-matrix-zeroes)
+
+---
+
+## 5. Product of Array Except Self
+
+**Problem**:  
+Given an integer array `nums`, return an array `answer` such that `answer[i]` is the product of **all elements except `nums[i]`**.  
+You must solve it in **O(n)** time **without using division**.
+
+---
+
+**Approach**:
+
+- Use a **two-pass strategy**:
+
+  1. **Prefix pass**:
+     - Build `result[i]` as the product of all elements to the **left** of index `i`.
+  2. **Suffix pass**:
+     - Traverse from the end, maintaining a running product of elements to the **right** of index `i`.
+     - Multiply it with the existing `result[i]`.
+
+- This way, each `result[i] = prefix[i] × suffix[i]`, giving the product of all elements except `nums[i]`.
+
+---
+
+**Complexity**:
+
+- **Time**: O(n) – two linear passes
+- **Space**: O(1) extra space (excluding output array)
+
+---
+
+**Example**:
+
+```text
+Input: nums = [1,2,3,4]
+
+Prefix pass:
+→ result = [1, 1, 2, 6]  // left products
+
+Suffix pass:
+→ suffix = 1 → result[3] = 6 × 1 = 6
+→ suffix = 4 → result[2] = 2 × 4 = 8
+→ suffix = 12 → result[1] = 1 × 12 = 12
+→ suffix = 24 → result[0] = 1 × 24 = 24
+
+Output: [24,12,8,6]
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **prefix-suffix product** problem.
+- Avoids division by splitting the product into two independent parts.
+- Efficient and elegant — no need for extra arrays or brute force.
+
+---
+
+**Pattern**:
+
+- Prefix accumulation
+- Suffix accumulation
+- Multiplicative merging
+
+---
+
+**Edge Cases**:
+
+- Contains zero → result will have zeros in affected positions
+- Multiple zeros → entire result is zero
+- Single element → not applicable (problem constraint: `n ≥ 2`)
+
+🔗 [LeetCode – Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self)
+
+---

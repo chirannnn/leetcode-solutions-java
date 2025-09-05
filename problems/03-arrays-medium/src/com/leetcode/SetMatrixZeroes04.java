@@ -28,31 +28,82 @@ public class SetMatrixZeroes04 {
         int m = matrix.length;
         int n = matrix[0].length;
 
-        List<Integer> zeroRows = new ArrayList<>();
-        List<Integer> zeroCols = new ArrayList<>();
+        boolean firstRowZero = false;
+        boolean firstColZero = false;
+
+        for (int i = 0; i < n; i++) {
+            if (matrix[0][i] == 0){
+                firstRowZero = true;
+                break;
+            }
+        }
+
         for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+            if (matrix[i][0] == 0){
+                firstColZero = true;
+                break;
+            }
+        }
+
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
                 if (matrix[i][j] == 0){
-                    zeroRows.add(i);
-                    zeroCols.add(j);
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
                 }
             }
         }
 
-        for(int row : zeroRows){
-            for (int i = 0; i < n; i++) {
-                matrix[row][i] = 0;
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0){
+                    matrix[i][j] = 0;
+                }
             }
         }
 
-        for(int col : zeroCols){
+        if (firstRowZero){
+            for (int i = 0; i < n; i++) {
+                matrix[0][i] = 0;
+            }
+        }
+
+        if (firstColZero){
             for (int i = 0; i < m; i++) {
-                matrix[i][col] = 0;
+                matrix[i][0] = 0;
             }
         }
 
         for(int[] arr : matrix){
             System.out.println(Arrays.toString(arr));
         }
+
+
+//        List<Integer> zeroRows = new ArrayList<>();
+//        List<Integer> zeroCols = new ArrayList<>();
+//        for (int i = 0; i < m; i++) {
+//            for (int j = 0; j < n; j++) {
+//                if (matrix[i][j] == 0){
+//                    zeroRows.add(i);
+//                    zeroCols.add(j);
+//                }
+//            }
+//        }
+//
+//        for(int row : zeroRows){
+//            for (int i = 0; i < n; i++) {
+//                matrix[row][i] = 0;
+//            }
+//        }
+//
+//        for(int col : zeroCols){
+//            for (int i = 0; i < m; i++) {
+//                matrix[i][col] = 0;
+//            }
+//        }
+//
+//        for(int[] arr : matrix){
+//            System.out.println(Arrays.toString(arr));
+//        }
     }
 }
