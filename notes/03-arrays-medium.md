@@ -356,3 +356,145 @@ Output: [24,12,8,6]
 🔗 [LeetCode – Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self)
 
 ---
+
+## 8. Rotate Array
+
+**Problem**:  
+Given an integer array `nums`, rotate the array to the right by `k` steps.  
+Rotation must be done **in-place**, and `k` is non-negative.
+
+---
+
+**Approach**: Reverse Trick (Optimal)
+
+- Step 1: Reverse the entire array
+- Step 2: Reverse the first `k` elements
+- Step 3: Reverse the remaining `n - k` elements
+- This simulates a right rotation without using extra space
+
+---
+
+**Complexity**:
+
+- **Time**: O(n) – three passes over the array
+- **Space**: O(1) – in-place reversal
+
+---
+
+**Example**:
+
+```text
+Input: nums = [1,2,3,4,5,6,7], k = 3
+
+Step-by-step:
+→ Reverse entire array: [7,6,5,4,3,2,1]
+→ Reverse first 3: [5,6,7,4,3,2,1]
+→ Reverse last 4: [5,6,7,1,2,3,4]
+
+Output: [5,6,7,1,2,3,4]
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **array manipulation** problem.
+- The reversal trick avoids shifting elements one by one.
+- Efficient and elegant — no extra memory required.
+
+---
+
+**Pattern**:
+
+- In-place reversal
+- Modular arithmetic (`k % n`)
+- Three-phase transformation
+
+---
+
+**Edge Cases**:
+
+- `k = 0` → no rotation
+- `k > n` → use `k % n`
+- Empty array → return as-is
+
+🔗 [LeetCode – Rotate Array](https://leetcode.com/problems/rotate-array)
+
+---
+
+## 9. Sort Colors (Dutch National Flag)
+
+**Problem**:  
+Given an array `nums` containing only `0`, `1`, and `2` (representing red, white, and blue), sort the array **in-place** so that all `0`s come first, followed by `1`s, then `2`s.  
+You must not use built-in sort functions.
+
+---
+
+**Approach**:  
+Use **three pointers** to partition the array in a single pass:
+
+- `low` → boundary for 0s
+- `mid` → current index
+- `high` → boundary for 2s
+
+**Logic**:
+
+- If `nums[mid] == 0`:  
+  → Swap with `nums[low]`, increment both `low` and `mid`
+- If `nums[mid] == 2`:  
+  → Swap with `nums[high]`, decrement `high` only
+- If `nums[mid] == 1`:  
+  → Just increment `mid`
+
+---
+
+**Complexity**:
+
+- **Time**: O(n) – single pass
+- **Space**: O(1) – in-place sorting
+
+---
+
+**Example**:
+
+```text
+Input: nums = [2,0,2,1,1,0]
+
+Step-by-step:
+→ mid = 0: 2 → swap with high → [0,0,2,1,1,2]
+→ mid = 0: 0 → swap with low → [0,0,2,1,1,2]
+→ mid = 1: 0 → swap with low → [0,0,2,1,1,2]
+→ mid = 2: 2 → swap with high → [0,0,1,1,2,2]
+→ mid = 2: 1 → move on
+→ mid = 3: 1 → move on
+
+Output: [0,0,1,1,2,2]
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **three-way partitioning** problem.
+- Efficiently sorts 0s, 1s, and 2s in one pass.
+- Avoids counting or multiple passes.
+
+---
+
+**Pattern**:
+
+- Two-pointer / three-pointer technique
+- In-place partitioning
+- Conditional swapping
+
+---
+
+**Edge Cases**:
+
+- Already sorted → no swaps
+- All same color → minimal movement
+- Single element → return as-is
+
+🔗 [LeetCode – Sort Colors](https://leetcode.com/problems/sort-colors)
+
+---
