@@ -135,3 +135,215 @@ Output: [3,4]
 🔗 [LeetCode – Find First and Last Position of Element in Sorted Array](https://leetcodethehardway.com/solutions/0000-0099/find-first-and-last-position-of-element-in-sorted-array-medium)
 
 ---
+
+## 3. Peak Index in a Mountain Array
+
+**Problem**:  
+Given a mountain array `arr` (strictly increasing to a peak, then strictly decreasing), return the **index of the peak element**.  
+You must solve it in **O(log n)** time.
+
+---
+
+**Approach**: Binary Search on Shape
+
+- Use binary search to locate the peak:
+  - If `arr[mid] > arr[mid + 1]`, you're in the **descending slope** → move `end = mid`
+  - Else, you're in the **ascending slope** → move `start = mid + 1`
+- Loop continues until `start == end`, which is the **peak index**
+
+---
+
+**Complexity**:
+
+- **Time**: O(log n) – binary search halves the search space
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: arr = [0,10,5,2]
+
+Step-by-step:
+→ mid = 1 → arr[1] = 10 > arr[2] = 5 → move end = 1
+→ mid = 0 → arr[0] = 0 < arr[1] = 10 → move start = 1
+
+Now start == end == 1 → peak index = 1
+
+Output: 1
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **binary search on unimodal function**.
+- Efficiently finds the peak without scanning the entire array.
+- Works only because the array is guaranteed to be a mountain.
+
+---
+
+**Pattern**:
+
+- Binary search
+- Slope detection (ascending vs descending)
+- Peak localization
+
+---
+
+**Edge Cases**:
+
+- Peak at start or end → handled naturally by binary logic
+- Minimum length = 3 → peak always exists
+- No duplicates → guarantees strict slope
+
+🔗 [LeetCode – Peak Index in a Mountain Array](https://leetcode.com/problems/peak-index-in-a-mountain-array)
+
+---
+
+## 4. Find Peak Element
+
+**Problem**:  
+Given an integer array `nums`, find a **peak element** and return its index.  
+A peak is defined as an element that is **strictly greater than its neighbors**.  
+Assume `nums[-1] = nums[n] = -∞` to handle edge boundaries.  
+You must solve this in **O(log n)** time.
+
+---
+
+**Approach**: Binary Search on Slope
+
+- Use binary search to find a peak:
+  - If `nums[mid] > nums[mid + 1]`, you're on a **descending slope** → move `end = mid`
+  - Else, you're on an **ascending slope** → move `start = mid + 1`
+- Loop continues until `start == end`, which is a **peak index**
+- Since multiple peaks may exist, any valid peak is acceptable
+
+---
+
+**Complexity**:
+
+- **Time**: O(log n) – binary search
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: nums = [1,2,1,3,5,6,4]
+
+Step-by-step:
+→ mid = 3 → nums[3] = 3 < nums[4] = 5 → move start = 4
+→ mid = 4 → nums[4] = 5 < nums[5] = 6 → move start = 5
+→ mid = 5 → nums[5] = 6 > nums[6] = 4 → move end = 5
+
+Now start == end == 5 → peak index = 5
+
+Output: 5
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **binary search on unsorted terrain**.
+- Efficiently finds a peak without scanning the entire array.
+- Works even when multiple peaks exist — any one is valid.
+
+---
+
+**Pattern**:
+
+- Binary search
+- Slope detection (ascending vs descending)
+- Peak localization
+
+---
+
+**Edge Cases**:
+
+- Single element → always a peak
+- Peak at start or end → handled naturally by boundary logic
+- Multiple peaks → any valid index is acceptable
+
+🔗 [LeetCode – Find Peak Element](https://leetcode.com/problems/find-peak-element)
+
+---
+
+## 5. Find in Mountain Array
+
+**Problem**:  
+You're given a **mountain array** — strictly increasing to a peak, then strictly decreasing.  
+Return the **minimum index** where `arr[index] == target`.  
+If the target doesn't exist, return `-1`.  
+You must solve this in **O(log n)** time and simulate access via a restricted interface.
+
+---
+
+**Approach**:
+
+1. **Find the peak index** using binary search:
+
+   - If `arr[mid] > arr[mid + 1]`, you're on the **descending slope** → move `end = mid`
+   - Else, you're on the **ascending slope** → move `start = mid + 1`
+   - Loop ends with `start == end` → peak index
+
+2. **Binary search on both sides** of the peak:
+
+   - Left side (ascending) → standard binary search
+   - Right side (descending) → reverse binary search
+
+3. Return the **first match** found (left side prioritized)
+
+---
+
+**Complexity**:
+
+- **Time**: O(log n) + O(log n) = O(log n)
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: arr = [1,2,3,4,5,3,1], target = 3
+
+Step 1: Find peak → index = 4 (value = 5)
+
+Step 2: Search left (0 to 4):
+→ mid = 2 → arr[2] = 3 → match found → return 2
+
+Output: 2
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a **hybrid binary search** problem.
+- Efficiently narrows down search space using peak detection.
+- Handles both ascending and descending segments with tailored logic.
+
+---
+
+**Pattern**:
+
+- Binary search on unimodal array
+- Peak detection
+- Dual search strategy (left/right of peak)
+
+---
+
+**Edge Cases**:
+
+- Target at peak → found in first search
+- Target on descending side → second search required
+- Target not present → return `-1`
+- Multiple matches → return **minimum index**
+
+🔗 [LeetCode – Find in Mountain Array](https://leetcode.com/problems/find-in-mountain-array)
+
+---
