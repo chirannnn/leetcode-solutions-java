@@ -347,3 +347,78 @@ Output: 2
 🔗 [LeetCode – Find in Mountain Array](https://leetcode.com/problems/find-in-mountain-array)
 
 ---
+
+## 6. Search in Rotated Sorted Array
+
+**Problem**:  
+Given a sorted array `nums` that’s been **rotated at an unknown pivot**, return the index of a given `target`.  
+If the target is not found, return `-1`.  
+You must solve this in **O(log n)** time.
+
+---
+
+**Approach**: Pivot Detection + Binary Search
+
+1. **Find the pivot index**:
+
+   - Pivot is the index where the rotation occurs (i.e., the largest element).
+   - Use binary search to detect the point where `arr[mid] > arr[mid + 1]` or `arr[mid - 1] > arr[mid]`.
+
+2. **Binary search in the correct half**:
+
+   - If `target == arr[pivot]` → return pivot
+   - If `target ≥ arr[0]` → search in left half `[0, pivot - 1]`
+   - Else → search in right half `[pivot + 1, n - 1]`
+
+3. If no pivot is found (array is not rotated), perform standard binary search.
+
+---
+
+**Complexity**:
+
+- **Time**: O(log n) – binary search for pivot + binary search for target
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: nums = [4,5,6,7,0,1,2], target = 0
+
+Step 1: Find pivot → index = 3 (value = 7)
+
+Step 2: target < nums[0] → search in right half [4,6]
+
+Binary search → target found at index 4
+
+Output: 4
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **binary search on rotated array**.
+- Efficiently narrows down the search space by detecting rotation.
+- Handles both rotated and non-rotated arrays seamlessly.
+
+---
+
+**Pattern**:
+
+- Pivot detection
+- Conditional binary search
+- Rotation-aware logic
+
+---
+
+**Edge Cases**:
+
+- Array not rotated → fallback to standard binary search
+- Single element → check directly
+- Target not present → return `-1`
+
+🔗 [LeetCode – Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
+
+---
