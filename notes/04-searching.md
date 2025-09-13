@@ -422,3 +422,78 @@ Output: 4
 🔗 [LeetCode – Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
 
 ---
+
+## 7. Search in Rotated Sorted Array II
+
+**Problem**:  
+Given a sorted array `nums` (possibly with duplicates) that’s been **rotated at an unknown pivot**, determine whether a given `target` exists in the array.  
+You must minimize the number of operations — ideally achieving **O(log n)** time when possible.
+
+---
+
+**Approach**: Pivot Detection + Binary Search with Duplicate Handling
+
+1. **Find the pivot index**:
+
+   - Use modified binary search to locate the rotation point.
+   - Handle duplicates by cautiously shrinking the search space when `arr[start] == arr[mid] == arr[end]`.
+
+2. **Binary search in the correct half**:
+
+   - If `target == arr[pivot]` → return `true`
+   - If `target ≥ arr[0]` → search in left half `[0, pivot - 1]`
+   - Else → search in right half `[pivot + 1, n - 1]`
+
+3. If no pivot is found (array not rotated), perform standard binary search.
+
+---
+
+**Complexity**:
+
+- **Time**:
+  - **Best/Average**: O(log n)
+  - **Worst (due to duplicates)**: O(n)
+- **Space**: O(1)
+
+---
+
+**Example**:
+
+```text
+Input: nums = [2,5,6,0,0,1,2], target = 0
+
+Step 1: Find pivot → index = 3 (value = 0)
+
+Step 2: arr[pivot] == target → return true
+
+Output: true
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a **robust binary search** problem.
+- Duplicates introduce ambiguity in pivot detection, requiring cautious boundary shrinking.
+- Efficient for most inputs, but worst-case can degrade to linear time.
+
+---
+
+**Pattern**:
+
+- Binary search with rotation
+- Duplicate-aware pivot detection
+- Conditional search partitioning
+
+---
+
+**Edge Cases**:
+
+- All elements same → fallback to linear scan
+- Target at pivot → early exit
+- Target not present → return `false`
+- No rotation → standard binary search
+
+🔗 [LeetCode – Search in Rotated Sorted Array II](https://leetcode.com/problems/search-in-rotated-sorted-array-ii)
+
+---
