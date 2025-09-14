@@ -29,6 +29,7 @@ public class SearchInRotatedSortedArrayII07 {
 
     static boolean search(int[] arr, int target){
 
+        // Pivot + binary search → usually O(log n)
         int pivot = findPivot(arr);
         if (pivot == -1){
             return binarySearch(arr, target, 0, arr.length - 1);
@@ -43,6 +44,16 @@ public class SearchInRotatedSortedArrayII07 {
         }
 
         return binarySearch(arr, target, pivot + 1, arr.length - 1);
+
+
+        // Linear scan → O(n) (worst-case: you look at every element).
+//        for (int i = 0; i < arr.length; i++) {
+//            if (target == arr[i]){
+//                return true;
+//            }
+//        }
+//
+//        return false;
     }
 
     static boolean binarySearch(int[] arr, int target, int start, int end){
