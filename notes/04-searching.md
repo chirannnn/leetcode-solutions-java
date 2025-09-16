@@ -497,3 +497,80 @@ Output: true
 🔗 [LeetCode – Search in Rotated Sorted Array II](https://leetcode.com/problems/search-in-rotated-sorted-array-ii)
 
 ---
+
+## 8. Split Array Largest Sum
+
+**Problem**:  
+Given an array `nums` and an integer `k`, split `nums` into `k` non-empty **contiguous subarrays** such that the **largest sum** among them is **minimized**.  
+Return that minimized largest sum.
+
+---
+
+**Approach**: Binary Search + Greedy Partitioning
+
+1. **Search space**:
+
+   - **Lower bound** = max element in `nums` (no subarray can be smaller than this)
+   - **Upper bound** = sum of all elements (one subarray)
+
+2. **Binary search** on possible max sum:
+
+   - For each `mid`, simulate splitting the array:
+     - Use a greedy strategy to count how many subarrays are needed if no subarray exceeds `mid`
+     - If count > `k` → `mid` is too small → increase lower bound
+     - Else → try smaller `mid` to minimize the largest sum
+
+3. Loop until `start == end`, which gives the minimized largest sum
+
+---
+
+**Complexity**:
+
+- **Time**: O(n × log(sum))
+  - `n` = number of elements
+  - `sum` = total sum of array
+- **Space**: O(1)
+
+---
+
+**Example**:
+
+```text
+Input: nums = [7,2,5,10,8], k = 2
+
+Search space: [10, 32]
+→ mid = 21 → can split into 2 subarrays → try smaller
+→ mid = 15 → needs 3 subarrays → too many → increase lower bound
+→ mid = 18 → valid split → try smaller
+
+Final result: 18
+Split: [7,2,5] and [10,8]
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **binary search on answer space**.
+- Greedy partitioning helps validate each guess efficiently.
+- Elegant way to solve a hard partitioning problem without brute force.
+
+---
+
+**Pattern**:
+
+- Binary search over range
+- Greedy simulation
+- Minimize max constraint
+
+---
+
+**Edge Cases**:
+
+- `k = 1` → entire array is one subarray → return total sum
+- `k = nums.length` → each element is its own subarray → return max element
+- Duplicates or zeros → handled naturally by greedy logic
+
+🔗 [LeetCode – Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum/)
+
+---
