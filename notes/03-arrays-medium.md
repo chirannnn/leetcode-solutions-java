@@ -357,6 +357,76 @@ Output: [24,12,8,6]
 
 ---
 
+## 7. Jump Game
+
+**Problem**:  
+Given an array `nums`, where each element represents your **maximum jump length** from that position, determine if you can **reach the last index** starting from index `0`.
+
+---
+
+**Approach**: Greedy Simulation
+
+- Track the number of **steps you can still take** (`steps`)
+- Initialize `steps = nums[0]`
+- For each index `i` from `1` to `n - 1`:
+  - Decrease `steps` by 1 (you used a move to get here)
+  - If `steps < 0` → you’re stuck → return `false`
+  - If `nums[i] > steps` → update `steps = nums[i]` (you found a better jump)
+- If you reach the end of the loop, return `true`
+
+---
+
+**Complexity**:
+
+- **Time**: O(n) – single pass through the array
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: nums = [2,3,1,1,4]
+
+Step-by-step:
+→ steps = 2
+→ index 1: steps = 1 → nums[1] = 3 → update steps = 3
+→ index 2: steps = 2
+→ index 3: steps = 1
+→ index 4: steps = 0 → reached last index
+
+Output: true
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **greedy reachability** problem.
+- You simulate movement and dynamically update your jump capacity.
+- Efficient and intuitive — no need for recursion or DP.
+
+---
+
+**Pattern**:
+
+- Greedy simulation
+- Dynamic jump window
+- Early termination on failure
+
+---
+
+**Edge Cases**:
+
+- `nums = [0]` → already at last index → return `true`
+- `nums = [0,1]` → stuck at index 0 → return `false`
+- Large jumps early → easily reach the end
+- Zeros near the end → may block progress
+
+🔗 [LeetCode – Jump Game](https://leetcode.com/problems/jump-game)
+
+---
+
 ## 8. Rotate Array
 
 **Problem**:  
