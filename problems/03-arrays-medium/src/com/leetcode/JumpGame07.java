@@ -41,5 +41,20 @@ public class JumpGame07 {
         }
 
         return true;
+
+        // Greedy / Farthest Reach
+        // int farthest = 0;
+
+        // for (int i = 0; i < nums.length; i++) {
+        //     if (i > farthest) {
+        //         return false;
+        //     }
+
+        //     if(nums[i] + i > farthest) {
+        //         farthest = nums[i] + i;
+        //     }
+        // }
+        // return true;
+
     }
 }
