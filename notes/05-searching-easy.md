@@ -1,0 +1,212 @@
+## 1. Sqrt(x)
+
+**Problem**:  
+Given a non-negative integer `x`, return the **integer part** of its square root (i.e., `⌊√x⌋`).  
+You must not use built-in exponentiation functions like `pow()` or `x ** 0.5`.
+
+---
+
+**Approach**: Binary Search on Square Domain
+
+- Search space: `start = 0`, `end = x`
+- For each `mid`, compute `mid²` and compare with `x`
+  - If `mid² == x` → return `mid`
+  - If `mid² < x` → store `mid` as potential answer and move right
+  - If `mid² > x` → move left
+- Final answer is the largest `mid` such that `mid² ≤ x`
+
+---
+
+**Complexity**:
+
+- **Time**: O(log x) – binary search
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: x = 8
+
+Search space: [0, 8]
+→ mid = 4 → 16 > 8 → move left
+→ mid = 2 → 4 < 8 → store 2, move right
+→ mid = 3 → 9 > 8 → move left
+
+Final answer: 2
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **binary search on monotonic function**.
+- Efficiently avoids floating-point math.
+- Handles large inputs safely using `long` for squaring.
+
+---
+
+**Pattern**:
+
+- Binary search over numeric domain
+- Monotonic function evaluation
+- Integer approximation
+
+---
+
+**Edge Cases**:
+
+- `x = 0` → return 0
+- `x = 1` → return 1
+- Large `x` → avoid overflow by casting `mid * mid` to `long`
+
+🔗 [LeetCode – Sqrt(x)](https://leetcode.com/problems/sqrtx)
+
+---
+
+## 2. Guess Number Higher or Lower
+
+**Problem**:  
+You're playing a number guessing game. The number is picked from `1` to `n`, and you must find it using a pre-defined API:
+
+```java
+int guess(int num)
+```
+
+which returns:
+
+- `0` → correct guess
+- `-1` → guess is too high
+- `1` → guess is too low
+
+Your task is to **find the picked number** using **as few guesses as possible**.
+
+---
+
+**Approach**: Binary Search with Feedback API
+
+- Initialize `start = 1`, `end = n`
+- While `start ≤ end`:
+  - Compute `mid = start + (end - start) / 2`
+  - Call `guess(mid)`:
+    - If result is `0` → return `mid`
+    - If result is `-1` → move left → `end = mid - 1`
+    - If result is `1` → move right → `start = mid + 1`
+
+---
+
+**Complexity**:
+
+- **Time**: O(log n) – binary search
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: n = 10, pick = 6
+
+→ mid = 5 → guess = 1 → move right
+→ mid = 8 → guess = -1 → move left
+→ mid = 6 → guess = 0 → found
+
+Output: 6
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **binary search with feedback loop**.
+- Efficiently narrows down the search space using API hints.
+- Common in interactive problems and system design simulations.
+
+---
+
+**Pattern**:
+
+- Binary search
+- Feedback-driven narrowing
+- Midpoint probing
+
+---
+
+**Edge Cases**:
+
+- `n = 1` → only one guess needed
+- `pick = n` → search goes all the way to the end
+- `pick = 1` → search ends early
+
+🔗 [LeetCode – Guess Number Higher or Lower](https://leetcode.com/problems/guess-number-higher-or-lower)
+
+---
+
+## 3. First Bad Version
+
+**Problem**:  
+You're given `n` product versions `[1, 2, ..., n]`.  
+One version fails the quality check, and **all versions after it are also bad**.  
+Using the API `isBadVersion(version)`, find the **first bad version** with **minimal API calls**.
+
+---
+
+**Approach**: Binary Search for Transition Point
+
+- Initialize `start = 1`, `end = n`
+- While `start < end`:
+  - Compute `mid = start + (end - start) / 2`
+  - If `isBadVersion(mid)` is `true` → move left → `end = mid`
+  - Else → move right → `start = mid + 1`
+- Loop ends when `start == end`, which is the **first bad version**
+
+---
+
+**Complexity**:
+
+- **Time**: O(log n) – binary search
+- **Space**: O(1) – constant space
+- **API calls**: minimized to log-scale
+
+---
+
+**Example**:
+
+```text
+Input: n = 5, bad = 4
+
+→ mid = 3 → isBadVersion(3) = false → move right
+→ mid = 4 → isBadVersion(4) = true → move left
+→ start == end == 4 → return 4
+
+Output: 4
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **binary search on monotonic boolean function**.
+- Efficiently finds the transition point from `false` to `true`.
+- Optimized for minimal API usage — no redundant checks.
+
+---
+
+**Pattern**:
+
+- Binary search
+- Transition detection
+- API-driven narrowing
+
+---
+
+**Edge Cases**:
+
+- `n = 1` → only one version → return 1 if bad
+- `bad = n` → search goes all the way to the end
+- `bad = 1` → search ends early
+
+🔗 [LeetCode – First Bad Version](https://leetcode.com/problems/first-bad-version)
+
+---
