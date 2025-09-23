@@ -210,3 +210,136 @@ Output: 4
 🔗 [LeetCode – First Bad Version](https://leetcode.com/problems/first-bad-version)
 
 ---
+
+## 4. Two Sum II – Input Array Is Sorted
+
+**Problem**:  
+Given a **1-indexed**, sorted array `numbers`, find two distinct elements that add up to a given `target`.  
+Return their indices as `[index1, index2]` (1-based).  
+You must use **constant extra space**.
+
+---
+
+**Approach**: Two-Pointer Scan
+
+- Initialize two pointers:
+  - `start = 0` (beginning of array)
+  - `end = n - 1` (end of array)
+- While `start < end`:
+  - Compute `sum = numbers[start] + numbers[end]`
+  - If `sum == target` → return `[start + 1, end + 1]`
+  - If `sum > target` → move `end--` to reduce sum
+  - If `sum < target` → move `start++` to increase sum
+
+---
+
+**Complexity**:
+
+- **Time**: O(n) – single pass
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: numbers = [2,3,4], target = 6
+
+→ start = 0, end = 2 → sum = 2 + 4 = 6 → match
+
+Output: [1,3]
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **two-pointer pattern** for sorted arrays.
+- Efficiently finds the pair without extra space or hash maps.
+- Guaranteed to find a solution due to problem constraints.
+
+---
+
+**Pattern**:
+
+- Two-pointer traversal
+- Sorted array optimization
+- Sum comparison logic
+
+---
+
+**Edge Cases**:
+
+- Negative numbers → handled naturally
+- Duplicates → not reused due to `start < end`
+- Only one valid pair → loop exits early
+
+🔗 [LeetCode – Two Sum II](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted)
+
+---
+
+## 5. Valid Perfect Square
+
+**Problem**:  
+Given a positive integer `num`, return `true` if it is a **perfect square**, else return `false`.  
+You must not use built-in functions like `sqrt()` or exponentiation.
+
+---
+
+**Approach**: Binary Search on Square Domain
+
+- Search space: `start = 1`, `end = num`
+- For each `mid`, compute `mid²` using `long` to avoid overflow
+  - If `mid² == num` → return `true`
+  - If `mid² > num` → move left → `end = mid - 1`
+  - If `mid² < num` → move right → `start = mid + 1`
+- If loop ends without match → return `false`
+
+---
+
+**Complexity**:
+
+- **Time**: O(log num) – binary search
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: num = 8
+
+→ mid = 4 → 16 > 8 → move left
+→ mid = 2 → 4 < 8 → move right
+→ mid = 3 → 9 > 8 → move left
+
+Loop ends → no match → return false
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **binary search on monotonic function**.
+- Efficiently checks for perfect squares without floating-point math.
+- Using `long` for squaring avoids overflow for large inputs.
+
+---
+
+**Pattern**:
+
+- Binary search
+- Integer approximation
+- Overflow-safe arithmetic
+
+---
+
+**Edge Cases**:
+
+- `num = 1` → return true
+- `num = 0` → not allowed (positive integers only)
+- Large `num` → safely handled via `long` casting
+
+🔗 [LeetCode – Valid Perfect Square](https://leetcode.com/problems/valid-perfect-square)
+
+---
