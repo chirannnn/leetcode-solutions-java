@@ -343,3 +343,70 @@ Loop ends → no match → return false
 🔗 [LeetCode – Valid Perfect Square](https://leetcode.com/problems/valid-perfect-square)
 
 ---
+
+## 6. Arranging Coins
+
+**Problem**:  
+Given `n` coins, build a staircase with `k` rows such that the `i-th` row has exactly `i` coins.  
+Return the number of **complete rows** that can be formed.  
+The last row may be incomplete.
+
+---
+
+**Approach**: Binary Search on Triangular Sum
+
+- Each complete row `i` requires `i` coins → total coins for `k` rows = `k(k+1)/2`
+- Use binary search to find the **maximum `k`** such that:
+  - `k(k+1)/2 ≤ n`
+- If `mid` rows require more coins than `n`, move left
+- If valid, store `mid` and move right to try for more rows
+
+---
+
+**Complexity**:
+
+- **Time**: O(log n) – binary search
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: n = 8
+
+Search space: [1, 8]
+→ mid = 4 → 4×5/2 = 10 > 8 → move left
+→ mid = 2 → 2×3/2 = 3 < 8 → move right
+→ mid = 3 → 3×4/2 = 6 ≤ 8 → move right
+
+Final answer: 3
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **binary search on monotonic math function**.
+- Efficiently finds the largest `k` such that `k(k+1)/2 ≤ n`.
+- Avoids brute-force iteration and handles large `n` safely using `long`.
+
+---
+
+**Pattern**:
+
+- Binary search over numeric domain
+- Triangular number evaluation
+- Integer approximation
+
+---
+
+**Edge Cases**:
+
+- `n = 0` → return 0
+- `n = 1` → return 1
+- Large `n` → safely handled via `long` casting
+
+🔗 [LeetCode – Arranging Coins](https://leetcode.com/problems/arranging-coins)
+
+---
