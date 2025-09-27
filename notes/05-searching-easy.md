@@ -410,3 +410,138 @@ Final answer: 3
 🔗 [LeetCode – Arranging Coins](https://leetcode.com/problems/arranging-coins)
 
 ---
+
+## 7. Find Smallest Letter Greater Than Target
+
+**Problem**:  
+Given a sorted array of characters `letters`, return the **smallest character** that is **lexicographically greater** than a given `target`.  
+If no such character exists, return the **first character** in the array (wraparound behavior).
+
+---
+
+**Approach**: Binary Search with Wraparound
+
+- Use binary search to find the **first character greater than `target`**
+- If `letters[mid] > target` → move left → `end = mid - 1`
+- Else → move right → `start = mid + 1`
+- After loop ends, `start` points to the smallest character greater than `target`
+- Use `start % letters.length` to handle wraparound (e.g., when `target ≥ all letters`)
+
+---
+
+**Complexity**:
+
+- **Time**: O(log n) – binary search
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: letters = ['c','f','j'], target = 'c'
+
+→ mid = 1 → letters[1] = 'f' > 'c' → move left
+→ mid = 0 → letters[0] = 'c' == 'c' → move right
+
+Loop ends → start = 1 → letters[1] = 'f'
+
+Output: 'f'
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a **binary search for upper bound**.
+- The `% letters.length` trick elegantly handles wraparound.
+- Works even with duplicate characters and edge targets.
+
+---
+
+**Pattern**:
+
+- Binary search for next-greater element
+- Wraparound indexing
+- Lexicographic comparison
+
+---
+
+**Edge Cases**:
+
+- `target < letters[0]` → return letters[0]
+- `target ≥ letters[n-1]` → wraparound → return letters[0]
+- Duplicates → handled naturally
+- All characters same → return first character
+
+🔗 [LeetCode – Find Smallest Letter Greater Than Target](https://leetcode.com/problems/find-smallest-letter-greater-than-target)
+
+---
+
+## 8. Kth Missing Positive Number
+
+**Problem**:  
+Given a strictly increasing array `arr` of positive integers and an integer `k`, return the **kth missing positive number** that is not present in `arr`.
+
+---
+
+**Approach**: Binary Search on Missing Count
+
+- For each index `i`, the number of missing elements before `arr[i]` is:
+  - `missing = arr[i] - (i + 1)`
+- Use binary search to find the **first index** where `missing ≥ k`
+  - If `missing < k` → move right → `start = mid + 1`
+  - If `missing ≥ k` → move left → `end = mid - 1`
+- After the loop, `start` is the number of elements present before the kth missing
+- Final answer: `start + k`
+
+---
+
+**Complexity**:
+
+- **Time**: O(log n) – binary search
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: arr = [2,3,4,7,11], k = 5
+
+→ mid = 2 → arr[2] = 4 → missing = 4 - (2 + 1) = 1 → move right
+→ mid = 3 → arr[3] = 7 → missing = 7 - 4 = 3 → move right
+→ mid = 4 → arr[4] = 11 → missing = 11 - 5 = 6 → move left
+
+Loop ends → start = 3 → answer = 3 + 5 = 8
+
+Output: 9
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a clever **binary search on the difference between expected and actual values**.
+- Efficiently finds the kth missing number without scanning all gaps.
+- Works even when `k` exceeds the last element in `arr`.
+
+---
+
+**Pattern**:
+
+- Binary search on derived metric
+- Gap analysis
+- Index-based simulation
+
+---
+
+**Edge Cases**:
+
+- `k` is smaller than first element → return `k` directly
+- `k` is larger than all missing before last element → handled by `start + k`
+- Array starts at 1 → missing count = 0 at index 0
+
+🔗 [LeetCode – Kth Missing Positive Number](https://leetcode.com/problems/kth-missing-positive-number)
+
+---
