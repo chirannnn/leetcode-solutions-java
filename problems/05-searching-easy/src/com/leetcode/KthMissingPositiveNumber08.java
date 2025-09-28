@@ -46,7 +46,7 @@ public class KthMissingPositiveNumber08 {
             }
         }
 
-        // Now start = number of present elements before kth missing number
+        // Now start = number of present elements before kth missing number (the index of the first element int the array where missing >= k)
         // k = number of missing number we want
         return start + k;
     }
