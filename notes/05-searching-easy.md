@@ -545,3 +545,209 @@ Output: 9
 🔗 [LeetCode – Kth Missing Positive Number](https://leetcode.com/problems/kth-missing-positive-number)
 
 ---
+
+## 9. Search Insert Position
+
+**Problem**:  
+Given a sorted array of **distinct integers** and a `target`, return the **index** if the target is found.  
+If not, return the index where it would be **inserted in order**.  
+Must run in **O(log n)** time.
+
+---
+
+**Approach**: Binary Search for Lower Bound
+
+- Use binary search to locate the **first index ≥ target**
+- If `nums[mid] == target` → return `mid`
+- If `target > nums[mid]` → move right → `start = mid + 1`
+- If `target < nums[mid]` → move left → `end = mid - 1`
+- When loop ends, `start` is the correct **insertion index**
+
+---
+
+**Complexity**:
+
+- **Time**: O(log n) – binary search
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: nums = [1,3,5,6], target = 2
+
+→ mid = 1 → nums[1] = 3 > 2 → move left
+→ mid = 0 → nums[0] = 1 < 2 → move right
+
+Loop ends → start = 1
+
+Output: 1
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **lower bound search**.
+- Efficiently finds the correct position for insertion.
+- Works seamlessly whether or not the target exists in the array.
+
+---
+
+**Pattern**:
+
+- Binary search
+- Lower bound / insertion index
+- Sorted array traversal
+
+---
+
+**Edge Cases**:
+
+- `target < nums[0]` → return 0
+- `target > nums[n-1]` → return `n`
+- Exact match → return index directly
+- Empty array → not applicable (guaranteed non-empty)
+
+🔗 [LeetCode – Search Insert Position](https://leetcode.com/problems/search-insert-position)
+
+---
+
+## 10. Peak Index in a Mountain Array
+
+**Problem**:  
+Given a **mountain array** `arr` (strictly increasing then strictly decreasing), return the **index of the peak element**.  
+You must solve it in **O(log n)** time.
+
+---
+
+**Approach**: Binary Search on Slope
+
+- Use binary search to find the peak:
+  - If `arr[mid] > arr[mid + 1]` → you're on the **descending slope** → move `end = mid`
+  - Else → you're on the **ascending slope** → move `start = mid + 1`
+- Loop continues until `start == end`, which is the **peak index**
+
+---
+
+**Complexity**:
+
+- **Time**: O(log n) – binary search
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: arr = [0,2,1,0]
+
+→ mid = 1 → arr[1] = 2 > arr[2] = 1 → move left → end = 1
+→ mid = 0 → arr[0] = 0 < arr[1] = 2 → move right → start = 1
+
+Loop ends → start == end == 1
+
+Output: 1
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **binary search on unimodal array**.
+- Efficiently finds the peak without scanning the entire array.
+- Works even with short arrays like `[0,1,0]`.
+
+---
+
+**Pattern**:
+
+- Binary search
+- Slope detection (ascending vs descending)
+- Peak localization
+
+---
+
+**Edge Cases**:
+
+- Peak at start or end → handled naturally by slope logic
+- Multiple peaks → not possible in strict mountain array
+- Short arrays (length 3) → still valid
+
+🔗 [LeetCode – Peak Index in a Mountain Array](https://leetcode.com/problems/peak-index-in-a-mountain-array)
+
+---
+
+## 11. Count Negative Numbers in a Sorted Matrix
+
+**Problem**:  
+Given a `m × n` matrix `grid` sorted in **non-increasing order** both row-wise and column-wise, return the **number of negative numbers** in the matrix.
+
+---
+
+**Approach**: Top-Right Greedy Traversal
+
+- Start from the **top-right corner** of the matrix
+- While `rStart ≤ rows` and `cStart ≥ 0`:
+  - If `grid[rStart][cStart] < 0`:
+    - All elements **below** in the same column are also negative
+    - Add `(rows - rStart + 1)` to count
+    - Move left → `cStart--`
+  - Else:
+    - Move down → `rStart++`
+
+---
+
+**Complexity**:
+
+- **Time**: O(m + n) – at most one pass through each row and column
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: grid = [[4,3,2,-1],[3,2,1,-1],[1,1,-1,-2],[-1,-1,-2,-3]]
+
+Traversal:
+→ (0,3): -1 → count += 4
+→ (0,2): 2 → move down
+→ (1,2): 1 → move down
+→ (2,2): -1 → count += 2
+→ (2,1): 1 → move down
+→ (3,1): -1 → count += 1
+→ (3,0): -1 → count += 1
+
+Final count: 8
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a **greedy matrix scan** that exploits the sorted structure.
+- Avoids brute-force scanning by skipping entire submatrices.
+- Elegant and efficient for large grids.
+
+---
+
+**Pattern**:
+
+- Matrix traversal
+- Greedy counting
+- Sorted structure exploitation
+
+---
+
+**Edge Cases**:
+
+- No negatives → return 0
+- All negatives → return `m × n`
+- Single row or column → handled naturally
+- Mixed values → traversal adapts dynamically
+
+🔗 [LeetCode – Count Negative Numbers in a Sorted Matrix](https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix)
+
+---
