@@ -751,3 +751,229 @@ Final count: 8
 🔗 [LeetCode – Count Negative Numbers in a Sorted Matrix](https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix)
 
 ---
+
+## 12. Intersection of Two Arrays
+
+**Problem**:  
+Given two integer arrays `nums1` and `nums2`, return an array of their **unique intersection elements**.  
+The result can be returned in **any order**.
+
+---
+
+**Approach**: Brute Force with Duplicate Check
+
+- For each `num1` in `nums1`, compare with every `num2` in `nums2`
+- If `num1 == num2`, check if it’s already in the result list
+  - If not, add it
+- Convert the result list to an array and return
+
+---
+
+**Complexity**:
+
+- **Time**: O(n × m) – nested loops
+- **Space**: O(k) – result list (ignoring auxiliary space)
+
+---
+
+**Example**:
+
+```text
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+
+→ Compare each element → match found: 2
+→ Add 2 to result if not already present
+
+Output: [2]
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a classic **array intersection** problem.
+- Brute force is intuitive but inefficient for large inputs.
+- Can be optimized using sorting or hashing.
+
+---
+
+**Pattern**:
+
+- Array comparison
+- Duplicate filtering
+- Set-based uniqueness
+
+---
+
+**Edge Cases**:
+
+- No common elements → return empty array
+- All elements same → return unique set
+- One array empty → return empty array
+- Multiple duplicates → only one copy in result
+
+---
+
+**Optimization Path**:
+
+| Strategy               | Time Complexity      | Space Complexity | Notes                  |
+| ---------------------- | -------------------- | ---------------- | ---------------------- |
+| Brute Force            | O(n × m)             | O(k)             | Current approach       |
+| Sorting + Two Pointers | O(n log n + m log m) | O(k)             | Requires sorted arrays |
+| HashSet-based          | O(n + m)             | O(n)             | Fastest, most scalable |
+
+🔗 [LeetCode – Intersection of Two Arrays](https://leetcode.com/problems/intersection-of-two-arrays)
+
+---
+
+## 13. Intersection of Two Arrays II
+
+**Problem**:  
+Given two integer arrays `nums1` and `nums2`, return an array of their **intersection**, where each element appears **as many times** as it occurs in both arrays.  
+The result can be returned in **any order**.
+
+---
+
+**Approach**: Brute Force with Usage Tracking
+
+- For each element in `nums1`, scan `nums2` for a match
+- Use a `used[]` boolean array to ensure each match in `nums2` is counted only once
+- Add matched elements to a result list
+- Convert the list to an array and return
+
+---
+
+**Complexity**:
+
+- **Time**: O(n × m) – nested loops
+- **Space**: O(m) – for `used[]` and result list
+
+---
+
+**Example**:
+
+```text
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+
+→ Match 2 twice → result = [2,2]
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a **multi-set intersection** problem.
+- Brute force works but is inefficient for large arrays.
+- Frequency tracking is essential to avoid overcounting.
+
+---
+
+**Pattern**:
+
+- Array comparison with frequency
+- Duplicate-aware matching
+- Usage tracking via auxiliary array
+
+---
+
+**Edge Cases**:
+
+- No common elements → return empty array
+- All elements same → return full overlap
+- One array empty → return empty array
+- Multiple duplicates → match only shared frequency
+
+---
+
+**Optimization Path**:
+
+| Strategy               | Time Complexity      | Space Complexity | Notes                  |
+| ---------------------- | -------------------- | ---------------- | ---------------------- |
+| Brute Force            | O(n × m)             | O(m)             | Current approach       |
+| Sorting + Two Pointers | O(n log n + m log m) | O(k)             | Requires sorted arrays |
+| HashMap-based          | O(n + m)             | O(n)             | Fastest, most scalable |
+
+🔗 [LeetCode – Intersection of Two Arrays II](https://leetcode.com/problems/intersection-of-two-arrays-ii)
+
+---
+
+## 14. Fair Candy Swap
+
+**Problem**:  
+Alice and Bob each have boxes of candies represented by arrays `aliceSizes` and `bobSizes`.  
+They want to **swap one box each** so that their **total candy counts become equal**.  
+Return `[a, b]` where `a` is the box Alice gives and `b` is the box Bob gives.
+
+---
+
+**Approach**: Brute Force with Total Rebalancing
+
+1. **Compute total candies** for Alice and Bob:
+
+   - `sumA = total of aliceSizes`
+   - `sumB = total of bobSizes`
+
+2. **Try all pairs** `(a, b)`:
+   - Check if swapping `a` and `b` balances totals:
+     - `sumA - a + b == sumB - b + a`
+   - If yes → return `[a, b]`
+
+---
+
+**Complexity**:
+
+- **Time**: O(n × m) – nested loops over both arrays
+- **Space**: O(1) – constant extra space
+
+---
+
+**Example**:
+
+```text
+Input: aliceSizes = [2], bobSizes = [1,3]
+
+→ sumA = 2, sumB = 4
+→ Try swap (2,1): 2-2+1 = 1, 4-1+2 = 5 → not equal
+→ Try swap (2,3): 2-2+3 = 3, 4-3+2 = 3 → match
+
+Output: [2,3]
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a **balancing problem via single swap**.
+- Brute force works but is inefficient for large arrays.
+- Can be optimized using a **math trick**:
+  - Let `delta = (sumA - sumB) / 2`
+  - Find `a` in `aliceSizes` and `b = a - delta` in `bobSizes`
+
+---
+
+**Pattern**:
+
+- Sum balancing
+- Swap simulation
+- Equation-based matching
+
+---
+
+**Edge Cases**:
+
+- Multiple valid swaps → any one is acceptable
+- Arrays with duplicates → handled naturally
+- Guaranteed solution → no need for empty return
+
+---
+
+**Optimization Path**:
+
+| Strategy       | Time Complexity | Space Complexity | Notes                       |
+| -------------- | --------------- | ---------------- | --------------------------- |
+| Brute Force    | O(n × m)        | O(1)             | Current approach            |
+| HashSet + Math | O(n + m)        | O(n)             | Fastest, uses `delta` trick |
+
+🔗 [LeetCode – Fair Candy Swap](https://leetcode.com/problems/fair-candy-swap)
+
+---
