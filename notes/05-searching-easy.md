@@ -977,3 +977,221 @@ Output: [2,3]
 🔗 [LeetCode – Fair Candy Swap](https://leetcode.com/problems/fair-candy-swap)
 
 ---
+
+## 15. Check If N and Its Double Exist
+
+**Problem**:  
+Given an integer array `arr`, determine if there exist **two distinct indices** `i` and `j` such that:
+
+- `arr[i] == 2 * arr[j]`
+- `i ≠ j`
+
+---
+
+**Approach**: Brute Force Pairwise Comparison
+
+- For every pair `(i, j)`:
+  - Check if `i ≠ j` and `arr[i] == 2 * arr[j]`
+- If any such pair exists → return `true`
+- If no such pair found → return `false`
+
+---
+
+**Complexity**:
+
+- **Time**: O(n²) – nested loop over all pairs
+- **Space**: O(1) – no extra space used
+
+---
+
+**Example**:
+
+```text
+Input: arr = [10,2,5,3]
+
+→ i = 0, j = 2 → 10 == 2 * 5 → match found
+
+Output: true
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a **relationship-checking problem** between elements.
+- Brute force is simple but inefficient for large arrays.
+- Can be optimized using a **HashSet** for O(n) lookup:
+  - For each `x`, check if `2*x` or `x/2` exists in the set
+
+---
+
+**Pattern**:
+
+- Pairwise comparison
+- Multiplicative relationship
+- Index-based filtering
+
+---
+
+**Edge Cases**:
+
+- Duplicates → handled naturally
+- Zeros → special case: need at least two zeros to satisfy `0 == 2 * 0`
+- Negative numbers → valid if doubling condition holds
+
+---
+
+**Optimization Path**:
+
+| Strategy                | Time Complexity | Space Complexity | Notes                      |
+| ----------------------- | --------------- | ---------------- | -------------------------- |
+| Brute Force             | O(n²)           | O(1)             | Current approach           |
+| HashSet-based           | O(n)            | O(n)             | Fastest, handles all cases |
+| Sorting + Binary Search | O(n log n)      | O(1) or O(log n) | Requires sorted array      |
+
+🔗 [LeetCode – Check If N and Its Double Exist](https://leetcode.com/problems/check-if-n-and-its-double-exist)
+
+---
+
+## 16. Special Array With X Elements ≥ X
+
+**Problem**:  
+Given an array `nums` of non-negative integers, return a number `x` such that **exactly `x` elements** in `nums` are **greater than or equal to `x`**.  
+If no such `x` exists, return `-1`.  
+Note: `x` does **not** need to be present in `nums`.
+
+---
+
+**Approach**: Brute Force Count Check
+
+- Try all possible values of `x` from `1` to `nums.length`
+- For each `x`, count how many elements in `nums` are `≥ x`
+- If `count == x` → return `x`
+- If no such `x` found → return `-1`
+
+---
+
+**Complexity**:
+
+- **Time**: O(n²) – outer loop over `x`, inner loop over `nums`
+- **Space**: O(1) – constant extra space
+
+---
+
+**Example**:
+
+```text
+Input: nums = [0,4,3,0,4]
+
+Try x = 1 → count = 5
+Try x = 2 → count = 3
+Try x = 3 → count = 3 → match found
+
+Output: 3
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a **self-referential frequency check**.
+- You’re searching for a value `x` that satisfies its own count condition.
+- Brute force is intuitive and works well for small arrays.
+
+---
+
+**Pattern**:
+
+- Count-based search
+- Self-validating condition
+- Frequency threshold detection
+
+---
+
+**Edge Cases**:
+
+- All zeros → no valid `x`
+- All large numbers → may match at `x = nums.length`
+- Multiple candidates → only one valid `x` due to uniqueness guarantee
+
+---
+
+**Optimization Ideas**:
+
+| Strategy         | Time Complexity | Space Complexity | Notes                          |
+| ---------------- | --------------- | ---------------- | ------------------------------ |
+| Brute Force      | O(n²)           | O(1)             | Current approach               |
+| Sorting + Prefix | O(n log n)      | O(n)             | Count elements ≥ x efficiently |
+| Counting Sort    | O(n)            | O(max(nums))     | Fastest for bounded inputs     |
+
+🔗 [LeetCode – Special Array With X Elements Greater Than or Equal X](https://leetcode.com/problems/special-array-with-x-elements-greater-than-or-equal-x)
+
+---
+
+## 17. Binary Search
+
+**Problem**:  
+Given a sorted array `nums` and a `target` value, return the **index** of `target` if found.  
+Otherwise, return `-1`.  
+Must run in **O(log n)** time.
+
+---
+
+**Approach**: Classic Binary Search
+
+- Initialize `start = 0`, `end = nums.length - 1`
+- While `start ≤ end`:
+  - Compute `mid = start + (end - start) / 2`
+  - If `nums[mid] == target` → return `mid`
+  - If `target < nums[mid]` → search left → `end = mid - 1`
+  - If `target > nums[mid]` → search right → `start = mid + 1`
+- If loop ends without match → return `-1`
+
+---
+
+**Complexity**:
+
+- **Time**: O(log n) – binary search
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: nums = [-1,0,3,5,9,12], target = 2
+
+→ mid = 2 → nums[2] = 3 > 2 → move left
+→ mid = 0 → nums[0] = -1 < 2 → move right
+→ mid = 1 → nums[1] = 0 < 2 → move right
+
+Loop ends → target not found → return -1
+```
+
+---
+
+**Key Takeaway**:
+
+- This is the **canonical binary search** — a must-know pattern.
+- Efficient for sorted arrays and forms the basis for many advanced search problems.
+- Handles edge cases and avoids overflow via `mid = start + (end - start) / 2`
+
+---
+
+**Pattern**:
+
+- Binary search
+- Sorted array traversal
+- Midpoint probing
+
+---
+
+**Edge Cases**:
+
+- Empty array → return -1
+- Target at start or end → handled naturally
+- Duplicates → returns any valid index (not applicable here since array is distinct)
+
+🔗 [LeetCode – Binary Search](https://leetcode.com/problems/binary-search)
+
+---

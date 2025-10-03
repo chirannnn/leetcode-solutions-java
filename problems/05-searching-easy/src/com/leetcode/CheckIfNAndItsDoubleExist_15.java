@@ -20,6 +20,24 @@ package com.leetcode;
 
 public class CheckIfNAndItsDoubleExist_15 {
     public static void main(String[] args) {
-        // ommaleeee
+        int[] arr = {3,1,7,11};
+
+        System.out.println(checkIfExist(arr));
+    }
+
+    static boolean checkIfExist(int[] arr) {
+
+        // brute-force
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length; j++) {
+                if (i != j && arr[i] == 2 * arr[j]) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+
+        // 🔑 Later Optimization: Use HashSet (O(n)) or Sorting + Binary Search (O(n log n)) instead of O(n^2).
     }
 }
