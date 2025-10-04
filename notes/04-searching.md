@@ -132,7 +132,7 @@ Output: [3,4]
 - Empty array → return `[-1, -1]`
 - All elements are target → return `[0, n-1]`
 
-🔗 [LeetCode – Find First and Last Position of Element in Sorted Array](https://leetcodethehardway.com/solutions/0000-0099/find-first-and-last-position-of-element-in-sorted-array-medium)
+🔗 [LeetCode – Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
 
 ---
 
