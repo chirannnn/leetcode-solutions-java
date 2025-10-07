@@ -18,6 +18,6 @@ package com.leetcode;
 
 public class SingleElementInASortedArray02 {
     public static void main(String[] args) {
-        // we see tomorrow
+        // fail better
     }
 }
