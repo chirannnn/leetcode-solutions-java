@@ -18,6 +18,30 @@ package com.leetcode;
 
 public class SingleElementInASortedArray02 {
     public static void main(String[] args) {
-        // will see tomorrow.
+        int[] nums = {1,1,2,3,3,4,4,8,8};
+
+        System.out.println(singleNonDuplicate(nums));
+    }
+
+    static int singleNonDuplicate(int[] nums) {
+        int start = 0;
+        int end = nums.length - 1;
+
+        while (start < end) {
+            int mid = start + (end - start) / 2;
+
+            // Check if mid is at the first element of a pair (even index)
+            // If mid is even and equals next → pattern is normal → single is on the right
+            // If mid is odd and equals previous → pattern is normal → single is on the right
+            // Otherwise, pattern breaks → single is on the left (or at mid)
+            if (mid % 2 == 0 && nums[mid] == nums[mid + 1] || mid % 2 == 1 && nums[mid] == nums[mid - 1]) {
+                start = mid + 1;
+            } else {
+                end = mid;
+            }
+        }
+
+        // When loop ends, start == end → single element found
+        return nums[start];
     }
 }
