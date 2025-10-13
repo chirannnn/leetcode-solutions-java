@@ -189,7 +189,7 @@ Output: 4
 
 **Key Takeaway**:
 
-- This is a classic **binary search on rotated array**.
+- This is a classic **Binary search on rotated array**.
 - Efficiently narrows down the search space by detecting rotation.
 - Handles both rotated and non-rotated arrays seamlessly.
 
