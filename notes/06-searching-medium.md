@@ -212,3 +212,233 @@ Output: 4
 🔗 [LeetCode – Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
 
 ---
+
+## 4. Search in Rotated Sorted Array II
+
+**Problem**:  
+Given a sorted array `nums` (possibly with duplicates) that’s been **rotated at an unknown pivot**, determine whether a given `target` exists in the array.  
+You must minimize the number of operations — ideally achieving **O(log n)** time when possible.
+
+---
+
+**Approach**: Pivot Detection + Binary Search with Duplicate Handling
+
+1. **Find the pivot index**:
+
+   - Use modified binary search to locate the rotation point.
+   - Handle duplicates by cautiously shrinking the search space when `arr[start] == arr[mid] == arr[end]`.
+
+2. **Binary search in the correct half**:
+
+   - If `target == arr[pivot]` → return `true`
+   - If `target ≥ arr[0]` → search in left half `[0, pivot - 1]`
+   - Else → search in right half `[pivot + 1, n - 1]`
+
+3. If no pivot is found (array not rotated), perform standard binary search.
+
+---
+
+**Complexity**:
+
+- **Time**:
+  - **Best/Average**: O(log n)
+  - **Worst (due to duplicates)**: O(n)
+- **Space**: O(1)
+
+---
+
+**Example**:
+
+```text
+Input: nums = [2,5,6,0,0,1,2], target = 0
+
+Step 1: Find pivot → index = 3 (value = 0)
+
+Step 2: arr[pivot] == target → return true
+
+Output: true
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a **robust binary search** problem.
+- Duplicates introduce ambiguity in pivot detection, requiring cautious boundary shrinking.
+- Efficient for most inputs, but worst-case can degrade to linear time.
+
+---
+
+**Pattern**:
+
+- Binary search with rotation
+- Duplicate-aware pivot detection
+- Conditional search partitioning
+
+---
+
+**Edge Cases**:
+
+- All elements same → fallback to linear scan
+- Target at pivot → early exit
+- Target not present → return `false`
+- No rotation → standard binary search
+
+🔗 [LeetCode – Search in Rotated Sorted Array II](https://leetcode.com/problems/search-in-rotated-sorted-array-ii)
+
+---
+
+## 5. Find Minimum in Rotated Sorted Array
+
+**Problem**:  
+You’re given a **rotated sorted array** of **unique integers**.  
+Return the **minimum element** in the array.  
+Must run in **O(log n)** time.
+
+**What’s a rotated array?**  
+An array like `[0,1,2,4,5,6,7]` rotated 4 times becomes `[4,5,6,7,0,1,2]`.
+
+---
+
+**Approach**: Binary Search on Rotation Break
+
+- Initialize `start = 0`, `end = n - 1`
+- While `start < end`:
+  - Compute `mid = start + (end - start) / 2`
+  - If `nums[mid] > nums[end]` → minimum is in **right half**
+  - If `nums[mid] < nums[end]` → minimum is in **left half or at mid**
+  - If `nums[mid] == nums[end]` → shrink search space (only needed for duplicates)
+- When loop ends, `start == end` → minimum found
+
+---
+
+**Example**:
+
+```text
+Input: nums = [4,5,6,7,0,1,2]
+
+→ mid = 3 → nums[3] = 7 > nums[6] = 2 → move right
+→ mid = 5 → nums[5] = 1 < nums[6] = 2 → move left
+→ mid = 4 → nums[4] = 0 < nums[5] = 1 → move left
+
+Loop ends → start == 4 → nums[4] = 0 → minimum
+```
+
+---
+
+**Why Binary Search Works**:
+
+- The array is **partially sorted** — either left or right half is always sorted.
+- The **rotation pivot** breaks the order — the minimum lies at or near the pivot.
+- Binary search exploits this structure to eliminate half the search space each time.
+
+**Key Observations**:
+
+- If `nums[mid] > nums[end]` → pivot is to the right
+- If `nums[mid] < nums[end]` → pivot is to the left or at mid
+- No need to check `nums[start]` — comparison with `nums[end]` is sufficient
+
+**Complexity**:
+
+- **Time**: O(log n)
+- **Space**: O(1)
+
+---
+
+**Pattern**:
+
+- Binary search on rotated array
+- Pivot detection
+- Minimum element localization
+
+---
+
+**Edge Cases**:
+
+- No rotation → minimum is `nums[0]`
+- Rotation at last index → minimum is `nums[n-1]`
+- Array of length 1 → return `nums[0]`
+- Duplicates → not applicable here (but handled via `end--` if needed)
+
+🔗 [LeetCode – Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array)
+
+---
+
+## 6. Find Peak Element
+
+**Problem**:  
+Given a 0-indexed array `nums`, find a **peak element** — one that is **strictly greater than its neighbors**.  
+Return its index. If multiple peaks exist, return **any one**.  
+You must solve this in **O(log n)** time.
+
+**Definition**:
+
+- A peak is `nums[i]` such that:
+  - `nums[i] > nums[i - 1]` (if `i > 0`)
+  - `nums[i] > nums[i + 1]` (if `i < n - 1`)
+- You can assume `nums[-1] = nums[n] = -∞` for edge comparison.
+
+---
+
+**Approach**: Binary Search on Slope Direction
+
+- Initialize `start = 0`, `end = n - 1`
+- While `start < end`:
+  - Compute `mid = start + (end - start) / 2`
+  - If `nums[mid] > nums[mid + 1]` → you're on a **descending slope** → peak is on the **left**
+    - Move `end = mid`
+  - Else → you're on an **ascending slope** → peak is on the **right**
+    - Move `start = mid + 1`
+- When loop ends, `start == end` → peak found
+
+---
+
+**Example**:
+
+```text
+Input: nums = [1,2,1,3,5,6,4]
+
+→ mid = 3 → nums[3] = 3 < nums[4] = 5 → move right
+→ mid = 4 → nums[4] = 5 < nums[5] = 6 → move right
+→ mid = 5 → nums[5] = 6 > nums[6] = 4 → move left
+
+Loop ends → start == 5 → peak = 6
+```
+
+---
+
+**Why Binary Search Works**:
+
+- The array may contain **multiple peaks**, but at least one peak **must exist** due to the boundary condition (`-∞`).
+- By comparing `nums[mid]` and `nums[mid + 1]`, we can **guarantee** the direction of a peak.
+- This is a **slope-based binary search**, not a value-based one.
+
+**Key Observations**:
+
+- You don’t need to check both neighbors — just `nums[mid]` vs `nums[mid + 1]` is enough.
+- The peak can be at any index — even at the boundaries.
+
+**Complexity**:
+
+- **Time**: O(log n)
+- **Space**: O(1)
+
+---
+
+**Pattern**:
+
+- Binary search
+- Slope detection
+- Peak localization
+
+---
+
+**Edge Cases**:
+
+- Single element → return index 0
+- Peak at start or end → handled naturally
+- Multiple peaks → any valid index is acceptable
+
+🔗 [LeetCode – Find Peak Element](https://leetcode.com/problems/find-peak-element)
+
+---
