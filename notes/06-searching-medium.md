@@ -442,3 +442,159 @@ Loop ends → start == 5 → peak = 6
 🔗 [LeetCode – Find Peak Element](https://leetcode.com/problems/find-peak-element)
 
 ---
+
+## 7. Find Right Interval
+
+**Problem**:  
+Given an array of intervals `[[start₀, end₀], [start₁, end₁], ...]`, return an array where each element is the **index of the "right interval"** for each interval.  
+A "right interval" is one whose `start ≥ end` of the current interval, and among all such intervals, the one with the **smallest start**.
+
+If no such interval exists, return `-1` for that position.
+
+---
+
+**Approach**: Brute Force Comparison
+
+- For each interval `i`, extract its `end`
+- Compare it with every other interval’s `start`
+- Track the **smallest start ≥ end** and its index
+- If no such interval exists, return `-1`
+
+---
+
+**Complexity**:
+
+- **Time**: O(n²) – nested loop over all intervals
+- **Space**: O(n) – result array
+
+---
+
+**Example**:
+
+```text
+Input: intervals = [[3,4],[2,3],[1,2]]
+
+→ For [3,4]: no start ≥ 4 → -1
+→ For [2,3]: [3,4] is valid → index 0
+→ For [1,2]: [2,3] is valid → index 1
+
+Output: [-1, 0, 1]
+```
+
+---
+
+**Optimization Strategy**:
+
+- **Preprocess**: Store each interval’s start and original index
+- **Sort** the starts array
+- For each interval’s `end`, use **binary search** to find the **smallest start ≥ end**
+- This reduces time complexity to **O(n log n)**
+
+**Why Binary Search Works**:
+
+- Starts are unique and sorted → binary search gives the first valid right interval
+- This is a classic **lower bound search** on a sorted array
+
+---
+
+**Optimized Complexity**:
+
+- **Time**: O(n log n)
+- **Space**: O(n)
+
+---
+
+**Pattern**:
+
+- Interval matching
+- Lower bound search
+- Greedy + binary search hybrid
+
+---
+
+**Edge Cases**:
+
+- Only one interval → always `-1`
+- No valid right interval → return `-1`
+- Right interval is the same interval → allowed (i == j)
+
+🔗 [LeetCode – Find Right Interval](https://leetcode.com/problems/find-right-interval)
+
+---
+
+## 8. Reach a Number
+
+**Problem**:  
+You start at position `0` on an infinite number line.  
+On the `i-th` move, you can go `i` steps left or right.  
+Find the **minimum number of moves** needed to reach a given `target`.
+
+---
+
+**Approach**: Triangular Sum + Parity Check
+
+### 🔢 Step 1: Normalize Target
+
+- Convert `target` to positive → symmetry allows us to ignore direction.
+
+### 🔢 Step 2: Find Minimum Moves `m` such that:
+
+- Sum of first `m` natural numbers ≥ `target`
+- Use formula:  
+  \[
+  \text{sum} = \frac{m(m+1)}{2}
+  \]
+
+### 🔢 Step 3: Check Parity
+
+- If `(sum - target)` is **even**, we can flip some steps to reach `target`
+- If **odd**, keep adding moves until the difference becomes even
+
+---
+
+**Complexity**:
+
+- **Time**: O(√target) – grows slowly with target
+- **Space**: O(1) – constant space
+
+---
+
+**Example**:
+
+```text
+Input: target = 2
+
+→ Try m = 1 → sum = 1 → not enough
+→ Try m = 2 → sum = 3 → (3 - 2) = 1 → odd → not reachable
+→ Try m = 3 → sum = 6 → (6 - 2) = 4 → even → reachable
+
+Output: 3
+```
+
+---
+
+**Key Takeaway**:
+
+- This is a **simulation + math trick** problem.
+- Uses **triangular number growth** and **parity flipping** to reach the target.
+- Elegant solution avoids brute-force path tracking.
+
+---
+
+**Pattern**:
+
+- Simulation
+- Triangular number formula
+- Parity-based correction
+
+---
+
+**Edge Cases**:
+
+- Negative target → handled via absolute value
+- Target = 0 → return 0
+- Large target → handled efficiently via math
+
+🔗 [LeetCode – Reach a Number](https://leetcode.com/problems/reach-a-number)
+
+---
