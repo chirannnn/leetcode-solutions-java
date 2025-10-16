@@ -598,3 +598,85 @@ Output: 3
 🔗 [LeetCode – Reach a Number](https://leetcode.com/problems/reach-a-number)
 
 ---
+
+## 9. Maximum Value at a Given Index in a Bounded Array
+
+**Problem**:  
+Construct an array `nums` of length `n` such that:
+
+- `nums[i]` is a positive integer
+- Adjacent values differ by at most 1 → `|nums[i] - nums[i+1]| ≤ 1`
+- Total sum ≤ `maxSum`
+- Maximize `nums[index]`
+
+Return the **maximum value** at `nums[index]` that satisfies all constraints.
+
+---
+
+### 🔍 Core Idea: Simulate a Mountain
+
+- The array forms a **mountain** centered at `index`
+- Values decrease by 1 to the left and right
+- If the peak is too small to fill all positions, pad remaining spots with `1`s
+- Use **binary search** to find the highest peak that fits within `maxSum`
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Binary Search on Peak Value
+
+- Search range: `start = 1` to `end = maxSum`
+- For each `mid` (candidate peak), calculate total sum of the mountain
+- If sum ≤ `maxSum` → try higher peak
+- If sum > `maxSum` → try lower peak
+
+#### Step 2: Calculate Total Sum Efficiently
+
+- Split array into:
+  - Left slope: from `index - 1` to `0`
+  - Peak: `nums[index] = mid`
+  - Right slope: from `index + 1` to `n - 1`
+- Use **arithmetic series** formulas:
+  - If peak > side length → full decreasing sequence
+  - Else → partial slope + padding with `1`s
+
+---
+
+### 📐 Complexity
+
+- **Time**: O(log maxSum) × O(1) → efficient binary search with constant-time math
+- **Space**: O(1)
+
+---
+
+### ✅ Example
+
+```text
+Input: n = 4, index = 2, maxSum = 6
+
+Try peak = 3 → sum = 7 → too high
+Try peak = 2 → sum = 6 → valid
+
+Output: 2
+```
+
+---
+
+### 🔁 Pattern
+
+- Binary search over answer space
+- Simulation via math, not construction
+- Arithmetic series for slope modeling
+
+---
+
+### ⚠️ Edge Cases
+
+- Peak at edge → one slope is empty
+- Peak too small → fill with `1`s
+- maxSum too low → peak = 1
+
+🔗 [LeetCode – Maximum Value at a Given Index in a Bounded Array](https://leetcode.com/problems/maximum-value-at-a-given-index-in-a-bounded-array)
+
+---
