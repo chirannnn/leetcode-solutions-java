@@ -680,3 +680,83 @@ Output: 2
 🔗 [LeetCode – Maximum Value at a Given Index in a Bounded Array](https://leetcode.com/problems/maximum-value-at-a-given-index-in-a-bounded-array)
 
 ---
+
+## 10. Koko Eating Bananas
+
+**Problem**:  
+Given an array `piles` where each element is the number of bananas in a pile, and an integer `h` representing hours before the guards return, find the **minimum integer speed `k`** such that Koko can eat all bananas within `h` hours.
+
+---
+
+### 🔍 Core Idea: Binary Search on Speed
+
+- Koko can eat `k` bananas per hour from **one pile per hour**
+- If a pile has fewer than `k` bananas, she eats the whole pile in one hour
+- We want the **smallest `k`** such that total hours ≤ `h`
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Define Search Space
+
+- Minimum speed = 1
+- Maximum speed = max pile size (Koko never needs to eat faster than the largest pile)
+
+#### Step 2: Binary Search
+
+- Try mid-speed `k`
+- Simulate total hours needed at speed `k`
+- If hours ≤ `h` → try slower speed (move left)
+- If hours > `h` → try faster speed (move right)
+
+#### Step 3: Time Calculation
+
+- For each pile:
+  \[
+  \text{hours} += \left\lceil \frac{\text{pile}}{k} \right\rceil = \frac{\text{pile} + k - 1}{k}
+  \]
+- This avoids floating-point division and rounds up efficiently
+
+---
+
+### ✅ Example
+
+```text
+Input: piles = [30,11,23,4,20], h = 6
+
+→ Try k = 15 → total hours = 7 → too slow
+→ Try k = 23 → total hours = 6 → valid
+→ Try k = 22 → total hours = 6 → valid
+→ Try k = 21 → total hours = 6 → valid
+→ Try k = 20 → total hours = 7 → too slow
+
+Final answer: 23
+```
+
+---
+
+### 📐 Complexity
+
+- **Time**: O(log maxPile × n)
+- **Space**: O(1)
+
+---
+
+### 🔁 Pattern
+
+- Binary search over answer space
+- Greedy simulation
+- Ceiling division for time modeling
+
+---
+
+### ⚠️ Edge Cases
+
+- One pile → speed = ceil(pile / h)
+- h = piles.length → must eat one pile per hour
+- Large piles, small h → speed must be high
+
+🔗 [LeetCode – Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas)
+
+---
