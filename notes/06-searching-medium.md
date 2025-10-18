@@ -760,3 +760,161 @@ Final answer: 23
 🔗 [LeetCode – Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas)
 
 ---
+
+## 11. Minimum Absolute Sum Difference
+
+**Problem**:  
+Given two arrays `nums1` and `nums2` of equal length `n`, minimize the **total absolute sum difference** defined as:
+
+\[
+\text{Total} = \sum\_{i=0}^{n-1} |nums1[i] - nums2[i]|
+\]
+
+You may **replace at most one element** in `nums1` with **any other element from `nums1`** to reduce this total.  
+Return the **minimum possible total**, modulo \(10^9 + 7\).
+
+---
+
+### 🔍 Core Idea: Maximize Reduction with One Smart Replacement
+
+- **Step 1**: Compute the base total difference without any replacement.
+- **Step 2**: For each index `i`, find the best possible replacement in `nums1` that minimizes `|nums1[i] - nums2[i]|`.
+- **Step 3**: Track the **maximum reduction** across all indices.
+- **Step 4**: Final answer = `baseTotal - maxReduction`, modulo \(10^9 + 7\)
+
+---
+
+### 🧠 Optimization Strategy
+
+- **Sort a copy of `nums1`** → enables binary search for closest match to `nums2[i]`
+- For each `i`:
+  - `originalDiff = |nums1[i] - nums2[i]|`
+  - `bestDiff = |closest(nums1) - nums2[i]|`
+  - `reduction = originalDiff - bestDiff`
+- Track the **maximum reduction** across all `i`
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value         |
+| --------- | ------------- |
+| Time      | O(n log n)    |
+| Space     | O(n)          |
+| Technique | Binary Search |
+
+---
+
+### ✅ Example
+
+```text
+nums1 = [1,7,5]
+nums2 = [2,3,5]
+
+→ Base total = |1-2| + |7-3| + |5-5| = 1 + 4 + 0 = 5
+
+→ Try replacing 7 with 1 or 5 → bestDiff = 2 → reduction = 2
+
+→ Final answer = 5 - 2 = 3
+```
+
+---
+
+### 🔁 Pattern
+
+- Greedy optimization
+- Binary search over sorted array
+- One-shot replacement strategy
+
+---
+
+### ⚠️ Edge Cases
+
+- Arrays already equal → return 0
+- No better replacement → return base total
+- Multiple candidates → pick one with **maximum reduction**
+
+🔗 [LeetCode – Minimum Absolute Sum Difference](https://leetcode.com/problems/minimum-absolute-sum-difference)
+
+---
+
+## 12. Search a 2D Matrix
+
+**Problem**:  
+Given a matrix with the following properties:
+
+- Each row is sorted in ascending order
+- The first element of each row is greater than the last of the previous row  
+  Determine if a given `target` exists in the matrix.  
+  Must run in **O(log(m × n))** time.
+
+---
+
+### 🔍 Core Idea: Treat the Matrix as a Flattened 1D Array
+
+- Because of the matrix’s structure, it behaves like a **sorted 1D array**
+- We can apply **binary search** directly over the range `[0, m × n - 1]`
+- Convert 1D index `mid` to 2D coordinates:
+  - `row = mid / cols`
+  - `col = mid % cols`
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize Search Space
+
+- `start = 0`, `end = rows × cols - 1`
+
+#### Step 2: Binary Search
+
+- Compute `mid = (start + end) / 2`
+- Convert `mid` to `matrix[mid / cols][mid % cols]`
+- Compare with `target`:
+  - If equal → return `true`
+  - If less → search right
+  - If greater → search left
+
+#### Step 3: Return `false` if not found
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value         |
+| --------- | ------------- |
+| Time      | O(log(m × n)) |
+| Space     | O(1)          |
+| Technique | Binary Search |
+
+---
+
+### ✅ Example
+
+```text
+matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]]
+target = 3
+
+→ Flattened array: [1,3,5,7,10,11,16,20,23,30,34,60]
+→ Binary search finds 3 at index 1 → return true
+```
+
+---
+
+### 🔁 Pattern
+
+- Binary search on 2D grid
+- Index mapping: 1D ↔ 2D
+- Sorted matrix traversal
+
+---
+
+### ⚠️ Edge Cases
+
+- Empty matrix → return false
+- Target smaller than first or larger than last → return false
+- Matrix with one row or one column → handled naturally
+
+🔗 [LeetCode – Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix)
+
+---
