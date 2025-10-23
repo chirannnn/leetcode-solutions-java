@@ -918,3 +918,85 @@ target = 3
 🔗 [LeetCode – Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix)
 
 ---
+
+## 13. Find a Peak Element II
+
+**Problem**:  
+Given an `m × n` matrix `mat` where:
+
+- Each cell is unique from its adjacent neighbors (no equal neighbors)
+- A **peak** is a cell strictly greater than its **up, down, left, and right** neighbors  
+  Find **any one** peak and return its coordinates `[i, j]`.
+
+**Constraints**:
+
+- The matrix is surrounded by a virtual border of `-1`s
+- Must run in **O(m log n)** or **O(n log m)** time
+
+---
+
+### 🔍 Core Idea: Binary Search on Columns
+
+Instead of checking every cell, we:
+
+1. **Pick a middle column**
+2. **Find the row with the maximum value** in that column
+3. **Compare** that value with its left and right neighbors
+   - If it's greater than both → it's a **peak**
+   - If left neighbor is greater → move search to **left half**
+   - If right neighbor is greater → move search to **right half**
+4. Repeat until a peak is found
+
+---
+
+### 🧠 Why This Works
+
+- The matrix has **no equal adjacent values**, so we’re guaranteed to move toward a peak
+- At each step, we eliminate half the columns → **log(n)** steps
+- Each step takes **O(m)** time to find the column max
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                    |
+| --------- | ------------------------ |
+| Time      | O(m log n)               |
+| Space     | O(1)                     |
+| Technique | Binary Search on Columns |
+
+---
+
+### ✅ Example
+
+```text
+Input: mat = [[10,20,15],
+              [21,30,14],
+              [7,16,32]]
+
+→ midCol = 1 → column = [20,30,16]
+→ maxRow = 1 → mat[1][1] = 30
+→ left = 21, right = 14 → 30 > both → peak found
+
+Output: [1,1]
+```
+
+---
+
+### 🔁 Pattern
+
+- 2D peak finding
+- Binary search on matrix dimensions
+- Greedy movement toward higher neighbor
+
+---
+
+### ⚠️ Edge Cases
+
+- Single row or column → handled naturally
+- Peak at edge → perimeter is `-1`, so edge values can be peaks
+- Multiple peaks → return any one
+
+🔗 [LeetCode – Find a Peak Element II](https://leetcode.com/problems/find-a-peak-element-ii)
+
+---
