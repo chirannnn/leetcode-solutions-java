@@ -1000,3 +1000,170 @@ Output: [1,1]
 🔗 [LeetCode – Find a Peak Element II](https://leetcode.com/problems/find-a-peak-element-ii)
 
 ---
+
+## 14. Frequency of the Most Frequent Element
+
+**Problem**:  
+Given an array `nums` and an integer `k`, you can perform at most `k` operations.  
+Each operation lets you **increment any element by 1**.  
+Return the **maximum frequency** of any element you can achieve.
+
+---
+
+### 🔍 Core Idea: Make Elements Equal by Incrementing Smaller Ones
+
+- You want to **maximize how many elements can become equal** to a target value
+- You can only **increment**, not decrement
+- So for each target value, try to **raise smaller elements** to match it using at most `k` operations
+
+---
+
+### 🧪 Brute Force Approach (Current)
+
+- For each `nums[i]`, assume it’s the target
+- Try to make other elements equal to it by incrementing
+- Track how many elements you can match within `k` operations
+
+---
+
+### ✅ Example
+
+```text
+nums = [1,2,4], k = 5
+
+→ Try target = 4:
+  - 1 → needs 3 ops
+  - 2 → needs 2 ops
+  → total = 5 ops → frequency = 3
+
+Output: 3
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value       |
+| --------- | ----------- |
+| Time      | O(n²)       |
+| Space     | O(1)        |
+| Technique | Brute Force |
+
+---
+
+### 🔁 Pattern
+
+- Frequency maximization
+- Greedy increment strategy
+- Brute force with future optimization potential
+
+---
+
+### 🚀 Optimization Plan (O(n log n) Sliding Window)
+
+- **Sort `nums`** → makes it easier to work with increasing values
+- Use a **sliding window** to find the largest group of elements that can be made equal to `nums[right]`
+- Maintain a running cost:
+  \[
+  \text{cost} = \text{window size} \times nums[right] - \text{sum of window}
+  \]
+- If cost ≤ `k`, update max frequency
+
+---
+
+### ⚠️ Edge Cases
+
+- All elements already equal → return `n`
+- `k = 0` → return frequency of most frequent element
+- Large `k` → can make all elements equal
+
+🔗 [LeetCode – Frequency of the Most Frequent Element](https://leetcode.com/problems/frequency-of-the-most-frequent-element)
+
+---
+
+## 15. Find the Duplicate Number
+
+**Problem**:  
+Given an array `nums` of length `n + 1` where each number is in the range `[1, n]`, and **exactly one number is repeated**, return the duplicate.  
+Constraints:
+
+- **Do not modify** the array
+- Use **constant extra space**
+- Time complexity: better than O(n²)
+
+---
+
+### 🔍 Core Idea: Floyd’s Tortoise and Hare (Cycle Detection)
+
+Treat the array as a **linked list**:
+
+- Each index is a node
+- Each value is a pointer to the next node
+- Because of the duplicate, there’s a **cycle** in this graph
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Detect Cycle
+
+- Initialize `slow = nums[0]`, `fast = nums[0]`
+- Move:
+  - `slow = nums[slow]`
+  - `fast = nums[nums[fast]]`
+- Continue until `slow == fast` → cycle detected
+
+#### Step 2: Find Cycle Entrance (Duplicate)
+
+- Reset one pointer to start: `ptr1 = nums[0]`
+- Keep other at meeting point: `ptr2 = slow`
+- Move both one step at a time:
+  - `ptr1 = nums[ptr1]`
+  - `ptr2 = nums[ptr2]`
+- When they meet again → that index is the **duplicate**
+
+---
+
+### ✅ Example
+
+```text
+nums = [1,3,4,2,2]
+
+→ Linked list view:
+  0 → 1 → 3 → 2 → 4 → 2 → (cycle)
+
+→ slow and fast meet at 2
+→ reset one pointer, move both → meet again at 2
+
+Output: 2
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value           |
+| --------- | --------------- |
+| Time      | O(n)            |
+| Space     | O(1)            |
+| Technique | Cycle Detection |
+
+---
+
+### 🔁 Pattern
+
+- Linked list cycle detection
+- Pointer-based traversal
+- Graph modeling of array indices
+
+---
+
+### ⚠️ Edge Cases
+
+- All elements same → cycle at start
+- Duplicate at end → cycle loops back
+- Multiple duplicates → not allowed by constraints
+
+🔗 [LeetCode – Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number)
+
+---
