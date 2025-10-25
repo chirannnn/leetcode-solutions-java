@@ -1167,3 +1167,84 @@ Output: 2
 🔗 [LeetCode – Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number)
 
 ---
+
+## 16. Capacity to Ship Packages Within D Days
+
+**Problem**:  
+Given an array `weights[]` representing package weights and an integer `days`, find the **minimum ship capacity** required to deliver all packages **in order** within `days` days.
+
+---
+
+### 🔍 Core Idea: Binary Search on Capacity
+
+Instead of brute-forcing capacities, we:
+
+- Define a **search space** from `max(weights)` to `sum(weights)`
+- Use **binary search** to find the smallest capacity that allows shipping within `days`
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Define Search Space
+
+- **Minimum capacity** = `max(weights)` → must fit the heaviest package
+- **Maximum capacity** = `sum(weights)` → can ship everything in one day
+
+#### Step 2: Binary Search
+
+- Try `mid` as candidate capacity
+- Simulate shipping:
+  - Accumulate weights until exceeding `mid`
+  - Count how many days are needed
+- If `daysNeeded > days` → capacity too small → move right
+- Else → try smaller capacity → move left
+
+#### Step 3: Return Final Capacity
+
+- When `start == end`, we’ve found the **minimum valid capacity**
+
+---
+
+### ✅ Example
+
+```text
+weights = [1,2,3,1,1], days = 4
+
+→ Search space: [3, 8]
+→ mid = 5 → 3 days → valid → try smaller
+→ mid = 4 → 3 days → valid → try smaller
+→ mid = 3 → 4 days → valid → done
+
+Output: 3
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                      |
+| --------- | -------------------------- |
+| Time      | O(n × log(sum(weights)))   |
+| Space     | O(1)                       |
+| Technique | Binary Search + Simulation |
+
+---
+
+### 🔁 Pattern
+
+- Binary search over answer space
+- Greedy simulation
+- Load balancing with constraints
+
+---
+
+### ⚠️ Edge Cases
+
+- One package per day → capacity = max(weights)
+- All packages in one day → capacity = sum(weights)
+- Large weights, small days → capacity must be high
+
+🔗 [LeetCode – Capacity to Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days)
+
+---
