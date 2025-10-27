@@ -259,3 +259,255 @@ stalls = [1, 2, 4, 8, 9], k = 3
 🔗 [Aggressive Cows – Binary Search Pattern](https://www.geeksforgeeks.org/problems/aggressive-cows/1/)
 
 ---
+
+## 4. Magnetic Force Between Two Balls
+
+**Problem**:  
+Given `n` basket positions and `m` balls, place the balls such that the **minimum magnetic force** (i.e., absolute distance between any two balls) is **maximized**.
+
+---
+
+### 🔍 Core Idea: Binary Search on Minimum Force
+
+- Magnetic force between two balls = `|x - y|`
+- Goal: **maximize the smallest force** between any pair
+- Use **binary search** to find the largest feasible minimum force
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Sort Positions
+
+- Ensures linear traversal and valid distance checks
+
+#### Step 2: Define Search Space
+
+- `start = 1` → smallest possible force
+- `end = max(position) - min(position)` → largest possible force
+
+#### Step 3: Binary Search
+
+- For each `mid` (candidate force), check if we can place `m` balls with at least `mid` distance between them
+- Use `canPlace()`:
+  - Place first ball at `position[0]`
+  - For each next position:
+    - If `position[i] - lastPlaced ≥ mid`, place next ball
+  - If `m` balls placed → return true
+
+#### Step 4: Update Search
+
+- If placement is possible → try larger force (`start = mid + 1`)
+- Else → try smaller force (`end = mid - 1`)
+- Track last successful `mid` as `ans`
+
+---
+
+### ✅ Example
+
+```text
+position = [1,2,3,4,7], m = 3
+
+→ Sorted: [1,2,3,4,7]
+→ Try mid = 3 → balls at 1, 4, 7 → valid
+→ Try mid = 4 → not enough space
+→ Final answer = 3
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                   |
+| --------- | ----------------------- |
+| Time      | O(n log(maxDistance))   |
+| Space     | O(1)                    |
+| Technique | Binary Search on Answer |
+
+---
+
+### 🔁 Pattern
+
+- Binary search over feasible values
+- Greedy placement with constraints
+- Optimization of minimum pairwise distance
+
+---
+
+### ⚠️ Edge Cases
+
+- `m == 2` → force = max(position) - min(position)
+- `m == position.length` → force = smallest gap
+- Unsorted input → handled via initial sort
+
+🔗 [LeetCode – Magnetic Force Between Two Balls](https://leetcode.com/problems/magnetic-force-between-two-balls)
+
+---
+
+## 5. Book Allocation Problem
+
+**Problem**:  
+Given an array `arr[]` where each element represents the number of pages in a book, and an integer `k` representing the number of students, allocate books such that:
+
+- Each student gets **at least one book**
+- Each student gets a **contiguous sequence** of books
+- No book is shared
+- The goal is to **minimize the maximum number of pages** assigned to any student
+
+If allocation is impossible (i.e., `k > arr.length`), return `-1`.
+
+---
+
+### 🔍 Core Idea: Binary Search on Maximum Pages
+
+We’re searching for the **smallest possible value of the largest page count** any student receives.  
+This is a classic **binary search on the answer space**.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Define Search Space
+
+- **Minimum** possible max pages = `max(arr)` → no student can take less than the largest book
+- **Maximum** possible max pages = `sum(arr)` → one student takes all books
+
+#### Step 2: Binary Search
+
+- For each `mid` (candidate max pages), simulate allocation:
+  - Traverse books
+  - Accumulate pages until exceeding `mid`
+  - Then assign to next student
+- Count how many students are needed
+
+#### Step 3: Update Search
+
+- If students needed > `k` → `mid` too small → move right
+- Else → valid allocation → try smaller `mid`
+
+#### Step 4: Final Answer
+
+- When `start == end`, we’ve found the **minimum feasible max pages**
+
+---
+
+### ✅ Example
+
+```text
+arr = [12, 34, 67, 90], k = 2
+
+→ Try mid = 146 → allocation possible
+→ Try mid = 118 → allocation possible
+→ Try mid = 104 → allocation fails
+→ Final answer = 113
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                  |
+| --------- | ---------------------- |
+| Time      | O(n log(sum(arr)))     |
+| Space     | O(1)                   |
+| Technique | Binary Search + Greedy |
+
+---
+
+### 🔁 Pattern
+
+- Binary search on feasible answer
+- Greedy partitioning
+- Contiguous allocation constraint
+
+---
+
+### ⚠️ Edge Cases
+
+- `k > arr.length` → return `-1`
+- One student → must take all books
+- One book → must go to one student
+
+🔗 [Book Allocation – Binary Search Pattern](https://www.geeksforgeeks.org/allocate-minimum-number-pages/)
+
+---
+
+## 6. Split Array – Minimize Largest Subarray Sum
+
+**Problem**:  
+Given an array `nums[]` and an integer `k`, split the array into `k` **contiguous subarrays** such that the **largest subarray sum** is **minimized**.
+
+---
+
+### 🔍 Core Idea: Binary Search on Feasible Maximum Sum
+
+We’re searching for the **smallest possible value of the largest subarray sum** across all valid `k`-partitions.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Define Search Space
+
+- **Minimum** possible max sum = `max(nums)` → no subarray can be smaller than the largest element
+- **Maximum** possible max sum = `sum(nums)` → one subarray takes everything
+
+#### Step 2: Binary Search
+
+- For each `mid` (candidate max sum), simulate partitioning:
+  - Traverse `nums`, accumulate sum
+  - If `sum + num > mid` → start new subarray (`pieces++`)
+- Count how many subarrays are formed
+
+#### Step 3: Update Search
+
+- If `pieces > k` → `mid` too small → move right
+- Else → valid partitioning → try smaller `mid`
+
+#### Step 4: Final Answer
+
+- When `start == end`, we’ve found the **minimum feasible largest subarray sum**
+
+---
+
+### ✅ Example
+
+```text
+nums = [7,2,5,10,8], k = 2
+
+→ Search space: [10, 32]
+→ Try mid = 21 → valid split: [7,2,5,10], [8]
+→ Try mid = 15 → too many splits
+→ Try mid = 18 → valid ✅
+→ Final answer = 18
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                  |
+| --------- | ---------------------- |
+| Time      | O(n log(sum(nums)))    |
+| Space     | O(1)                   |
+| Technique | Binary Search + Greedy |
+
+---
+
+### 🔁 Pattern
+
+- Binary search on feasible answer
+- Greedy partitioning
+- Contiguous subarray constraint
+
+---
+
+### ⚠️ Edge Cases
+
+- `k == 1` → entire array is one subarray → return `sum(nums)`
+- `k == nums.length` → each element is its own subarray → return `max(nums)`
+- Large values → handled via greedy simulation
+
+🔗 [LeetCode – Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum)
+
+---
