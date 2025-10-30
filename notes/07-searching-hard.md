@@ -599,3 +599,182 @@ mountainArr = [1,2,3,4,5,3,1], target = 3
 🔗 [LeetCode – Find in Mountain Array](https://leetcode.com/problems/find-in-mountain-array)
 
 ---
+
+## 8. Count of Smaller Numbers After Self
+
+**Problem**:  
+Given an array `nums[]`, return an array `counts[]` where `counts[i]` is the number of elements **smaller than `nums[i]` to its right**.
+
+---
+
+### 🔍 Core Idea: Reverse Traversal + Binary Search Insertion
+
+We build the result **from right to left**, maintaining a dynamically sorted list of seen elements.  
+For each element:
+
+- Use **binary search** to find its insertion index in the sorted list
+- That index = number of smaller elements to its right
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `result[]` → stores final counts
+- `sortedList[]` → stores elements seen so far (in sorted order)
+
+#### Step 2: Traverse from Right to Left
+
+- For each `num = nums[i]`:
+  - Binary search `sortedList` to find index where `num` fits
+  - That index = count of smaller elements to the right
+  - Insert `num` at that index in `sortedList`
+  - Append index to `result`
+
+#### Step 3: Reverse Result
+
+- Since we built `result` backwards, reverse it before returning
+
+---
+
+### ✅ Example
+
+```text
+nums = [5,2,6,1]
+
+→ Traverse from right:
+1 → insert at 0 → count = 0
+6 → insert at 1 → count = 1 (1)
+2 → insert at 1 → count = 1 (1,6)
+5 → insert at 2 → count = 2 (1,2,6)
+
+Output: [2,1,1,0]
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                                   |
+| --------- | ------------------------------------------------------- |
+| Time      | O(n log n) average, O(n²) worst (due to list insertion) |
+| Space     | O(n)                                                    |
+| Technique | Binary Search + Sorted Insert                           |
+
+---
+
+### 🔁 Pattern
+
+- Reverse traversal
+- Binary search on dynamic structure
+- Inversion counting
+
+---
+
+### 🚀 Optimization Path
+
+- Current method: clean and intuitive
+- Future upgrade: **Fenwick Tree** or **Merge Sort Tree** for guaranteed O(n log n)
+
+---
+
+### ⚠️ Edge Cases
+
+- All elements equal → counts = all zeros
+- Strictly increasing → counts = all zeros
+- Strictly decreasing → counts = [n-1, n-2, ..., 0]
+
+🔗 [LeetCode – Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self)
+
+---
+
+## 9. Divide Chocolate
+
+**Problem**:  
+You’re given a chocolate bar represented by an array `sweetness[]`, where each element is the sweetness of a chunk.  
+You must divide it into `K + 1` contiguous pieces using `K` cuts.  
+You keep the **least sweet piece**, and give the rest to your friends.  
+Return the **maximum possible sweetness** you can guarantee for yourself.
+
+---
+
+### 🔍 Core Idea: Maximize the Minimum Sweetness You Get
+
+This is a classic **binary search on the answer** problem:
+
+- We want the **largest minimum sweetness** we can guarantee
+- For a given candidate sweetness `X`, we check:  
+  ➤ Can we make at least `K + 1` pieces, each with total sweetness ≥ `X`?
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Define Search Space
+
+- `start = 1` → minimum possible sweetness
+- `end = sum(sweetness)` → maximum if no cuts are made
+
+#### Step 2: Binary Search
+
+- For each `mid` (candidate sweetness), simulate cutting:
+  - Accumulate chunk values
+  - When `sum ≥ mid`, cut and reset
+  - Count how many such pieces we can form
+
+#### Step 3: Update Search
+
+- If `pieces ≥ K + 1` → `mid` is feasible → try higher (`start = mid + 1`)
+- Else → `mid` too high → try lower (`end = mid - 1`)
+- Track last successful `mid` as `ans`
+
+---
+
+### ✅ Example
+
+```text
+sweetness = [1,2,3,4,5,6,7,8,9], K = 5
+
+→ Need 6 pieces total
+→ Try mid = 6:
+   [1,2,3] → 6 ✅
+   [4,5] → 9 ✅
+   [6], [7], [8], [9] → all valid
+→ 6 pieces formed → 6 is feasible
+→ Try higher until it breaks → final answer = 6
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                    |
+| --------- | ------------------------ |
+| Time      | O(n log(sum(sweetness))) |
+| Space     | O(1)                     |
+| Technique | Binary Search + Greedy   |
+
+---
+
+### 🔁 Pattern
+
+- Binary search on feasible minimum
+- Greedy partitioning
+- Maximize the minimum gain
+
+---
+
+### ⚠️ Edge Cases
+
+- `K = 0` → no cuts → return total sweetness
+- `sweetness.length = K + 1` → each chunk is a piece
+- All chunks equal → answer = chunk value
+
+🔗 [Divide Chocolate](https://curiouschild.github.io/leetcode/2019/06/21/divide-chocolate.html)
+
+🔗 [gfg – Divide Chocolate](https://www.geeksforgeeks.org/dsa/divide-chocolates/)
+
+🔗 [LeetCode – Divide Chocolate](https://leetcode.com/problems/divide-chocolate)
+
+---
