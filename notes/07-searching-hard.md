@@ -511,3 +511,91 @@ nums = [7,2,5,10,8], k = 2
 🔗 [LeetCode – Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum)
 
 ---
+
+## 7. Find in Mountain Array
+
+**Problem**:  
+Given a **mountain array** (strictly increasing then strictly decreasing), find the **minimum index** where `target` appears.  
+You can only access the array via `MountainArray.get(index)` and `MountainArray.length()`.  
+Minimize the number of calls — ideally within **O(log n)**.
+
+---
+
+### 🔍 Core Idea: Three-Phase Binary Search
+
+We treat the mountain array as two sorted halves split by a peak:
+
+- Left half: strictly increasing
+- Right half: strictly decreasing
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Find Peak Index
+
+- Use binary search to locate the peak:
+  - If `arr[mid] > arr[mid + 1]` → peak is left or at `mid`
+  - Else → peak is right of `mid`
+- When `start == end`, we’ve found the peak
+
+#### Step 2: Binary Search on Ascending Side
+
+- Search from `0` to `peak - 1`
+- Use standard binary search (increasing order)
+
+#### Step 3: Binary Search on Descending Side
+
+- If not found on left, search from `peak + 1` to `n - 1`
+- Use reversed binary search (decreasing order)
+
+#### Step 4: Return Minimum Index
+
+- If found on left → return index
+- Else if found on right → return index
+- Else → return `-1`
+
+---
+
+### ✅ Example
+
+```text
+mountainArr = [1,2,3,4,5,3,1], target = 3
+
+→ Peak = 4 (value = 5)
+→ Search left: [1,2,3,4] → found at index 2
+→ Search right: [3,1] → also has 3 at index 5
+→ Return minimum index = 2 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect         | Value       |
+| -------------- | ----------- |
+| Time           | O(log n)    |
+| Space          | O(1)        |
+| Calls to get() | ≤ 3 × log n |
+
+---
+
+### 🔁 Pattern
+
+- Binary search on mountain array
+- Peak detection
+- Dual-direction search
+- Interactive access constraint
+
+---
+
+### ⚠️ Edge Cases
+
+- Target at peak → return peak index
+- Target on both sides → return smaller index
+- Target not found → return `-1`
+- Array too short (< 3) → invalid mountain
+
+🔗 [LeetCode – Find in Mountain Array](https://leetcode.com/problems/find-in-mountain-array)
+
+---
