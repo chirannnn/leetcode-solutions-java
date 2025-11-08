@@ -541,3 +541,557 @@ Output: [2,2]
 🔗 [LeetCode – Intersection of Two Arrays II](https://leetcode.com/problems/intersection-of-two-arrays-ii)
 
 ---
+
+## 7. Third Maximum Number
+
+**Problem**:  
+Given an integer array `nums[]`, return the **third distinct maximum** number.  
+If fewer than three distinct values exist, return the **maximum** number.
+
+---
+
+### 🔍 Core Idea: Track Top 3 Distinct Maximum
+
+We maintain three variables:
+
+- `max1` → highest
+- `max2` → second highest
+- `max3` → third highest
+
+We update them in a single pass, skipping duplicates.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- Set `max1`, `max2`, `max3` to `Long.MIN_VALUE` to handle edge cases
+
+#### Step 2: Traverse Array
+
+- For each `num`:
+  - Skip if already equal to any of the three maxes
+  - If `num > max1` → shift all down, update `max1`
+  - Else if `num > max2` → shift `max2` and `max3`, update `max2`
+  - Else if `num > max3` → update `max3`
+
+#### Step 3: Return Result
+
+- If `max3` was never updated → return `max1`
+- Else → return `max3`
+
+---
+
+### ✅ Example
+
+```text
+nums = [2,2,3,1]
+
+→ Unique values: [3,2,1]
+→ max1 = 3, max2 = 2, max3 = 1
+→ Return 1 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value               |
+| --------- | ------------------- |
+| Time      | O(n)                |
+| Space     | O(1)                |
+| Technique | Rolling Max Tracker |
+
+---
+
+### 🔁 Pattern
+
+- Top-k distinct tracking
+- Duplicate skipping
+- Constant space scan
+
+---
+
+### 🚀 Alternative Approaches
+
+- **TreeSet**:
+
+  - Add all elements to a set
+  - Sort descending and pick third → O(n log n)
+
+- **Sort + Dedup**:
+  - Sort array, remove duplicates, return third from end → O(n log n)
+
+---
+
+### ⚠️ Edge Cases
+
+- Less than 3 distinct values → return max
+- All elements same → return that value
+- Negative numbers → handled via `Long.MIN_VALUE`
+
+🔗 [LeetCode – Third Maximum Number](https://leetcode.com/problems/third-maximum-number)
+
+---
+
+## 8. Assign Cookies
+
+**Problem**:  
+Given two arrays:
+
+- `g[]` → greed factor of each child (minimum cookie size needed)
+- `s[]` → size of each cookie
+
+Assign at most one cookie per child such that the number of **content children** is maximized.  
+A child is content if `cookie ≥ greed`.
+
+---
+
+### 🔍 Core Idea: Greedy Matching with Sorted Arrays
+
+We sort both arrays and use **two pointers** to match the smallest available cookie to the least greedy child.  
+This ensures:
+
+- We don’t waste large cookies on small greed
+- We maximize the number of satisfied children
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Sort Both Arrays
+
+- `g[]` → increasing greed
+- `s[]` → increasing cookie size
+
+#### Step 2: Initialize Pointers
+
+- `i = 0` → child index
+- `j = 0` → cookie index
+
+#### Step 3: Match Cookies to Children
+
+- While both pointers are in bounds:
+  - If `s[j] ≥ g[i]` → assign cookie, increment both
+  - Else → cookie too small → try next cookie (`j++`)
+
+#### Step 4: Return Count of Matches
+
+---
+
+### ✅ Example
+
+```text
+g = [1,2,3], s = [1,1]
+
+→ Sorted: g = [1,2,3], s = [1,1]
+→ Match:
+  s[0] = 1 ≥ g[0] = 1 → assign → count = 1
+  s[1] = 1 < g[1] = 2 → skip
+
+Output: 1
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                 |
+| --------- | ------------------------------------- |
+| Time      | O(n log n + m log m) (due to sorting) |
+| Space     | O(1)                                  |
+| Technique | Greedy + Two-Pointer                  |
+
+---
+
+### 🔁 Pattern
+
+- Greedy resource allocation
+- Sorted matching
+- Early termination on exhaustion
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Priority Queue**:
+
+  - Match largest cookies to largest greed → more complex, same result
+
+- **Brute Force**:
+  - Try every cookie for every child → O(n × m)
+
+---
+
+### ⚠️ Edge Cases
+
+- No cookies → return 0
+- No children → return 0
+- All cookies too small → return 0
+- All greed ≤ smallest cookie → all children satisfied
+
+🔗 [LeetCode – Assign Cookies](https://leetcode.com/problems/assign-cookies)
+
+---
+
+## 9. Array Partition – Maximize Sum of Min Pairs
+
+**Problem**:  
+Given an array `nums[]` of `2n` integers, form `n` pairs such that the **sum of the minimum of each pair** is **maximized**.  
+Return that maximum sum.
+
+---
+
+### 🔍 Core Idea: Greedy Pairing via Sorting
+
+To maximize the sum of `min(ai, bi)`:
+
+- We want to **pair the smallest numbers together**
+- Sorting ensures that pairing adjacent elements gives the best result
+- Always take the **first element of each pair** (i.e., every even index)
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Sort the Array
+
+- Ensures optimal adjacent pairing
+
+#### Step 2: Traverse in Steps of 2
+
+- For every pair `(nums[i], nums[i+1])`, take `nums[i]` (the smaller one)
+- Accumulate the sum
+
+#### Step 3: Return the Total
+
+---
+
+### ✅ Example
+
+```text
+nums = [1,4,3,2]
+
+→ Sorted: [1,2,3,4]
+→ Pairs: (1,2), (3,4)
+→ Sum = min(1,2) + min(3,4) = 1 + 3 = 4 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                |
+| --------- | -------------------- |
+| Time      | O(n log n)           |
+| Space     | O(1) (in-place sort) |
+| Technique | Greedy + Sorting     |
+
+---
+
+### 🔁 Pattern
+
+- Greedy pairing
+- Min-max optimization
+- Stepwise accumulation
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Counting Sort** (if range is small) → O(n) time
+- **Priority Queue** → less efficient, not needed here
+
+---
+
+### ⚠️ Edge Cases
+
+- All elements equal → return `n × value`
+- Already sorted → still works
+- Negative numbers → handled naturally
+
+🔗 [LeetCode – Array Partition I](https://leetcode.com/problems/array-partition)
+
+---
+
+## 10. Maximum Product of Three Numbers
+
+**Problem**:  
+Given an integer array `nums[]`, find the **maximum product** of any **three numbers**.
+
+---
+
+### 🔍 Core Idea: Sort and Compare Two Product Scenarios
+
+To maximize the product of three numbers:
+
+- Either take the **three largest positives**
+- Or take **two smallest negatives** and the largest positive  
+  (since negative × negative = positive)
+
+Sorting helps us identify both cases efficiently.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Sort the Array
+
+- Ascending order gives access to:
+  - Two smallest values → `nums[0]`, `nums[1]`
+  - Three largest values → `nums[n-1]`, `nums[n-2]`, `nums[n-3]`
+
+#### Step 2: Compute Two Product Candidates
+
+- `prod1 = nums[0] * nums[1] * nums[n-1]` → handles negative × negative × positive
+- `prod2 = nums[n-1] * nums[n-2] * nums[n-3]` → handles all positives
+
+#### Step 3: Return the Maximum of Both
+
+---
+
+### ✅ Example
+
+```text
+nums = [-10, -10, 5, 2]
+
+→ Sorted: [-10, -10, 2, 5]
+→ prod1 = -10 × -10 × 5 = 500
+→ prod2 = 5 × 2 × -10 = -100
+
+Output: 500 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                  |
+| --------- | ---------------------- |
+| Time      | O(n log n)             |
+| Space     | O(1) (in-place sort)   |
+| Technique | Sort + Edge Comparison |
+
+---
+
+### 🔁 Pattern
+
+- Product maximization
+- Edge-case handling with negatives
+- Dual-scenario evaluation
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Linear scan**:
+  - Track top 3 max and bottom 2 min values in one pass
+  - Time: O(n), Space: O(1)
+
+---
+
+### ⚠️ Edge Cases
+
+- All positives → take top 3
+- All negatives → take least negative (closest to 0)
+- Mixed signs → check both scenarios
+
+🔗 [LeetCode – Maximum Product of Three Numbers](https://leetcode.com/problems/maximum-product-of-three-numbers)
+
+---
+
+## 11. Sort Array by Parity
+
+**Problem**:  
+Given an array `nums[]`, rearrange it so that **all even integers appear before all odd integers**.  
+Return any array that satisfies this condition.
+
+---
+
+### 🔍 Core Idea: Two-Pointer Swap Based on Parity
+
+We use two pointers:
+
+- `i` → scans from the start
+- `j` → scans from the end  
+  We swap values when:
+- `nums[i]` is odd and `nums[j]` is even
+
+This ensures:
+
+- Evens move left
+- Odds move right
+- No extra space is used
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize Pointers
+
+- `i = 0`, `j = n - 1`
+
+#### Step 2: While `i < j`
+
+- If `nums[i]` is odd and `nums[j]` is even → swap
+- If `nums[i]` is even → move `i` forward
+- If `nums[j]` is odd → move `j` backward
+
+#### Step 3: Return Modified Array
+
+---
+
+### ✅ Example
+
+```text
+nums = [3,1,2,4]
+
+→ Initial: i = 0, j = 3
+→ nums[0] = 3 (odd), nums[3] = 4 (even) → swap → [4,1,2,3]
+→ nums[0] = 4 (even) → i++
+→ nums[1] = 1 (odd), nums[2] = 2 (even) → swap → [4,2,1,3]
+→ i = 2, j = 1 → done
+
+Output: [4,2,1,3] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value            |
+| --------- | ---------------- |
+| Time      | O(n)             |
+| Space     | O(1)             |
+| Technique | Two-Pointer Swap |
+
+---
+
+### 🔁 Pattern
+
+- In-place partitioning
+- Parity-based rearrangement
+- Swap logic with dual traversal
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Extra array**:
+
+  - Create two lists: evens and odds
+  - Concatenate → O(n) time, O(n) space
+
+- **Stable sort**:
+  - Sort by `num % 2` → preserves relative order
+
+---
+
+### ⚠️ Edge Cases
+
+- Single element → return as-is
+- All even or all odd → no swaps needed
+- Negative numbers → parity logic still valid
+
+🔗 [LeetCode – Sort Array by Parity](https://leetcode.com/problems/sort-array-by-parity)
+
+---
+
+## 12. Sort Array by Parity II
+
+**Problem**:  
+Given an array `nums[]` where half the elements are even and half are odd, rearrange it so that:
+
+- Every even number is placed at an even index
+- Every odd number is placed at an odd index
+
+Return any valid arrangement.
+
+---
+
+### 🔍 Core Idea: Two-Pointer Parity Correction
+
+We use two pointers:
+
+- `i` → scans even indices (0, 2, 4, …)
+- `j` → scans odd indices (1, 3, 5, …)
+
+If:
+
+- `nums[i]` is odd → misplaced
+- `nums[j]` is even → misplaced  
+  → Swap them to restore parity alignment
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize Pointers
+
+- `i = 0` (even index)
+- `j = 1` (odd index)
+
+#### Step 2: Traverse While `i < n` and `j < n`
+
+- If `nums[i]` is even → correct → move `i += 2`
+- If `nums[j]` is odd → correct → move `j += 2`
+- Else → swap `nums[i]` and `nums[j]`
+
+#### Step 3: Return Modified Array
+
+---
+
+### ✅ Example
+
+```text
+nums = [4,2,5,7]
+
+→ Initial: i = 0, j = 1
+→ nums[0] = 4 (even) → i += 2
+→ nums[2] = 5 (odd), nums[1] = 2 (even) → swap → [4,5,2,7]
+
+Output: [4,5,2,7] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                   |
+| --------- | ----------------------- |
+| Time      | O(n)                    |
+| Space     | O(1)                    |
+| Technique | Two-Pointer Parity Swap |
+
+---
+
+### 🔁 Pattern
+
+- Index-based parity enforcement
+- In-place correction
+- Dual stepping pointers
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Extra arrays**:
+
+  - Separate evens and odds
+  - Reconstruct by placing at correct indices → O(n) space
+
+- **Stable sort by index parity**:
+  - More complex, not needed here
+
+---
+
+### ⚠️ Edge Cases
+
+- Already sorted → no swaps
+- Only two elements → trivial
+- Negative numbers → parity logic still valid
+
+🔗 [LeetCode – Sort Array by Parity II](https://leetcode.com/problems/sort-array-by-parity-ii)
+
+---
