@@ -1095,3 +1095,282 @@ Output: [4,5,2,7] ✅
 🔗 [LeetCode – Sort Array by Parity II](https://leetcode.com/problems/sort-array-by-parity-ii)
 
 ---
+
+## 13. Largest Perimeter Triangle
+
+**Problem**:  
+Given an array `nums[]` representing side lengths, return the **largest perimeter** of a triangle that can be formed using any three lengths.  
+If no valid triangle can be formed, return `0`.
+
+---
+
+### 🔍 Core Idea: Triangle Inequality + Greedy from Largest
+
+To form a triangle with sides `a, b, c`:
+
+- The triangle inequality must hold:  
+  \[
+  a + b > c,\quad b + c > a,\quad c + a > b
+  \]
+- When sorted in ascending order, we only need to check:  
+  \[
+  \text{if } nums[i-2] + nums[i-1] > nums[i]
+  \]
+
+We sort the array and check triplets from the end (largest sides) to maximize the perimeter.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Sort the Array
+
+- Ascending order ensures largest sides are at the end
+
+#### Step 2: Traverse from End
+
+- For each triplet `(a, b, c)` from right to left:
+  - If `b + c > a` → valid triangle → return `a + b + c`
+
+#### Step 3: Return 0 if No Valid Triplet Found
+
+---
+
+### ✅ Example
+
+```text
+nums = [2,1,2]
+
+→ Sorted: [1,2,2]
+→ Check: 1 + 2 > 2 → valid
+→ Perimeter = 1 + 2 + 2 = 5 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                        |
+| --------- | ---------------------------- |
+| Time      | O(n log n)                   |
+| Space     | O(1)                         |
+| Technique | Greedy + Triangle Inequality |
+
+---
+
+### 🔁 Pattern
+
+- Greedy selection from sorted array
+- Feasibility check using mathematical constraint
+- Early exit on first valid match
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Brute Force**:
+
+  - Try all triplets → O(n³)
+  - Not efficient for large inputs
+
+- **Heap-based**:
+  - Maintain top 3 candidates → more complex, not needed here
+
+---
+
+### ⚠️ Edge Cases
+
+- All sides too small → return 0
+- All equal → always forms a triangle
+- Large gap between largest and others → triangle not possible
+
+🔗 [LeetCode – Largest Perimeter Triangle](https://leetcode.com/problems/largest-perimeter-triangle)
+
+---
+
+## 14. Squares of a Sorted Array
+
+**Problem**:  
+Given a sorted array `nums[]` (non-decreasing), return a new array of the **squares of each number**, also sorted in non-decreasing order.
+
+---
+
+### 🔍 Core Idea: Two-Pointer Merge from Ends
+
+Squaring negative numbers can disrupt order:
+
+- Example: `[-4, -1, 0, 3, 10] → [16, 1, 0, 9, 100]`
+- Sorting after squaring is trivial but costs `O(n log n)`
+
+Instead, we use a **two-pointer approach**:
+
+- Compare absolute values from both ends
+- Place the **larger square** at the end of the result array
+- Move inward and fill from right to left
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `i = 0` → start pointer
+- `j = n - 1` → end pointer
+- `k = n - 1` → fill position in result array
+
+#### Step 2: Compare and Fill
+
+- While `i ≤ j`:
+  - If `|nums[i]| > |nums[j]|` → square `nums[i]`, place at `ans[k]`, move `i++`
+  - Else → square `nums[j]`, place at `ans[k]`, move `j--`
+  - Move `k--`
+
+#### Step 3: Return Result
+
+---
+
+### ✅ Example
+
+```text
+nums = [-4,-1,0,3,10]
+
+→ Compare:
+  |−4| vs |10| → 10² = 100 → ans[4] = 100
+  |−4| vs |3| → 4² = 16 → ans[3] = 16
+  |−1| vs |3| → 3² = 9 → ans[2] = 9
+  |−1| vs |0| → 1² = 1 → ans[1] = 1
+  0² = 0 → ans[0] = 0
+
+Output: [0,1,9,16,100] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                      |
+| --------- | -------------------------- |
+| Time      | O(n)                       |
+| Space     | O(n)                       |
+| Technique | Two-Pointer + Reverse Fill |
+
+---
+
+### 🔁 Pattern
+
+- Monotonic transformation
+- Two-pointer merge
+- Reverse construction
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Square + Sort**:
+
+  - Square all → sort → O(n log n)
+
+- **In-place variant**:
+  - Requires careful overwrite logic → not used here
+
+---
+
+### ⚠️ Edge Cases
+
+- All non-negative → square preserves order
+- All negative → square reverses order
+- Mixed signs → two-pointer needed
+
+🔗 [LeetCode – Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array)
+
+---
+
+## 15. Matrix Cells in Distance Order
+
+**Problem**:  
+Given a matrix of size `rows × cols` and a center cell `(rCenter, cCenter)`, return all cell coordinates **sorted by their Manhattan distance** from the center.
+
+---
+
+### 🔍 Core Idea: Generate All Coordinates + Sort by Distance
+
+We:
+
+- Generate all cell coordinates in the matrix
+- Compute their **Manhattan distance** from `(rCenter, cCenter)`:
+  \[
+  \text{distance} = |r - rCenter| + |c - cCenter|
+  \]
+- Sort the list based on this distance
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Generate All Coordinates
+
+- Loop through every cell `(i, j)` in the matrix
+- Add to a list as `[i, j]`
+
+#### Step 2: Sort by Manhattan Distance
+
+- Use a custom comparator:
+  - Compare `|i - rCenter| + |j - cCenter|` for each cell
+
+#### Step 3: Convert List to Array
+
+- Return the sorted coordinates as a 2D array
+
+---
+
+### ✅ Example
+
+```text
+rows = 2, cols = 3, rCenter = 1, cCenter = 2
+
+→ All cells: [0,0], [0,1], [0,2], [1,0], [1,1], [1,2]
+→ Distances: 3, 2, 1, 2, 1, 0
+→ Sorted: [1,2], [0,2], [1,1], [0,1], [1,0], [0,0]
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                            |
+| --------- | -------------------------------- |
+| Time      | O(n log n) where n = rows × cols |
+| Space     | O(n)                             |
+| Technique | Grid Generation + Custom Sort    |
+
+---
+
+### 🔁 Pattern
+
+- Grid traversal
+- Distance-based sorting
+- Coordinate transformation
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Bucket sort by distance**:
+
+  - Precompute max distance
+  - Group cells by distance → O(n) time
+
+- **BFS from center**:
+  - Layered expansion → preserves order without sorting
+
+---
+
+### ⚠️ Edge Cases
+
+- Single cell → return itself
+- Center at edge → still valid
+- Multiple cells with same distance → any order accepted
+
+🔗 [LeetCode – Matrix Cells in Distance Order](https://leetcode.com/problems/matrix-cells-in-distance-order)
+
+---
