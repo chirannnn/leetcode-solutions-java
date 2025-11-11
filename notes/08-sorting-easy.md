@@ -1374,3 +1374,91 @@ rows = 2, cols = 3, rCenter = 1, cCenter = 2
 🔗 [LeetCode – Matrix Cells in Distance Order](https://leetcode.com/problems/matrix-cells-in-distance-order)
 
 ---
+
+## 16. Height Checker
+
+**Problem**:  
+Given an array `heights[]` representing students' current lineup, return the number of indices where `heights[i] ≠ expected[i]`, where `expected[]` is the sorted version of `heights[]`.
+
+---
+
+### 🔍 Core Idea: Compare Original vs Sorted Snapshot
+
+To find how many students are **out of place**:
+
+- Clone and sort the array to get the expected order
+- Compare each index between original and sorted
+- Count mismatches
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Clone and Sort
+
+- `expected = heights.clone()`
+- `Arrays.sort(expected)`
+
+#### Step 2: Compare Each Index
+
+- For each `i`:
+  - If `heights[i] ≠ expected[i]` → increment mismatch count
+
+#### Step 3: Return Count
+
+---
+
+### ✅ Example
+
+```text
+heights = [1,1,4,2,1,3]
+expected = [1,1,1,2,3,4]
+
+→ Compare:
+  i=0: 1 == 1 ✅
+  i=1: 1 == 1 ✅
+  i=2: 4 ≠ 1 ❌
+  i=3: 2 == 2 ✅
+  i=4: 1 ≠ 3 ❌
+  i=5: 3 ≠ 4 ❌
+
+→ Mismatches = 3 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value          |
+| --------- | -------------- |
+| Time      | O(n log n)     |
+| Space     | O(n)           |
+| Technique | Sort + Compare |
+
+---
+
+### 🔁 Pattern
+
+- Snapshot comparison
+- Stability check
+- Mismatch detection
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Counting Sort**:
+  - Use frequency array (0–100 range)
+  - Simulate sorted traversal and compare → O(n) time, O(1) space
+
+---
+
+### ⚠️ Edge Cases
+
+- Already sorted → return 0
+- All elements same → return 0
+- Completely reversed → return `n`
+
+🔗 [LeetCode – Height Checker](https://leetcode.com/problems/height-checker)
+
+---
