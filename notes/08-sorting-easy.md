@@ -1462,3 +1462,199 @@ expected = [1,1,1,2,3,4]
 🔗 [LeetCode – Height Checker](https://leetcode.com/problems/height-checker)
 
 ---
+
+## 17. Relative Sort Array
+
+**Problem**:  
+Given two arrays `arr1[]` and `arr2[]`:
+
+- All elements of `arr2` are distinct and present in `arr1`
+- Sort `arr1` such that:
+  - Elements in `arr2` appear first, in the same order as `arr2`
+  - Remaining elements (not in `arr2`) appear at the end in ascending order
+
+---
+
+### 🔍 Core Idea: Frequency Count + Ordered Placement
+
+We:
+
+- Count frequencies of all elements in `arr1`
+- Place elements from `arr2` in order, using their frequencies
+- Append remaining elements (not in `arr2`) in sorted order
+
+This avoids repeated scans and ensures linear time placement.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Count Frequencies
+
+- Use a fixed-size array `freq[1001]` since `0 ≤ arr[i] ≤ 1000`
+
+#### Step 2: Place Elements from `arr2`
+
+- For each `num` in `arr2`, place it `freq[num]` times in result
+- Decrement frequency as you go
+
+#### Step 3: Place Remaining Elements
+
+- Traverse `freq[]` from 0 to 1000
+- For any `freq[i] > 0`, place `i` that many times
+
+---
+
+### ✅ Example
+
+```text
+arr1 = [2,3,1,3,2,4,6,7,9,2,19]
+arr2 = [2,1,4,3,9,6]
+
+→ Frequency map:
+  1→1, 2→3, 3→2, 4→1, 6→1, 7→1, 9→1, 19→1
+
+→ Output:
+  [2,2,2,1,4,3,3,9,6] ← from arr2
+  [7,19] ← sorted remainder
+
+→ Final: [2,2,2,1,4,3,3,9,6,7,19] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                         |
+| --------- | ----------------------------- |
+| Time      | O(n + m + k) where k = 1001   |
+| Space     | O(k)                          |
+| Technique | Frequency Map + Ordered Merge |
+
+---
+
+### 🔁 Pattern
+
+- Relative ordering
+- Frequency counting
+- Hybrid sorting strategy
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Custom Comparator**:
+
+  - Map `arr2` values to ranks
+  - Sort `arr1` using comparator → O(n log n)
+
+- **List-based filtering**:
+  - Extract and remove `arr2` elements
+  - Sort and append remainder
+
+---
+
+### ⚠️ Edge Cases
+
+- All elements in `arr2` → no remainder
+- All elements outside `arr2` → full sort
+- Duplicates in `arr1` → handled via frequency
+
+🔗 [LeetCode – Relative Sort Array](https://leetcode.com/problems/relative-sort-array)
+
+---
+
+## 18. Minimum Absolute Difference
+
+**Problem**:  
+Given an array `arr[]` of **distinct integers**, find all pairs `[a, b]` such that:
+
+- `a < b`
+- `b - a == min(abs difference)` among all pairs in `arr`
+
+Return all such pairs in **ascending order**.
+
+---
+
+### 🔍 Core Idea: Sort + Adjacent Difference Scan
+
+Sorting the array ensures:
+
+- The smallest absolute differences are between adjacent elements
+- We only need to scan once to find the minimum difference and collect matching pairs
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Sort the Array
+
+- Ensures adjacent elements are closest in value
+
+#### Step 2: Track Minimum Difference
+
+- Initialize `minDiff = Integer.MAX_VALUE`
+
+#### Step 3: Scan Adjacent Pairs
+
+- For each `i` from `1` to `n-1`:
+  - Compute `diff = arr[i] - arr[i-1]`
+  - If `diff < minDiff` → update `minDiff`, clear result, add pair
+  - If `diff == minDiff` → add pair
+
+#### Step 4: Return Result List
+
+---
+
+### ✅ Example
+
+```text
+arr = [4,2,1,3]
+
+→ Sorted: [1,2,3,4]
+→ Differences: 1,1,1
+→ minDiff = 1
+→ Pairs: [1,2], [2,3], [3,4] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                       |
+| --------- | --------------------------- |
+| Time      | O(n log n) (due to sorting) |
+| Space     | O(n)                        |
+| Technique | Sort + Linear Scan          |
+
+---
+
+### 🔁 Pattern
+
+- Adjacent pair scanning
+- Minimum value tracking
+- Sorted difference analysis
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Brute Force**:
+
+  - Compare all pairs → O(n²)
+  - Inefficient for large inputs
+
+- **TreeSet**:
+  - Insert and scan neighbors → more complex, not needed here
+
+---
+
+### ⚠️ Edge Cases
+
+- Already sorted → still works
+- Negative numbers → handled naturally
+- Only two elements → one pair returned
+
+🔗 [LeetCode – Minimum Absolute Difference](https://leetcode.com/problems/minimum-absolute-difference)
+
+---
