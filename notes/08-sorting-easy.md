@@ -1658,3 +1658,272 @@ arr = [4,2,1,3]
 🔗 [LeetCode – Minimum Absolute Difference](https://leetcode.com/problems/minimum-absolute-difference)
 
 ---
+
+## 19. Rank Transform of an Array
+
+**Problem**:  
+Given an array `arr[]`, replace each element with its **rank**, where:
+
+- Rank starts from `1`
+- Larger elements get higher ranks
+- Equal elements share the same rank
+- Ranks are as small as possible
+
+---
+
+### 🔍 Core Idea: Sort + Map to Rank
+
+We:
+
+- Clone and sort the array to establish rank order
+- Assign ranks to each unique value
+- Map original values to their ranks using binary search or hash map
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Clone and Sort
+
+- `copy = arr.clone()`
+- `Arrays.sort(copy)` → ascending order
+
+#### Step 2: Assign Ranks
+
+- Traverse `copy[]`
+- If `copy[i] ≠ copy[i-1]` → increment rank
+- Store ranks in parallel array or map
+
+#### Step 3: Map Original Values to Ranks
+
+- For each `arr[i]`, find its index in `copy[]` using binary search
+- Use that index to fetch rank
+
+---
+
+### ✅ Example
+
+```text
+arr = [40,10,20,30]
+
+→ Sorted: [10,20,30,40]
+→ Ranks: 10→1, 20→2, 30→3, 40→4
+
+→ Output: [4,1,2,3] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                       |
+| --------- | ------------------------------------------- |
+| Time      | O(n log n) (due to sorting + binary search) |
+| Space     | O(n)                                        |
+| Technique | Sort + Rank Mapping                         |
+
+---
+
+### 🔁 Pattern
+
+- Value-to-rank transformation
+- Duplicate handling
+- Sorted mapping with binary search
+
+---
+
+### 🚀 Alternative Approaches
+
+- **HashMap**:
+
+  - Map each unique value to its rank directly → O(n log n) time, O(n) space
+
+- **TreeMap**:
+  - Sorted map for rank assignment → more overhead
+
+---
+
+### ⚠️ Edge Cases
+
+- All elements equal → rank = 1 for all
+- Already sorted → ranks increase linearly
+- Negative values → handled naturally
+
+🔗 [LeetCode – Rank Transform of an Array](https://leetcode.com/problems/rank-transform-of-an-array)
+
+---
+
+## 20. How Many Numbers Are Smaller Than the Current Number
+
+**Problem**:  
+Given an array `nums[]`, return a new array where each element at index `i` is the **count of numbers smaller than `nums[i]`**.
+
+---
+
+### 🔍 Core Idea: Sort + Rank Mapping
+
+We:
+
+- Clone and sort the array to establish value order
+- Assign each value a **rank** equal to the number of smaller elements before it
+- Use binary search to map each original value to its rank
+
+This avoids nested loops and handles duplicates efficiently.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Clone and Sort
+
+- `copy = nums.clone()`
+- `Arrays.sort(copy)` → ascending order
+
+#### Step 2: Assign Ranks
+
+- Traverse `copy[]`
+- If `copy[i] ≠ copy[i-1]` → `ranks[i] = i`
+- Else → `ranks[i] = ranks[i-1]` (same value, same rank)
+
+#### Step 3: Map Original Values to Ranks
+
+- For each `nums[i]`, binary search its index in `copy[]`
+- Use that index to fetch `ranks[index]`
+
+---
+
+### ✅ Example
+
+```text
+nums = [8,1,2,2,3]
+
+→ Sorted: [1,2,2,3,8]
+→ Ranks: 1→0, 2→1, 3→3, 8→4
+
+→ Output: [4,0,1,1,3] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                             |
+| --------- | --------------------------------- |
+| Time      | O(n log n) (sort + binary search) |
+| Space     | O(n)                              |
+| Technique | Sort + Rank Mapping               |
+
+---
+
+### 🔁 Pattern
+
+- Count of smaller elements
+- Sorted index mapping
+- Duplicate-aware ranking
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Counting Sort** (range 0–100):
+
+  - Use frequency array and prefix sum → O(n) time, O(1) space
+
+- **Brute Force**:
+  - Compare each pair → O(n²)
+
+---
+
+### ⚠️ Edge Cases
+
+- All elements equal → return all zeros
+- Already sorted → ranks increase linearly
+- Negative values → handled naturally if range extended
+
+🔗 [LeetCode – How Many Numbers Are Smaller Than the Current Number](https://leetcode.com/problems/how-many-numbers-are-smaller-than-the-current-number)
+
+---
+
+## 21. Maximum Product of Two Elements in an Array
+
+**Problem**:  
+Given an array `nums[]`, choose two different indices `i` and `j` such that the value of \((nums[i] - 1) \cdot (nums[j] - 1)\) is maximized.  
+Return that maximum value.
+
+---
+
+### 🔍 Core Idea: Track Top Two Values
+
+To maximize \((a - 1) \cdot (b - 1)\), we need the **two largest values** in the array.  
+Subtract 1 from each and multiply.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `max1 = 0`, `max2 = 0`
+
+#### Step 2: Traverse Array
+
+- For each `num`:
+  - If `num > max1` → shift `max1 → max2`, update `max1`
+  - Else if `num > max2` → update `max2`
+
+#### Step 3: Return Product
+
+- \((max1 - 1) \cdot (max2 - 1)\)
+
+---
+
+### ✅ Example
+
+```text
+nums = [3,4,5,2]
+
+→ max1 = 5, max2 = 4
+→ (5 - 1) × (4 - 1) = 4 × 3 = 12 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value        |
+| --------- | ------------ |
+| Time      | O(n)         |
+| Space     | O(1)         |
+| Technique | Max Tracking |
+
+---
+
+### 🔁 Pattern
+
+- Top-k value tracking
+- Offset-based product
+- Linear scan optimization
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Sort and pick last two**:
+
+  - Time: O(n log n)
+  - Space: O(1) if in-place
+
+- **Priority Queue**:
+  - Track top two → more overhead
+
+---
+
+### ⚠️ Edge Cases
+
+- Only two elements → direct product
+- Duplicates → handled naturally
+- Negative values → not applicable (constraints: positive integers)
+
+🔗 [LeetCode – Maximum Product of Two Elements in an Array](https://leetcode.com/problems/maximum-product-of-two-elements-in-an-array)
+
+---
