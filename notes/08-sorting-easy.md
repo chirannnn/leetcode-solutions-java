@@ -1927,3 +1927,185 @@ nums = [3,4,5,2]
 🔗 [LeetCode – Maximum Product of Two Elements in an Array](https://leetcode.com/problems/maximum-product-of-two-elements-in-an-array)
 
 ---
+
+## 22. Average Salary Excluding the Minimum and Maximum
+
+**Problem**:  
+Given an array `salary[]` of unique integers, return the **average salary excluding the minimum and maximum values**.
+
+---
+
+### 🔍 Core Idea: One-Pass Min/Max Tracking
+
+To compute the average excluding min and max:
+
+- Track `sum`, `min`, and `max` in a single pass
+- Subtract `min` and `max` from total sum
+- Divide by `(n - 2)` to get average
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `max = Integer.MIN_VALUE`
+- `min = Integer.MAX_VALUE`
+- `sum = 0`
+
+#### Step 2: Traverse Array
+
+- Add each salary to `sum`
+- Update `min` and `max` accordingly
+
+#### Step 3: Compute Average
+
+- Formula:  
+  \[
+  \text{average} = \frac{sum - min - max}{n - 2}
+  \]
+
+---
+
+### ✅ Example
+
+```text
+salary = [4000,3000,1000,2000]
+
+→ sum = 10000
+→ min = 1000, max = 4000
+→ average = (10000 - 1000 - 4000) / (4 - 2)
+           = 5000 / 2
+           = 2500 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                   |
+| --------- | ----------------------- |
+| Time      | O(n)                    |
+| Space     | O(1)                    |
+| Technique | Single-pass aggregation |
+
+---
+
+### 🔁 Pattern
+
+- Min-max exclusion
+- Aggregate + adjust
+- Average computation
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Sort + slice**:
+
+  - Sort array, sum middle elements
+  - Time: O(n log n), Space: O(1)
+
+- **Stream API (Java)**:
+  - Use `IntStream` for concise code
+
+---
+
+### ⚠️ Edge Cases
+
+- Only 3 elements → average is the middle one
+- Large values → safe with `int` sum (constraints small)
+- Negative salaries → handled naturally
+
+🔗 [LeetCode – Average Salary Excluding the Minimum and Maximum](https://leetcode.com/problems/average-salary-excluding-the-minimum-and-maximum-salary/)
+
+---
+
+## 23. Make Two Arrays Equal by Reversing Subarrays
+
+**Problem**:  
+Given two arrays `target[]` and `arr[]` of equal length, determine if `arr` can be transformed into `target` by reversing any number of subarrays.
+
+---
+
+### 🔍 Core Idea: Frequency Equivalence
+
+Key observation:
+
+- Reversing subarrays allows **any permutation** of elements.
+- Therefore, the only requirement is that both arrays contain the **same multiset of elements** (same values with same frequencies).
+- If frequencies match → return `true`.
+- Otherwise → return `false`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize Frequency Array
+
+- `freq[1001]` (since values are bounded by constraints)
+
+#### Step 2: Count Elements in `target`
+
+- For each `num` in `target`, increment `freq[num]`
+
+#### Step 3: Subtract Elements in `arr`
+
+- For each `num` in `arr`, decrement `freq[num]`
+- If any `freq[num] < 0` → mismatch → return `false`
+
+#### Step 4: Return True
+
+- If all frequencies balanced → arrays are equivalent
+
+---
+
+### ✅ Example
+
+```text
+target = [1,2,3,4]
+arr    = [2,4,1,3]
+
+→ freq after target: {1:1, 2:1, 3:1, 4:1}
+→ subtract arr: all counts return to 0
+→ result = true ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                   |
+| --------- | --------------------------------------- |
+| Time      | O(n)                                    |
+| Space     | O(k) where k = max element value (1001) |
+| Technique | Frequency Counting                      |
+
+---
+
+### 🔁 Pattern
+
+- Permutation equivalence
+- Frequency-based validation
+- Subarray reversal → permutation freedom
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Sorting**:
+  - Sort both arrays and compare → O(n log n)
+- **HashMap**:
+  - Count frequencies with map → O(n), more flexible for larger ranges
+
+---
+
+### ⚠️ Edge Cases
+
+- Single element arrays → always equal if values match
+- Different values → immediate false
+- Large arrays with duplicates → handled by frequency counts
+
+🔗 [LeetCode – Make Two Arrays Equal by Reversing Subarrays](https://leetcode.com/problems/make-two-arrays-equal-by-reversing-subarrays)
+
+---
