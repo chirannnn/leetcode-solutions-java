@@ -2109,3 +2109,205 @@ arr    = [2,4,1,3]
 🔗 [LeetCode – Make Two Arrays Equal by Reversing Subarrays](https://leetcode.com/problems/make-two-arrays-equal-by-reversing-subarrays)
 
 ---
+
+## 24. Can Make Arithmetic Progression From Sequence
+
+**Problem**:  
+Given an array `arr[]`, determine if it can be rearranged to form an **arithmetic progression** (AP), i.e., a sequence where the difference between consecutive elements is constant.
+
+---
+
+### 🔍 Core Idea: Sort + Uniform Difference Check
+
+- Rearranging means we can sort the array first.
+- After sorting, if the difference between every consecutive pair is the same, the array can form an AP.
+- Otherwise, return `false`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Sort the Array
+
+- Sorting ensures elements are in ascending order, making AP check straightforward.
+
+#### Step 2: Compute Common Difference
+
+- `diff = arr[1] - arr[0]`
+
+#### Step 3: Validate All Consecutive Differences
+
+- For each `i` from `2` to `n-1`:
+  - If `arr[i] - arr[i-1] != diff` → return `false`
+
+#### Step 4: Return True
+
+- If all differences match, array can form AP.
+
+---
+
+### ✅ Example
+
+```text
+arr = [3,5,1]
+
+→ Sorted: [1,3,5]
+→ Differences: 3-1 = 2, 5-3 = 2
+→ All equal → true ✅
+```
+
+```text
+arr = [1,2,4]
+
+→ Sorted: [1,2,4]
+→ Differences: 2-1 = 1, 4-2 = 2
+→ Not equal → false ❌
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                       |
+| --------- | --------------------------- |
+| Time      | O(n log n) (due to sorting) |
+| Space     | O(1)                        |
+| Technique | Sort + Difference Check     |
+
+---
+
+### 🔁 Pattern
+
+- Rearrangement feasibility via sorting
+- Uniform difference validation
+- Sequence property check
+
+---
+
+### 🚀 Alternative Approaches
+
+- **HashSet + min/max**:
+
+  - Compute min, max, and expected difference
+  - Check if all expected terms exist in set → O(n) time, O(n) space
+
+- **Direct formula check**:
+  - If `(max - min) % (n-1) != 0` → cannot form AP
+
+---
+
+### ⚠️ Edge Cases
+
+- Array length ≤ 2 → always true (any two numbers form AP)
+- Negative numbers → handled naturally
+- Large gaps → still valid if consistent
+
+🔗 [LeetCode – Can Make Arithmetic Progression From Sequence](https://leetcode.com/problems/can-make-arithmetic-progression-from-sequence)
+
+---
+
+## 25. Sort Array by Increasing Frequency
+
+**Problem**:  
+Given an array `nums[]`, sort it such that:
+
+1. Elements with **lower frequency** come first.
+2. If two elements have the **same frequency**, sort them in **decreasing order** (larger value first).
+
+Return the sorted array.
+
+---
+
+### 🔍 Core Idea: Frequency Count + Custom Comparator
+
+We:
+
+- Count frequency of each element.
+- Sort using a comparator:
+  - Primary key → frequency (ascending).
+  - Secondary key → value (descending).
+- Copy sorted result back into `int[]`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Frequency Array
+
+- Use `freq[201]` since values range from `-100` to `100`.
+- Shift index by `+100` to handle negatives.
+
+#### Step 2: Convert to `Integer[]`
+
+- Needed because `Arrays.sort` with comparator doesn’t work directly on primitive `int[]`.
+
+#### Step 3: Custom Comparator
+
+- If `freq[a] == freq[b]` → sort by `b - a` (decreasing order).
+- Else → sort by `freq[a] - freq[b]` (increasing frequency).
+
+#### Step 4: Copy Back
+
+- Convert sorted `Integer[]` to `int[]`.
+
+---
+
+### ✅ Example
+
+```text
+nums = [1,1,2,2,2,3]
+
+→ Frequencies: 1→2, 2→3, 3→1
+→ Sorted by frequency:
+   3 (freq=1) → first
+   1 (freq=2) → next
+   2 (freq=3) → last
+→ Output: [3,1,1,2,2,2] ✅
+```
+
+```text
+nums = [2,3,1,3,2]
+
+→ Frequencies: 1→1, 2→2, 3→2
+→ Tie between 2 and 3 → sort by value descending → 3 before 2
+→ Output: [1,3,3,2,2] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                           |
+| --------- | ------------------------------- |
+| Time      | O(n log n) (due to sorting)     |
+| Space     | O(n + k), k = 201               |
+| Technique | Frequency Counting + Comparator |
+
+---
+
+### 🔁 Pattern
+
+- Frequency-based ordering
+- Tie-breaking with secondary rule
+- Comparator-driven sorting
+
+---
+
+### 🚀 Alternative Approaches
+
+- **HashMap + List Sort**:
+  - Store frequencies in a map, sort list with comparator.
+- **Bucket Sort**:
+  - Group by frequency, then sort within buckets by value descending.
+
+---
+
+### ⚠️ Edge Cases
+
+- All elements same → array unchanged.
+- Negative numbers → handled via offset indexing.
+- Multiple ties → resolved by descending order rule.
+
+🔗 [LeetCode – Sort Array by Increasing Frequency](https://leetcode.com/problems/sort-array-by-increasing-frequency)
+
+---
