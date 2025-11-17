@@ -2311,3 +2311,115 @@ nums = [2,3,1,3,2]
 🔗 [LeetCode – Sort Array by Increasing Frequency](https://leetcode.com/problems/sort-array-by-increasing-frequency)
 
 ---
+
+## 26. Special Array With X Elements Greater Than or Equal to X
+
+**Problem**:  
+Given an array `nums[]` of non-negative integers, determine if there exists a number `x` such that exactly `x` numbers in `nums` are greater than or equal to `x`.  
+Return `x` if it exists, otherwise return `-1`.  
+If valid, `x` is guaranteed to be unique.
+
+---
+
+### 🔍 Core Idea: Binary Search on Candidate `x`
+
+- Possible values of `x` range from `1` to `n` (array length).
+- For each candidate `x`, count how many numbers in `nums` are ≥ `x`.
+- If count equals `x`, return it.
+- Otherwise, adjust search range:
+  - If count > x → need larger `x`.
+  - If count < x → need smaller `x`.
+
+This avoids brute force and leverages sorted order.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Sort Array
+
+- Sorting allows efficient counting of elements ≥ `x`.
+
+#### Step 2: Binary Search on `x`
+
+- Search range: `1 … n`
+- Midpoint = candidate `x`
+- Count elements ≥ `x` using helper function
+
+#### Step 3: Count Elements ≥ `x`
+
+- Binary search for first index where `arr[i] ≥ x`
+- Count = `n - index`
+
+#### Step 4: Return Result
+
+- If count == x → return x
+- If no match → return -1
+
+---
+
+### ✅ Example
+
+```text
+nums = [0,4,3,0,4]
+
+→ Sorted: [0,0,3,4,4]
+→ Try x = 3:
+   Count of ≥ 3 = 3 (values 3,4,4)
+   Count == x → return 3 ✅
+```
+
+```text
+nums = [3,5]
+
+→ Sorted: [3,5]
+→ Try x = 2:
+   Count of ≥ 2 = 2
+   Count == x → return 2 ✅
+```
+
+```text
+nums = [0,0]
+
+→ Sorted: [0,0]
+→ No valid x → return -1 ❌
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                             |
+| --------- | --------------------------------- |
+| Time      | O(n log n) (sort + binary search) |
+| Space     | O(1)                              |
+| Technique | Binary Search + Counting          |
+
+---
+
+### 🔁 Pattern
+
+- Candidate search space reduction
+- Frequency-based validation
+- Unique solution guarantee
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Brute Force**:
+  - For each `x` from 1 to n, count manually → O(n²)
+- **Direct Scan**:
+  - Sort and check counts sequentially → O(n log n)
+
+---
+
+### ⚠️ Edge Cases
+
+- All zeros → always -1
+- Single element → only valid if `nums[0] == 1`
+- Large duplicates → handled by count logic
+
+🔗 [LeetCode – Special Array With X Elements Greater Than or Equal to X](https://leetcode.com/problems/special-array-with-x-elements-greater-than-or-equal-x)
+
+---
