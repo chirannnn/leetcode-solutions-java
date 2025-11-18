@@ -2423,3 +2423,197 @@ nums = [0,0]
 🔗 [LeetCode – Special Array With X Elements Greater Than or Equal to X](https://leetcode.com/problems/special-array-with-x-elements-greater-than-or-equal-x)
 
 ---
+
+## 27. Find All Numbers Disappeared in an Array
+
+**Problem**:  
+Given an array `nums[]` of length `n` where each element is in the range `[1, n]`, return all integers in `[1, n]` that do not appear in `nums`.
+
+---
+
+### 🔍 Core Idea: Cyclic Sort + Index Check
+
+- Since values are in `[1…n]`, each number has a **correct index** (`num → num-1`).
+- Use **cyclic sort** to place each number at its correct index.
+- After sorting, any index `i` where `nums[i] ≠ i+1` corresponds to a missing number.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Cyclic Sort
+
+- Traverse array with index `i`.
+- If `nums[i]` is not at its correct position (`nums[i] ≠ nums[nums[i]-1]`), swap.
+- Else, move to next index.
+- This ensures each number is placed at its correct index.
+
+#### Step 2: Collect Missing Numbers
+
+- After cyclic sort, scan array.
+- If `nums[index] ≠ index+1`, then `index+1` is missing.
+- Add to result list.
+
+---
+
+### ✅ Example
+
+```text
+nums = [4,3,2,7,8,2,3,1]
+
+→ After cyclic sort: [1,2,3,4,3,2,7,8]
+→ Scan:
+   index 4 → nums[4]=3 ≠ 5 → missing 5
+   index 5 → nums[5]=2 ≠ 6 → missing 6
+→ Output: [5,6] ✅
+```
+
+```text
+nums = [1,1]
+
+→ After cyclic sort: [1,1]
+→ Scan:
+   index 1 → nums[1]=1 ≠ 2 → missing 2
+→ Output: [2] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                 |
+| --------- | ------------------------------------- |
+| Time      | O(n) (single pass cyclic sort + scan) |
+| Space     | O(1) (excluding result list)          |
+| Technique | Cyclic Sort + Index Validation        |
+
+---
+
+### 🔁 Pattern
+
+- Cyclic sort for range `[1…n]` problems
+- Index mismatch → missing/duplicate detection
+- In-place rearrangement
+
+---
+
+### 🚀 Alternative Approaches
+
+- **HashSet**:
+  - Track seen numbers, then collect missing → O(n) time, O(n) space.
+- **Boolean Marking**:
+  - Mark visited indices → O(n) time, O(1) space.
+
+---
+
+### ⚠️ Edge Cases
+
+- All numbers present → return empty list
+- All numbers same → return all missing except that number
+- Single element array → missing all except that element
+
+🔗 [LeetCode – Find All Numbers Disappeared in an Array](https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array)
+
+---
+
+## 28. Set Mismatch
+
+**Problem**:  
+You are given an array `nums[]` of length `n` representing a set that should contain all numbers from `1…n`.  
+Due to an error:
+
+- One number is duplicated.
+- One number is missing.
+
+Return `[duplicate, missing]`.
+
+---
+
+### 🔍 Core Idea: Cyclic Sort + Index Validation
+
+- Since values are in `[1…n]`, each number has a **correct index** (`num → num-1`).
+- Use **cyclic sort** to place each number at its correct index.
+- After sorting, any index `i` where `nums[i] ≠ i+1` reveals:
+  - `nums[i]` → the duplicate.
+  - `i+1` → the missing number.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Cyclic Sort
+
+- Traverse array with index `i`.
+- If `nums[i]` is not at its correct position (`nums[i] ≠ nums[nums[i]-1]`), swap.
+- Else, move to next index.
+- This ensures each number is placed at its correct index unless duplication prevents it.
+
+#### Step 2: Detect Error
+
+- After cyclic sort, scan array.
+- If `nums[index] ≠ index+1`:
+  - Duplicate = `nums[index]`
+  - Missing = `index+1`
+
+---
+
+### ✅ Example
+
+```text
+nums = [1,2,2,4]
+
+→ After cyclic sort: [1,2,2,4]
+→ Scan:
+   index 2 → nums[2]=2 ≠ 3
+   → Duplicate = 2, Missing = 3
+→ Output: [2,3] ✅
+```
+
+```text
+nums = [1,1]
+
+→ After cyclic sort: [1,1]
+→ Scan:
+   index 1 → nums[1]=1 ≠ 2
+   → Duplicate = 1, Missing = 2
+→ Output: [1,2] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                         |
+| --------- | ----------------------------- |
+| Time      | O(n) (cyclic sort + scan)     |
+| Space     | O(1) (in-place)               |
+| Technique | Cyclic Sort + Error Detection |
+
+---
+
+### 🔁 Pattern
+
+- Cyclic sort for `[1…n]` problems
+- Index mismatch → duplicate/missing detection
+- In-place rearrangement with constant space
+
+---
+
+### 🚀 Alternative Approaches
+
+- **HashSet**:
+  - Track seen numbers, detect duplicate, then compute missing → O(n) time, O(n) space.
+- **Math-based**:
+  - Use sum and square sum formulas to deduce missing and duplicate → O(n) time, O(1) space.
+
+---
+
+### ⚠️ Edge Cases
+
+- Small arrays (n=2) → works correctly.
+- Duplicate at start or end → handled naturally.
+- Large arrays → efficient due to O(n) time and O(1) space.
+
+🔗 [LeetCode – Set Mismatch](https://leetcode.com/problems/set-mismatch)
+
+---
