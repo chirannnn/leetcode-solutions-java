@@ -2617,3 +2617,116 @@ nums = [1,1]
 🔗 [LeetCode – Set Mismatch](https://leetcode.com/problems/set-mismatch)
 
 ---
+
+## 29. Two Sum
+
+**Problem**:  
+Given an array `nums[]` and an integer `target`, return indices of the two numbers such that they add up to `target`.  
+Constraints:
+
+- Exactly one solution exists.
+- Cannot use the same element twice.
+- Answer can be returned in any order.
+
+---
+
+### 🔍 Core Idea: Sort + Two-Pointer Search
+
+- Pair each number with its original index.
+- Sort by value.
+- Use two pointers (`start`, `end`) to find two numbers whose sum equals `target`.
+- Return their original indices.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Pair Values with Indices
+
+- Build `pairs[i] = {nums[i], i}`.
+- This preserves original indices after sorting.
+
+#### Step 2: Sort by Value
+
+- Sort `pairs` by the first element (the number itself).
+
+#### Step 3: Two-Pointer Search
+
+- Initialize `start = 0`, `end = n-1`.
+- While `start < end`:
+  - Compute `sum = pairs[start][0] + pairs[end][0]`.
+  - If `sum == target` → return `[pairs[start][1], pairs[end][1]]`.
+  - If `sum > target` → move `end--`.
+  - Else → move `start++`.
+
+#### Step 4: Return Result
+
+- Guaranteed one solution, so loop will find it.
+- If not found (edge case), return empty array.
+
+---
+
+### ✅ Example
+
+```text
+nums = [2,7,11,15], target = 9
+
+→ pairs = [[2,0],[7,1],[11,2],[15,3]]
+→ Sorted: same order
+→ Two-pointer:
+   sum = 2+15=17 > 9 → end--
+   sum = 2+11=13 > 9 → end--
+   sum = 2+7=9 → match
+→ Return [0,1] ✅
+```
+
+```text
+nums = [3,2,4], target = 6
+
+→ pairs = [[3,0],[2,1],[4,2]]
+→ Sorted: [[2,1],[3,0],[4,2]]
+→ Two-pointer:
+   sum = 2+4=6 → match
+→ Return [1,2] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                          |
+| --------- | ------------------------------ |
+| Time      | O(n log n) (sorting dominates) |
+| Space     | O(n) (pairs array)             |
+| Technique | Sort + Two-Pointer             |
+
+---
+
+### 🔁 Pattern
+
+- Pairing values with indices
+- Sorting for ordered search
+- Two-pointer technique for sum problems
+
+---
+
+### 🚀 Alternative Approaches
+
+- **HashMap (Optimal)**:
+  - Store value → index mapping.
+  - For each number, check if `target - num` exists.
+  - Time: O(n), Space: O(n).
+- **Brute Force**:
+  - Check all pairs → O(n²).
+
+---
+
+### ⚠️ Edge Cases
+
+- Duplicate values (e.g., `[3,3]`, target=6) → handled correctly.
+- Negative numbers → works naturally.
+- Large arrays → efficient enough with O(n log n).
+
+🔗 [LeetCode – Two Sum](https://leetcode.com/problems/two-sum)
+
+---
