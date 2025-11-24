@@ -313,3 +313,105 @@ nums = [1,0,-1,0,-2,2], target = 0
 🔗 [LeetCode – 4Sum](https://leetcode.com/problems/4sum)
 
 ---
+
+## 4. Group Anagrams
+
+**Problem**:  
+Given an array of strings `strs[]`, group the anagrams together.  
+Return the groups in any order.
+
+---
+
+### 🔍 Core Idea: Canonical Key via Sorted Characters
+
+- Anagrams share the same sorted character sequence.
+- Use the sorted string as a **key** to group words.
+- Sort each word → pair with original → group by identical keys.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Build Key-Value Pairs
+
+- For each string:
+  - Convert to char array.
+  - Sort characters.
+  - Store `[sortedString, originalString]`.
+
+#### Step 2: Sort by Key
+
+- Sort pairs by `sortedString`.
+- This ensures anagrams are adjacent.
+
+#### Step 3: Group Anagrams
+
+- Traverse sorted pairs.
+- If current key matches previous → add to same group.
+- Else → start new group.
+- Collect groups into result list.
+
+---
+
+### ✅ Example
+
+```text
+strs = ["eat","tea","tan","ate","nat","bat"]
+
+→ Pairs:
+   ["aet","eat"], ["aet","tea"], ["ant","tan"],
+   ["aet","ate"], ["ant","nat"], ["abt","bat"]
+
+→ Sorted by key:
+   ["abt","bat"], ["aet","eat"], ["aet","tea"], ["aet","ate"],
+   ["ant","tan"], ["ant","nat"]
+
+→ Grouping:
+   ["bat"], ["eat","tea","ate"], ["tan","nat"]
+
+→ Output: [["bat"],["nat","tan"],["ate","eat","tea"]] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect | Value                  |
+| ------ | ---------------------- |
+| Time   | O(n·k log k + n log n) |
+
+- k = max word length (sorting chars)
+- n = number of words (sorting pairs) |
+  | Space | O(n·k) (pairs + groups) |
+  | Technique | Canonical key grouping |
+
+---
+
+### 🔁 Pattern
+
+- Canonical representation (sorted string)
+- Grouping by identical keys
+- Deduplication via sorting
+
+---
+
+### 🚀 Alternative Approaches
+
+- **HashMap** (Optimal):
+  - Key = sorted string, Value = list of words.
+  - Avoids sorting pairs → O(n·k log k).
+- **Character Count Signature**:
+  - Key = frequency array of 26 letters.
+  - Faster than sorting chars → O(n·k).
+
+---
+
+### ⚠️ Edge Cases
+
+- Empty string → grouped as `[""]`.
+- Single character → grouped individually.
+- All identical words → one group.
+
+🔗 [LeetCode – Group Anagrams](https://leetcode.com/problems/group-anagrams)
+
+---
