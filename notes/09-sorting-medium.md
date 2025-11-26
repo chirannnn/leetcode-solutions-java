@@ -621,3 +621,190 @@ nums = [2,0,2,1,1,0]
 🔗 [LeetCode – Sort Colors](https://leetcode.com/problems/sort-colors)
 
 ---
+
+## 7. Largest Number
+
+**Problem**:  
+Given a list of non-negative integers `nums[]`, arrange them such that they form the **largest possible number**.  
+Return the result as a string (since the number may be very large).
+
+---
+
+### 🔍 Core Idea: Custom Comparator on Strings
+
+- Convert each integer to a string.
+- Sort strings using a comparator that decides order based on concatenation:
+  - Compare `(b+a)` vs `(a+b)`.
+  - If `(b+a)` is larger, `b` should come before `a`.
+- Concatenate sorted strings to form the result.
+- Handle leading zeros (e.g., `[0,0]` → `"0"`).
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Convert Integers to Strings
+
+- `arr[i] = String.valueOf(nums[i])`.
+
+#### Step 2: Sort with Custom Comparator
+
+- Comparator: `(b+a).compareTo(a+b)`
+- Ensures correct ordering for cases like `9` vs `34`:
+  - `"934"` > `"349"` → `9` comes before `34`.
+
+#### Step 3: Handle Leading Zeros
+
+- If the largest element after sorting is `"0"`, return `"0"` (to avoid `"0000"`).
+
+#### Step 4: Build Result
+
+- Append all strings in sorted order into a `StringBuilder`.
+
+---
+
+### ✅ Example
+
+```text
+nums = [10,2]
+
+→ Convert: ["10","2"]
+→ Sort: compare "210" vs "102" → "210" > "102"
+→ Order: ["2","10"]
+→ Result: "210" ✅
+```
+
+```text
+nums = [3,30,34,5,9]
+
+→ Convert: ["3","30","34","5","9"]
+→ Sort order: ["9","5","34","3","30"]
+→ Concatenate: "9534330" ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                                                       |
+| --------- | --------------------------------------------------------------------------- |
+| Time      | O(n log n · k) (sorting with string comparisons, k = avg length of numbers) |
+| Space     | O(n) (string array + builder)                                               |
+| Technique | Custom Comparator + Concatenation                                           |
+
+---
+
+### 🔁 Pattern
+
+- String-based sorting for numerical arrangement
+- Comparator logic using concatenation
+- Handling edge cases with leading zeros
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Priority Queue**:
+  - Insert with custom comparator, build result.
+- **Manual Merge Sort**:
+  - Implement comparator logic directly in merge sort.
+
+---
+
+### ⚠️ Edge Cases
+
+- All zeros → return `"0"`
+- Single element → return that element as string
+- Large arrays → efficient due to O(n log n) sorting
+
+🔗 [LeetCode – Largest Number](https://leetcode.com/problems/largest-number)
+
+---
+
+## 8. Kth Largest Element in an Array
+
+**Problem**:  
+Given an integer array `nums[]` and an integer `k`, return the **kth largest element** in the array.  
+Note: It’s based on sorted order, not distinct values.
+
+---
+
+### 🔍 Core Idea: Sorting + Index Access
+
+- Sort the array in ascending order.
+- The `kth` largest element is at index `n-k` (from the end).
+- Simple and correct, but not the most efficient.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Sort Array
+
+- `Arrays.sort(nums)` → ascending order.
+
+#### Step 2: Access kth Largest
+
+- Return `nums[nums.length - k]`.
+
+---
+
+### ✅ Example
+
+```text
+nums = [3,2,1,5,6,4], k=2
+
+→ Sorted: [1,2,3,4,5,6]
+→ kth largest = nums[6-2] = nums[4] = 5 ✅
+```
+
+```text
+nums = [3,2,3,1,2,4,5,5,6], k=4
+
+→ Sorted: [1,2,2,3,3,4,5,5,6]
+→ kth largest = nums[9-4] = nums[5] = 4 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                          |
+| --------- | ------------------------------ |
+| Time      | O(n log n) (sorting dominates) |
+| Space     | O(1) (in-place sort)           |
+| Technique | Sorting + Index Access         |
+
+---
+
+### 🔁 Pattern
+
+- Order-statistics problem (find kth largest/smallest)
+- Sorting as baseline solution
+- Optimizations possible with selection algorithms
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Quick Select (Optimal Average O(n))**:
+  - Partition-based selection (like QuickSort).
+  - Only recurse into one side.
+- **Min Heap (O(n log k))**:
+  - Maintain heap of size `k`.
+  - Pop smallest when size exceeds `k`.
+  - Top of heap = kth largest.
+- **Max Heap (O(n log n))**:
+  - Build heap, pop `k` times.
+
+---
+
+### ⚠️ Edge Cases
+
+- `k=1` → largest element.
+- `k=n` → smallest element.
+- Duplicate values → handled naturally (not distinct).
+
+🔗 [LeetCode – Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array)
+
+---
