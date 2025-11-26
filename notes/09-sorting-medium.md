@@ -415,3 +415,209 @@ strs = ["eat","tea","tan","ate","nat","bat"]
 🔗 [LeetCode – Group Anagrams](https://leetcode.com/problems/group-anagrams)
 
 ---
+
+## 5. Merge Intervals
+
+**Problem**:  
+Given an array of intervals `intervals[i] = [start, end]`, merge all overlapping intervals and return the non-overlapping intervals that cover all input ranges.
+
+---
+
+### 🔍 Core Idea: Sort + Greedy Merge
+
+- Sort intervals by their **start time**.
+- Traverse sequentially, merging overlapping intervals into one.
+- If the current interval overlaps with the next, extend the end boundary.
+- Otherwise, finalize the current interval and move forward.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Sort Intervals
+
+- Sort by `start` value: `Arrays.sort(intervals, (a, b) -> a[0] - b[0])`.
+
+#### Step 2: Traverse and Merge
+
+- Initialize `newStart = intervals[index][0]`, `currEnd = intervals[index][1]`.
+- While next interval’s start ≤ `currEnd`, merge by updating:
+  - `currEnd = max(currEnd, nextEnd)`.
+- Add merged interval `[newStart, currEnd]` to result list.
+
+#### Step 3: Build Result
+
+- Convert list of merged intervals back to `int[][]`.
+
+---
+
+### ✅ Example
+
+```text
+intervals = [[1,3],[2,6],[8,10],[15,18]]
+
+→ Sorted: [[1,3],[2,6],[8,10],[15,18]]
+→ Merge [1,3] and [2,6] → [1,6]
+→ Next: [8,10] → no overlap
+→ Next: [15,18] → no overlap
+→ Output: [[1,6],[8,10],[15,18]] ✅
+```
+
+```text
+intervals = [[1,4],[4,5]]
+
+→ Sorted: [[1,4],[4,5]]
+→ Overlap since 4 ≥ 4 → merge → [1,5]
+→ Output: [[1,5]] ✅
+```
+
+```text
+intervals = [[4,7],[1,4]]
+
+→ Sorted: [[1,4],[4,7]]
+→ Overlap since 4 ≥ 4 → merge → [1,7]
+→ Output: [[1,7]] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                          |
+| --------- | ------------------------------ |
+| Time      | O(n log n) (sorting dominates) |
+| Space     | O(n) (result list)             |
+| Technique | Sort + Greedy Merge            |
+
+---
+
+### 🔁 Pattern
+
+- Sorting for ordered traversal
+- Greedy merging of overlapping ranges
+- Interval problems (merge, insert, overlap detection)
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Sweep Line Algorithm**:
+  - Track start/end events separately → useful for more complex interval problems.
+- **Stack-based Merge**:
+  - Push intervals, merge top with new one if overlapping.
+
+---
+
+### ⚠️ Edge Cases
+
+- Single interval → return as is.
+- Fully nested intervals (e.g., `[1,10],[2,5]`) → merge into `[1,10]`.
+- Disjoint intervals → remain unchanged.
+
+🔗 [LeetCode – Merge Intervals](https://leetcode.com/problems/merge-intervals)
+
+---
+
+## 6. Sort Colors
+
+**Problem**:  
+Given an array `nums[]` containing values `0`, `1`, and `2` (representing red, white, and blue), sort them **in-place** so that all `0`s come first, followed by `1`s, then `2`s.  
+Constraints:
+
+- No library sort function allowed.
+- Aim for a one-pass algorithm with constant extra space.
+
+---
+
+### 🔍 Core Idea: Dutch National Flag Algorithm
+
+- Maintain three pointers:
+  - `low` → boundary for 0s (red)
+  - `mid` → current element under consideration
+  - `high` → boundary for 2s (blue)
+- Traverse once, swapping elements into their correct regions.
+- Ensures in-place sorting in a single pass.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize Pointers
+
+- `low = 0`, `mid = 0`, `high = n-1`.
+
+#### Step 2: Traverse Array
+
+- While `mid <= high`:
+  - If `nums[mid] == 0`:
+    - Swap `nums[mid] ↔ nums[low]`.
+    - Increment both `low` and `mid`.
+  - If `nums[mid] == 2`:
+    - Swap `nums[mid] ↔ nums[high]`.
+    - Decrement `high`.
+    - Do **not** increment `mid` (need to recheck swapped value).
+  - If `nums[mid] == 1`:
+    - Just increment `mid`.
+
+#### Step 3: End Condition
+
+- Loop finishes when `mid > high`.
+- Array is sorted in-place.
+
+---
+
+### ✅ Example
+
+```text
+nums = [2,0,2,1,1,0]
+
+→ Initial: low=0, mid=0, high=5
+→ Step 1: nums[mid]=2 → swap with nums[high] → [0,0,2,1,1,2]
+→ Step 2: nums[mid]=0 → swap with nums[low] → [0,0,2,1,1,2]
+→ Step 3: nums[mid]=0 → swap with nums[low] → [0,0,2,1,1,2]
+→ Step 4: nums[mid]=2 → swap with nums[high] → [0,0,1,1,2,2]
+→ Step 5: nums[mid]=1 → mid++
+→ Step 6: nums[mid]=1 → mid++
+→ Done → [0,0,1,1,2,2] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value               |
+| --------- | ------------------- |
+| Time      | O(n) (single pass)  |
+| Space     | O(1) (in-place)     |
+| Technique | Dutch National Flag |
+
+---
+
+### 🔁 Pattern
+
+- Three-way partitioning
+- In-place swaps with boundary pointers
+- One-pass sorting for limited categories
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Counting Sort**:
+  - Count 0s, 1s, 2s → overwrite array.
+  - Time: O(n), Space: O(1).
+- **Two-pass Partition**:
+  - First segregate 0s, then 2s.
+  - Less optimal than Dutch Flag.
+
+---
+
+### ⚠️ Edge Cases
+
+- All elements same → array unchanged.
+- Already sorted → algorithm still works.
+- Small arrays (n=1 or n=2) → handled naturally.
+
+🔗 [LeetCode – Sort Colors](https://leetcode.com/problems/sort-colors)
+
+---
