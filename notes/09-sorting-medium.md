@@ -808,3 +808,218 @@ nums = [3,2,3,1,2,4,5,5,6], k=4
 🔗 [LeetCode – Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array)
 
 ---
+
+## 9. Find the Duplicate Number
+
+**Problem**:  
+Given an array `nums[]` of length `n+1` containing integers in the range `[1…n]`, exactly one number is repeated (possibly more than twice).  
+Return the duplicate number.  
+Constraints:
+
+- Do not modify the array.
+- Use only constant extra space.
+- Solve in linear runtime if possible.
+
+---
+
+### 🔍 Core Idea: Floyd’s Tortoise and Hare (Cycle Detection)
+
+- Treat the array as a **linked list** where each index points to `nums[index]`.
+- Because one number is repeated, this creates a **cycle** in the linked list.
+- Use cycle detection to find the entry point of the cycle → the duplicate number.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize Pointers
+
+- `slow = nums[0]`, `fast = nums[0]`.
+
+#### Step 2: Detect Cycle
+
+- Move `slow` by one step (`nums[slow]`).
+- Move `fast` by two steps (`nums[nums[fast]]`).
+- Continue until `slow == fast`.
+
+#### Step 3: Find Entry Point
+
+- Reset `slow = nums[0]`.
+- Move both `slow` and `fast` one step at a time.
+- When they meet again → that value is the duplicate.
+
+---
+
+### ✅ Example
+
+```text
+nums = [1,3,4,2,2]
+
+→ Linked list representation:
+   1 → 3 → 2 → 4 → 2 → cycle at 2
+
+→ Phase 1: slow and fast meet inside cycle
+→ Phase 2: reset slow, move both step by step
+→ Meet at 2 → duplicate = 2 ✅
+```
+
+```text
+nums = [3,1,3,4,2]
+
+→ Cycle formed at 3
+→ Duplicate = 3 ✅
+```
+
+```text
+nums = [3,3,3,3,3]
+
+→ Cycle formed immediately at 3
+→ Duplicate = 3 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                    |
+| --------- | ------------------------ |
+| Time      | O(n) (linear traversal)  |
+| Space     | O(1) (constant pointers) |
+| Technique | Floyd’s Cycle Detection  |
+
+---
+
+### 🔁 Pattern
+
+- Cycle detection in arrays (linked list analogy)
+- Entry point of cycle = duplicate value
+- Works without modifying array or extra memory
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Cyclic Sort** (requires modifying array):
+  - Place numbers at correct indices, detect mismatch.
+- **HashSet** (extra space):
+  - Track seen numbers, return first duplicate.
+- **Binary Search on Counts**:
+  - Count numbers ≤ mid, adjust search range.
+
+---
+
+### ⚠️ Edge Cases
+
+- All elements same → duplicate is that element.
+- Duplicate appears multiple times → still detected.
+- Large arrays → efficient due to O(n) time and O(1) space.
+
+🔗 [LeetCode – Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number)
+
+---
+
+## 10. Find All Duplicates in an Array
+
+**Problem**:  
+Given an integer array `nums[]` of length `n` where each integer is in the range `[1…n]` and appears at most twice, return all integers that appear twice.  
+Constraints:
+
+- Must run in **O(n)** time.
+- Must use **O(1)** auxiliary space (excluding output list).
+
+---
+
+### 🔍 Core Idea: Cyclic Sort + Index Validation
+
+- Since values are in `[1…n]`, each number has a **correct index** (`num → num-1`).
+- Use **cyclic sort** to place each number at its correct index.
+- After sorting, any index `i` where `nums[i] ≠ i+1` indicates that `nums[i]` is a duplicate.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Cyclic Sort
+
+- Traverse array with index `i`.
+- If `nums[i]` is not at its correct position (`nums[i] ≠ nums[nums[i]-1]`), swap.
+- Else, move to next index.
+- This rearranges numbers into their correct positions unless duplicates prevent it.
+
+#### Step 2: Collect Duplicates
+
+- After cyclic sort, scan array.
+- If `nums[index] ≠ index+1`, then `nums[index]` is a duplicate.
+- Add to result list.
+
+---
+
+### ✅ Example
+
+```text
+nums = [4,3,2,7,8,2,3,1]
+
+→ After cyclic sort: [1,2,3,4,3,2,7,8]
+→ Scan:
+   index 4 → nums[4]=3 ≠ 5 → duplicate = 3
+   index 5 → nums[5]=2 ≠ 6 → duplicate = 2
+→ Output: [2,3] ✅
+```
+
+```text
+nums = [1,1,2]
+
+→ After cyclic sort: [1,1,2]
+→ Scan:
+   index 1 → nums[1]=1 ≠ 2 → duplicate = 1
+→ Output: [1] ✅
+```
+
+```text
+nums = [1]
+
+→ After cyclic sort: [1]
+→ Scan: all correct → no duplicates
+→ Output: [] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                  |
+| --------- | -------------------------------------- |
+| Time      | O(n) (cyclic sort + scan)              |
+| Space     | O(1) (in-place, excluding result list) |
+| Technique | Cyclic Sort + Index Validation         |
+
+---
+
+### 🔁 Pattern
+
+- Cyclic sort for `[1…n]` problems
+- Index mismatch → duplicate detection
+- In-place rearrangement with constant space
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Negative Marking**:
+  - Iterate array, mark visited index as negative.
+  - If already negative → duplicate found.
+- **HashSet**:
+  - Track seen numbers, return duplicates.
+  - Uses O(n) extra space.
+
+---
+
+### ⚠️ Edge Cases
+
+- All unique → return empty list.
+- Multiple duplicates → all detected.
+- Single element → always empty result.
+
+🔗 [LeetCode – Find All Duplicates in an Array](https://leetcode.com/problems/find-all-duplicates-in-an-array)
+
+---
