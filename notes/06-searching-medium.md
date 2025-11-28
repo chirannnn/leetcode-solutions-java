@@ -446,77 +446,110 @@ Loop ends → start == 5 → peak = 6
 ## 7. Find Right Interval
 
 **Problem**:  
-Given an array of intervals `[[start₀, end₀], [start₁, end₁], ...]`, return an array where each element is the **index of the "right interval"** for each interval.  
-A "right interval" is one whose `start ≥ end` of the current interval, and among all such intervals, the one with the **smallest start**.
+Given an array of intervals `intervals[i] = [start, end]` where each `start` is unique, return an array of indices representing the **right interval** for each interval.
 
-If no such interval exists, return `-1` for that position.
-
----
-
-**Approach**: Brute Force Comparison
-
-- For each interval `i`, extract its `end`
-- Compare it with every other interval’s `start`
-- Track the **smallest start ≥ end** and its index
-- If no such interval exists, return `-1`
+- A right interval for `i` is an interval `j` such that `start[j] >= end[i]` and `start[j]` is minimized.
+- If no right interval exists, return `-1` for that index.
 
 ---
 
-**Complexity**:
+### 🔍 Core Idea: Sort Starts + Binary Search
 
-- **Time**: O(n²) – nested loop over all intervals
-- **Space**: O(n) – result array
+- Each interval’s **end** needs to be matched with the **smallest start ≥ end**.
+- Store all starts with their original indices.
+- Sort starts by value.
+- For each interval, binary search in the sorted starts to find the smallest start ≥ current end.
+- Return the corresponding index, or `-1` if none exists.
 
 ---
 
-**Example**:
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Preprocess Starts
+
+- Build array `starts[i] = [startValue, originalIndex]`.
+- Sort by `startValue`.
+
+#### Step 2: For Each Interval
+
+- Let `currEnd = intervals[i][1]`.
+- Binary search in `starts` for smallest `start ≥ currEnd`.
+- If found → record its original index.
+- Else → record `-1`.
+
+#### Step 3: Return Result
+
+- Collect results into `ans[]`.
+
+---
+
+### ✅ Example Walkthrough
 
 ```text
-Input: intervals = [[3,4],[2,3],[1,2]]
+intervals = [[3,4],[2,3],[1,2]]
 
-→ For [3,4]: no start ≥ 4 → -1
-→ For [2,3]: [3,4] is valid → index 0
-→ For [1,2]: [2,3] is valid → index 1
+→ starts = [[3,0],[2,1],[1,2]]
+→ Sorted: [[1,2],[2,1],[3,0]]
 
-Output: [-1, 0, 1]
+Check each interval:
+- [3,4]: need start ≥ 4 → none → -1
+- [2,3]: need start ≥ 3 → found [3,0] → index=0
+- [1,2]: need start ≥ 2 → found [2,1] → index=1
+
+→ Output: [-1,0,1] ✅
+```
+
+```text
+intervals = [[1,4],[2,3],[3,4]]
+
+→ starts = [[1,0],[2,1],[3,2]]
+→ Sorted: [[1,0],[2,1],[3,2]]
+
+Check each interval:
+- [1,4]: need start ≥ 4 → none → -1
+- [2,3]: need start ≥ 3 → found [3,2] → index=2
+- [3,4]: need start ≥ 4 → none → -1
+
+→ Output: [-1,2,-1] ✅
 ```
 
 ---
 
-**Optimization Strategy**:
+### 📐 Complexity
 
-- **Preprocess**: Store each interval’s start and original index
-- **Sort** the starts array
-- For each interval’s `end`, use **binary search** to find the **smallest start ≥ end**
-- This reduces time complexity to **O(n log n)**
-
-**Why Binary Search Works**:
-
-- Starts are unique and sorted → binary search gives the first valid right interval
-- This is a classic **lower bound search** on a sorted array
+| Aspect    | Value                                             |
+| --------- | ------------------------------------------------- |
+| Time      | O(n log n) (sorting + binary search per interval) |
+| Space     | O(n) (starts array + result)                      |
+| Technique | Sorting + Binary Search                           |
 
 ---
 
-**Optimized Complexity**:
+### 🔁 Pattern
 
-- **Time**: O(n log n)
-- **Space**: O(n)
-
----
-
-**Pattern**:
-
-- Interval matching
-- Lower bound search
-- Greedy + binary search hybrid
+- Preprocess values with original indices
+- Sort for ordered search
+- Binary search for minimal satisfying condition
+- Common in interval scheduling and range queries
 
 ---
 
-**Edge Cases**:
+### 🚀 Alternative Approaches
 
-- Only one interval → always `-1`
-- No valid right interval → return `-1`
-- Right interval is the same interval → allowed (i == j)
+- **Brute Force**:
+  - For each interval, scan all others → O(n²).
+- **TreeMap (Java)**:
+  - Store starts in TreeMap, use `ceilingKey(end)` → O(n log n).
+- **Heap-based**:
+  - Less direct, but can be adapted.
+
+---
+
+### ⚠️ Edge Cases
+
+- Single interval → always `-1`.
+- No valid right interval → `-1` for that index.
+- Multiple intervals with overlapping ends → binary search ensures smallest valid start is chosen.
 
 🔗 [LeetCode – Find Right Interval](https://leetcode.com/problems/find-right-interval)
 

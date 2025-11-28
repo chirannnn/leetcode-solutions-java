@@ -49,27 +49,57 @@ public class FindRightInterval07 {
     }
 
     static int[] findRightInterval(int[][] intervals) {
-
         int n = intervals.length;
-        int[] result = new int[n];
-
+        int[][] starts = new int[n][2];
         for (int i = 0; i < n; i++) {
-            int end = intervals[i][1];
-            int minStart = Integer.MAX_VALUE;
-            int index = -1;
-
-            for (int j = 0; j < n; j++) {
-                int start = intervals[j][0];
-
-                if (start >= end && start < minStart) {
-                    index = j;
-                    minStart = start;
-                }
-            }
-
-            result[i] = index;
+            starts[i][0] = intervals[i][0];
+            starts[i][1] = i;
         }
 
-        return result;
+        Arrays.sort(starts, (a, b) -> a[0] - b[0]);
+
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++) {
+            int currEnd = intervals[i][1];
+
+            int index = -1;
+            int start = 0;
+            int end = intervals.length - 1;
+            while (start <= end) {
+                int mid = start + (end - start) / 2;
+
+                if (starts[mid][0] >= currEnd) {
+                    index = starts[mid][1];
+                    end = mid - 1;
+                } else {
+                    start = mid + 1;
+                }
+            }
+            ans[i] = index;
+        }
+        return ans;
+
+        // brute-force
+//        int n = intervals.length;
+//        int[] result = new int[n];
+//
+//        for (int i = 0; i < n; i++) {
+//            int end = intervals[i][1];
+//            int minStart = Integer.MAX_VALUE;
+//            int index = -1;
+//
+//            for (int j = 0; j < n; j++) {
+//                int start = intervals[j][0];
+//
+//                if (start >= end && start < minStart) {
+//                    index = j;
+//                    minStart = start;
+//                }
+//            }
+//
+//            result[i] = index;
+//        }
+//
+//        return result;
     }
 }
