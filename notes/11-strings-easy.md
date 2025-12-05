@@ -427,3 +427,215 @@ ruleKey = "type", ruleValue = "phone"
 🔗 [LeetCode – Count Items Matching a Rule](https://leetcode.com/problems/count-items-matching-a-rule)
 
 ---
+
+## 5. Sorting the Sentence
+
+**Problem**:  
+You are given a shuffled sentence `s` where each word has a **1-indexed position number** appended at the end.  
+Reconstruct the original sentence by sorting words according to their position and removing the numbers.
+
+---
+
+### 🔍 Core Idea: Position Extraction + Array Placement
+
+- Each word ends with a digit (`'1'`…`'9'`) representing its correct position.
+- Extract the digit, convert it to an index (`digit - '1'`).
+- Place the word (without digit) into the correct position in an array.
+- Finally, join the words with spaces to form the original sentence.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Split Input
+
+- `String[] words = s.split(" ");`
+- Break sentence into individual words.
+
+#### Step 2: Extract Position
+
+- For each word:
+  - Get last character → position digit.
+  - Convert to index: `position - '1'`.
+  - Remove digit: `word.substring(0, word.length()-1)`.
+
+#### Step 3: Place Word
+
+- Store pure word in `ans[index]`.
+
+#### Step 4: Build Result
+
+- Join array with spaces → `String.join(" ", ans)`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "is2 sentence4 This1 a3"
+
+→ Split: ["is2","sentence4","This1","a3"]
+
+→ Process:
+   "is2" → position=2 → index=1 → word="is"
+   "sentence4" → position=4 → index=3 → word="sentence"
+   "This1" → position=1 → index=0 → word="This"
+   "a3" → position=3 → index=2 → word="a"
+
+→ ans = ["This","is","a","sentence"]
+
+→ Result = "This is a sentence" ✅
+```
+
+```text
+s = "Myself2 Me1 I4 and3"
+
+→ Split: ["Myself2","Me1","I4","and3"]
+
+→ Process:
+   "Myself2" → index=1 → "Myself"
+   "Me1" → index=0 → "Me"
+   "I4" → index=3 → "I"
+   "and3" → index=2 → "and"
+
+→ ans = ["Me","Myself","and","I"]
+
+→ Result = "Me Myself and I" ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                            |
+| --------- | -------------------------------- |
+| Time      | O(n) (process each word once)    |
+| Space     | O(n) (array for reordered words) |
+| Technique | Index extraction + placement     |
+
+---
+
+### 🔁 Pattern
+
+- Position-based reordering
+- String parsing with suffix digits
+- Array placement for reconstruction
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Sort with Comparator**:
+  - Store words in a list, sort by last character digit.
+- **Map-based Placement**:
+  - Use `HashMap<position, word>` then build result.
+
+---
+
+### ⚠️ Edge Cases
+
+- Single word → returns word itself.
+- Already ordered → returns original sentence.
+- Maximum 9 words → safe with char digit extraction.
+
+🔗 [LeetCode – Sorting the Sentence](https://leetcode.com/problems/sorting-the-sentence)
+
+---
+
+## 6. Check If Two String Arrays Are Equivalent
+
+**Problem**:  
+Given two string arrays `word1[]` and `word2[]`, return `true` if they represent the same string, and `false` otherwise.  
+A string is represented by concatenating all elements of the array in order.
+
+---
+
+### 🔍 Core Idea: Concatenate + Compare
+
+- Concatenate all elements of `word1[]` into a single string.
+- Concatenate all elements of `word2[]` into a single string.
+- Compare the two strings for equality.
+- If equal → return `true`, else → return `false`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Build Strings
+
+- Use `StringBuilder` for efficient concatenation.
+- Append each element of `word1[]` → `s1`.
+- Append each element of `word2[]` → `s2`.
+
+#### Step 2: Compare
+
+- Convert both builders to strings.
+- Return `s1.equals(s2)`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+word1 = ["ab","c"], word2 = ["a","bc"]
+
+→ s1 = "abc"
+→ s2 = "abc"
+→ s1.equals(s2) → true ✅
+```
+
+```text
+word1 = ["a","cb"], word2 = ["ab","c"]
+
+→ s1 = "acb"
+→ s2 = "abc"
+→ s1.equals(s2) → false ✅
+```
+
+```text
+word1 = ["abc","d","defg"], word2 = ["abcddefg"]
+
+→ s1 = "abcddefg"
+→ s2 = "abcddefg"
+→ s1.equals(s2) → true ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                  |
+| --------- | -------------------------------------- |
+| Time      | O(n) (concatenate all characters once) |
+| Space     | O(n) (two builders for strings)        |
+| Technique | Concatenation + Equality Check         |
+
+---
+
+### 🔁 Pattern
+
+- Concatenate arrays into strings
+- Compare results directly
+- Useful in problems where arrays represent sequences
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Two-pointer traversal**:
+  - Traverse both arrays character by character without building full strings.
+  - Saves space, still O(n) time.
+- **Stream-based (Java 8+)**:
+  - `String.join("", word1).equals(String.join("", word2))`.
+
+---
+
+### ⚠️ Edge Cases
+
+- Single-element arrays → direct comparison.
+- Different lengths but same concatenated string → still valid.
+- Large arrays (up to 1000 words, each up to 1000 chars) → efficient with O(n).
+
+🔗 [LeetCode – Check If Two String Arrays Are Equivalent](https://leetcode.com/problems/check-if-two-string-arrays-are-equivalent)
+
+---
