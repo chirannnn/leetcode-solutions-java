@@ -639,3 +639,223 @@ word1 = ["abc","d","defg"], word2 = ["abcddefg"]
 🔗 [LeetCode – Check If Two String Arrays Are Equivalent](https://leetcode.com/problems/check-if-two-string-arrays-are-equivalent)
 
 ---
+
+## 7. To Lower Case
+
+**Problem**:  
+Given a string `s`, return the string after replacing every uppercase letter with the same lowercase letter.
+
+---
+
+### 🔍 Core Idea: ASCII Conversion
+
+- Uppercase letters `'A'`–`'Z'` have ASCII values `65`–`90`.
+- Lowercase letters `'a'`–`'z'` have ASCII values `97`–`122`.
+- The difference between uppercase and lowercase is **32**.
+- So, to convert uppercase → lowercase: `ch[i] = (char)(ch[i] + 32)`.
+- Traverse the string, convert each uppercase character, and rebuild the string.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Convert String to Char Array
+
+- `char[] ch = s.toCharArray();`
+
+#### Step 2: Traverse Characters
+
+- For each character:
+  - If `ch[i]` is between `'A'` and `'Z'`, convert to lowercase by adding 32.
+  - Else, leave unchanged.
+
+#### Step 3: Build Result
+
+- Return new string from modified char array.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "Hello"
+
+→ Traverse:
+   'H' → 'h'
+   'e' → 'e'
+   'l' → 'l'
+   'l' → 'l'
+   'o' → 'o'
+
+→ Result = "hello" ✅
+```
+
+```text
+s = "here"
+
+→ All lowercase already → unchanged
+→ Result = "here" ✅
+```
+
+```text
+s = "LOVELY"
+
+→ Traverse:
+   'L' → 'l'
+   'O' → 'o'
+   'V' → 'v'
+   'E' → 'e'
+   'L' → 'l'
+   'Y' → 'y'
+
+→ Result = "lovely" ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                             |
+| --------- | --------------------------------- |
+| Time      | O(n) (scan through string once)   |
+| Space     | O(n) (char array + result string) |
+| Technique | ASCII manipulation                |
+
+---
+
+### 🔁 Pattern
+
+- Character-by-character transformation
+- ASCII arithmetic for case conversion
+- Generalizable to other transformations (e.g., uppercase, digit shifts)
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Built-in Method**:
+  - `return s.toLowerCase();` (simpler, uses library function).
+- **Streams (Java 8+)**:
+  - Convert to stream of chars, map to lowercase, collect.
+
+---
+
+### ⚠️ Edge Cases
+
+- Empty string → returns empty string.
+- Already lowercase → unchanged.
+- Mixed case → only uppercase letters converted.
+- Length up to 100 → efficient.
+
+🔗 [LeetCode – To Lower Case](https://leetcode.com/problems/to-lower-case)
+
+---
+
+## 8. Determine If String Halves Are Alike
+
+**Problem**:  
+Given a string `s` of even length, split it into two halves `a` and `b`.  
+Return `true` if both halves contain the same number of vowels (`a, e, i, o, u` in both cases).  
+Otherwise, return `false`.
+
+---
+
+### 🔍 Core Idea: Count Vowels in Each Half
+
+- Split string into two halves:
+  - `a = s[0 … mid-1]`
+  - `b = s[mid … n-1]`
+- Count vowels in each half.
+- Compare counts → if equal, return `true`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Split String
+
+- `int mid = n / 2;`
+- First half: indices `[0 … mid-1]`
+- Second half: indices `[mid … n-1]`
+
+#### Step 2: Count Vowels
+
+- Helper function `vowelsCount(s, start, end)` counts vowels in substring.
+- Check if character exists in `"aeiouAEIOU"`.
+
+#### Step 3: Compare Counts
+
+- If counts are equal → halves are alike.
+- Else → not alike.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "book"
+
+→ n=4, mid=2
+→ a = "bo", b = "ok"
+→ vowelsCount("bo") = 1 ('o')
+→ vowelsCount("ok") = 1 ('o')
+→ Equal → true ✅
+```
+
+```text
+s = "textbook"
+
+→ n=8, mid=4
+→ a = "text", b = "book"
+→ vowelsCount("text") = 1 ('e')
+→ vowelsCount("book") = 2 ('o','o')
+→ Not equal → false ✅
+```
+
+```text
+s = "Failure"
+
+→ n=7 (⚠️ odd length, but constraint says even length)
+→ If adjusted to even input, works correctly.
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                           |
+| --------- | ------------------------------- |
+| Time      | O(n) (scan through string once) |
+| Space     | O(1) (constant extra space)     |
+| Technique | Vowel counting                  |
+
+---
+
+### 🔁 Pattern
+
+- String splitting into halves
+- Character classification (vowel vs consonant)
+- Counting and comparing values
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Single-pass comparison**:
+  - Traverse both halves simultaneously, increment/decrement a counter.
+  - If final count = 0 → halves are alike.
+- **Regex-based counting**:
+  - Use regex to count vowels in substrings (less efficient).
+
+---
+
+### ⚠️ Edge Cases
+
+- All vowels → both halves equal.
+- No vowels → both halves equal (count=0).
+- Mixed case letters → handled since both uppercase and lowercase vowels are checked.
+- Input length must be even (constraint ensures this).
+
+🔗 [LeetCode – Determine if String Halves Are Alike](https://leetcode.com/problems/determine-if-string-halves-are-alike)
+
+---
