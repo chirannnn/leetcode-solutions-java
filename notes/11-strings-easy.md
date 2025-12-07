@@ -859,3 +859,228 @@ s = "Failure"
 🔗 [LeetCode – Determine if String Halves Are Alike](https://leetcode.com/problems/determine-if-string-halves-are-alike)
 
 ---
+
+## 9. Decrypt String from Alphabet to Integer Mapping
+
+**Problem**:  
+You are given a string `s` formed by digits and `'#'`.  
+Mapping rules:
+
+- `'1'` → `'a'`, `'2'` → `'b'`, … `'9'` → `'i'`
+- `'10#'` → `'j'`, `'11#'` → `'k'`, … `'26#'` → `'z'`  
+  Return the decoded string.
+
+---
+
+### 🔍 Core Idea: Reverse Traversal + Conditional Mapping
+
+- Traverse the string **from right to left**.
+- If current character is `'#'`:
+  - Take the two digits before it → form number (10–26).
+  - Convert to corresponding letter.
+  - Skip those two digits.
+- Else:
+  - Single digit (1–9) → convert directly.
+- Append characters to a builder, then reverse at the end.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `StringBuilder ans` to store decoded characters.
+- Start loop from `n-1` down to `0`.
+
+#### Step 2: Check Character
+
+- If `s.charAt(i) == '#'`:
+  - Extract two digits before `i`.
+  - Compute number: `(s[i-2]-'0')*10 + (s[i-1]-'0')`.
+  - Convert: `(char)('a' + num - 1)`.
+  - Move `i -= 2`.
+- Else:
+  - Single digit → `(char)('a' + (s[i]-'0') - 1)`.
+
+#### Step 3: Reverse Result
+
+- Since we processed backwards, reverse builder before returning.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "10#11#12"
+
+→ Traverse from right:
+   '2' → 'b'
+   '1' → 'a'
+   "11#" → 'k'
+   "10#" → 'j'
+
+→ ans = "bakj"
+→ Reverse → "jkab" ✅
+```
+
+```text
+s = "1326#"
+
+→ Traverse:
+   "26#" → 'z'
+   '3' → 'c'
+   '1' → 'a'
+
+→ ans = "zca"
+→ Reverse → "acz" ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                |
+| --------- | ------------------------------------ |
+| Time      | O(n) (single pass through string)    |
+| Space     | O(n) (builder for result)            |
+| Technique | Reverse traversal + ASCII conversion |
+
+---
+
+### 🔁 Pattern
+
+- Reverse traversal for multi-character tokens (`10#`–`26#`)
+- ASCII arithmetic for mapping digits → letters
+- Common in decoding/encoding problems
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Forward traversal with lookahead**:
+  - Check if next two characters + `'#'` form a valid mapping.
+- **Regex replacement**:
+  - Replace `\d\d#` with mapped letters, then single digits.
+- **Stack-based decoding**:
+  - Push characters, pop when encountering `'#'`.
+
+---
+
+### ⚠️ Edge Cases
+
+- Only single digits → maps to `'a'`–`'i'`.
+- Only `'#'` mappings → maps to `'j'`–`'z'`.
+- Mixed cases → handled naturally.
+- Length up to 1000 → efficient with O(n).
+
+🔗 [LeetCode – Decrypt String from Alphabet to Integer Mapping](https://leetcode.com/problems/decrypt-string-from-alphabet-to-integer-mapping)
+
+---
+
+## 10. Number of Strings That Appear as Substrings in Word
+
+**Problem**:  
+Given an array of strings `patterns[]` and a string `word`, return the number of strings in `patterns` that exist as substrings in `word`.
+
+---
+
+### 🔍 Core Idea: Substring Checking
+
+- For each string in `patterns[]`, check if it exists inside `word`.
+- Use `word.contains(str)` to test substring presence.
+- Count how many patterns match.
+- Return the count.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize Counter
+
+- `int count = 0;`
+
+#### Step 2: Traverse Patterns
+
+- For each `str` in `patterns`:
+  - If `word.contains(str)` → increment `count`.
+
+#### Step 3: Return Result
+
+- Return `count`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+patterns = ["a","abc","bc","d"], word = "abc"
+
+→ Check:
+   "a" → yes
+   "abc" → yes
+   "bc" → yes
+   "d" → no
+
+→ Count = 3 ✅
+```
+
+```text
+patterns = ["a","b","c"], word = "aaaaabbbbb"
+
+→ Check:
+   "a" → yes
+   "b" → yes
+   "c" → no
+
+→ Count = 2 ✅
+```
+
+```text
+patterns = ["a","a","a"], word = "ab"
+
+→ Check:
+   "a" → yes
+   "a" → yes
+   "a" → yes
+
+→ Count = 3 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                                                        |
+| --------- | ---------------------------------------------------------------------------- |
+| Time      | O(n · m) (n = patterns length, m = word length, substring check per pattern) |
+| Space     | O(1) (constant extra space)                                                  |
+| Technique | Substring search                                                             |
+
+---
+
+### 🔁 Pattern
+
+- Direct substring checking
+- Useful in problems involving pattern matching
+- Can generalize to searching multiple substrings in text
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Regex Matching**: Combine patterns into a regex and count matches.
+- **KMP Algorithm / Rabin-Karp**: Efficient substring search for larger inputs.
+- **Set-based Counting**: If duplicates in `patterns` matter, count each occurrence separately (as in Example 3).
+
+---
+
+### ⚠️ Edge Cases
+
+- Duplicate patterns → each occurrence is counted separately.
+- No matches → return `0`.
+- Word shorter than some patterns → those patterns cannot match.
+- Maximum constraints (100 patterns, each up to 100 chars, word length up to 100) → still efficient with `contains`.
+
+🔗 [LeetCode – Number of Strings That Appear as Substrings in Word](https://leetcode.com/problems/number-of-strings-that-appear-as-substrings-in-word)
+
+---
