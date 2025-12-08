@@ -1084,3 +1084,122 @@ patterns = ["a","a","a"], word = "ab"
 🔗 [LeetCode – Number of Strings That Appear as Substrings in Word](https://leetcode.com/problems/number-of-strings-that-appear-as-substrings-in-word)
 
 ---
+
+## 11. Robot Return to Origin
+
+**Problem**:  
+A robot starts at position `(0,0)` on a 2D plane. Given a string `moves` consisting of `'U'`, `'D'`, `'L'`, `'R'`, determine if the robot returns to the origin after executing all moves.
+
+- `'U'` → move up
+- `'D'` → move down
+- `'L'` → move left
+- `'R'` → move right
+
+Return `true` if robot ends at `(0,0)`, else `false`.
+
+---
+
+### 🔍 Core Idea: Coordinate Tracking
+
+- Represent robot’s position with `(x,y)`.
+- Initialize at `(0,0)`.
+- For each move:
+  - `'U'` → increment `x`
+  - `'D'` → decrement `x`
+  - `'R'` → increment `y`
+  - `'L'` → decrement `y`
+- After all moves, check if `(x,y) == (0,0)`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `x = 0, y = 0`
+
+#### Step 2: Traverse Moves
+
+- For each character in `moves`:
+  - Update coordinates based on direction.
+
+#### Step 3: Check Origin
+
+- If `x == 0 && y == 0` → return `true`.
+- Else → return `false`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+moves = "UD"
+
+→ Start (0,0)
+   'U' → (1,0)
+   'D' → (0,0)
+
+→ End = (0,0) → true ✅
+```
+
+```text
+moves = "LL"
+
+→ Start (0,0)
+   'L' → (0,-1)
+   'L' → (0,-2)
+
+→ End = (0,-2) → false ✅
+```
+
+```text
+moves = "URDL"
+
+→ Start (0,0)
+   'U' → (1,0)
+   'R' → (1,1)
+   'D' → (0,1)
+   'L' → (0,0)
+
+→ End = (0,0) → true ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                          |
+| --------- | ------------------------------ |
+| Time      | O(n) (scan through moves once) |
+| Space     | O(1) (constant variables)      |
+| Technique | Coordinate tracking            |
+
+---
+
+### 🔁 Pattern
+
+- Movement simulation on a grid
+- Tracking coordinates with counters
+- Common in path-following and robot problems
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Count-based method**:
+  - Count `'U'` vs `'D'`, and `'L'` vs `'R'`.
+  - If counts match for both directions → return `true`.
+- **Vector-based approach**:
+  - Treat moves as vectors, sum them, check if result is `(0,0)`.
+
+---
+
+### ⚠️ Edge Cases
+
+- Empty string → robot stays at origin → `true`.
+- Only one move → always `false`.
+- Long sequences (up to 20,000 moves) → still efficient with O(n).
+
+🔗 [LeetCode – Robot Return to Origin](https://leetcode.com/problems/robot-return-to-origin)
+
+---
