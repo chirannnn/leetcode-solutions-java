@@ -1203,3 +1203,313 @@ moves = "URDL"
 🔗 [LeetCode – Robot Return to Origin](https://leetcode.com/problems/robot-return-to-origin)
 
 ---
+
+## 12. Reverse Words in a String III
+
+**Problem**:  
+Given a string `s`, reverse the characters of each word while preserving:
+
+- Whitespace between words
+- Original word order
+
+Return the transformed string.
+
+---
+
+### 🔍 Core Idea: Reverse Each Word Individually
+
+- Words are separated by spaces.
+- For each word: reverse its characters.
+- Keep spaces and word order intact.
+- Two approaches:
+  1. **In-place reversal** using character array.
+  2. **Split + reverse** using `StringBuilder`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Method 1: In-place Reversal
+
+1. Convert string to `char[] arr`.
+2. Traverse array with index `i`.
+3. When encountering a space or end of string:
+   - Reverse the segment `[start … i-1]`.
+   - Update `start = i+1`.
+4. Return new string from modified array.
+
+#### Method 2: Split + Reverse
+
+1. Split string by spaces → `String[] arr`.
+2. For each word: reverse using `StringBuilder.reverse()`.
+3. Join words back with spaces.
+4. Return result.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "Let's take LeetCode contest"
+
+→ Split words: ["Let's","take","LeetCode","contest"]
+
+→ Reverse each:
+   "Let's" → "s'teL"
+   "take" → "ekat"
+   "LeetCode" → "edoCteeL"
+   "contest" → "tsetnoc"
+
+→ Result = "s'teL ekat edoCteeL tsetnoc" ✅
+```
+
+```text
+s = "Mr Ding"
+
+→ Split words: ["Mr","Ding"]
+
+→ Reverse each:
+   "Mr" → "rM"
+   "Ding" → "gniD"
+
+→ Result = "rM gniD" ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                |
+| --------- | ------------------------------------ |
+| Time      | O(n) (each character processed once) |
+| Space     | O(n) (char array or split array)     |
+| Technique | Word-by-word reversal                |
+
+---
+
+### 🔁 Pattern
+
+- String manipulation by word boundaries
+- In-place reversal vs split-and-reverse
+- Preserving structure while transforming content
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Stack-based reversal**: push characters until space, then pop.
+- **Regex split**: split by `\\s+` for flexible whitespace handling.
+- **Stream-based (Java 8+)**: map each word to reversed form, then join.
+
+---
+
+### ⚠️ Edge Cases
+
+- Single word → reversed entirely.
+- Multiple spaces not allowed (constraint ensures single space).
+- Very long string (up to 50,000 chars) → efficient with O(n).
+- No leading/trailing spaces → simplifies logic.
+
+🔗 [LeetCode – Reverse Words in a String III](https://leetcode.com/problems/reverse-words-in-a-string-iii)
+
+---
+
+## 13. Excel Sheet Column Title
+
+**Problem**:  
+Given an integer `columnNumber`, return its corresponding Excel column title.  
+Mapping rules:
+
+- `1 → A`, `2 → B`, … `26 → Z`
+- `27 → AA`, `28 → AB`, …
+- Essentially, this is a **base-26 number system** but with letters `A–Z` instead of digits.
+
+---
+
+### 🔍 Core Idea: Base-26 Conversion with Offset
+
+- Excel columns behave like a **1-indexed base-26 system**.
+- Subtract 1 before modulo to handle offset (`A=1` not `0`).
+- Compute remainder → map to letter (`'A' + remainder`).
+- Divide columnNumber by 26 → continue until 0.
+- Reverse the result since we build from least significant digit.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `StringBuilder ans = new StringBuilder();`
+
+#### Step 2: Loop Until Zero
+
+- While `columnNumber > 0`:
+  - Decrement `columnNumber` by 1 (to adjust offset).
+  - Compute remainder: `columnNumber % 26`.
+  - Convert to letter: `(char)('A' + remainder)`.
+  - Append to builder.
+  - Update `columnNumber = columnNumber / 26`.
+
+#### Step 3: Reverse Result
+
+- Reverse builder → final column title.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+columnNumber = 1
+→ columnNumber-- → 0
+→ remainder = 0 → 'A'
+→ Result = "A" ✅
+```
+
+```text
+columnNumber = 28
+→ Step 1: columnNumber=27 → remainder=1 → 'B'
+→ Step 2: columnNumber=1 → remainder=0 → 'A'
+→ Result = "AB" ✅
+```
+
+```text
+columnNumber = 701
+→ Step 1: columnNumber=700 → remainder=24 → 'Y'
+→ Step 2: columnNumber=26 → remainder=25 → 'Z'
+→ Result = "ZY" ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                         |
+| --------- | --------------------------------------------- |
+| Time      | O(log₍26₎ n) (loop runs per digit in base-26) |
+| Space     | O(1) (builder + result string)                |
+| Technique | Base-26 conversion with offset                |
+
+---
+
+### 🔁 Pattern
+
+- Similar to converting numbers into another base system.
+- Offset adjustment because Excel columns start at 1, not 0.
+- Reverse at the end since digits are built backwards.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Recursive solution**:
+  - Recurse until `columnNumber == 0`, build string from remainder.
+- **Mathematical approach**:
+  - Directly compute letters without reversing, but more complex.
+
+---
+
+### ⚠️ Edge Cases
+
+- Smallest input (`1`) → `"A"`.
+- Largest input (`2³¹ - 1`) → still works with loop.
+- Multiples of 26 (like `26`, `52`, `702`) → correctly map to `"Z"`, `"AZ"`, `"ZZ"`.
+
+🔗 [LeetCode – Excel Sheet Column Title](https://leetcode.com/problems/excel-sheet-column-title)
+
+---
+
+## 14. Find the Index of the First Occurrence in a String
+
+**Problem**:  
+Given two strings `haystack` and `needle`, return the index of the first occurrence of `needle` in `haystack`.  
+If `needle` is not found, return `-1`.
+
+---
+
+### 🔍 Core Idea: Substring Search
+
+- Traverse `haystack` and check substrings of length `m = needle.length()`.
+- If substring matches `needle`, return starting index.
+- If no match found, return `-1`.
+- Multiple approaches possible: manual comparison, substring method, or built-in `indexOf`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Method 1: Manual Comparison (Implemented)
+
+1. Get lengths: `n = haystack.length()`, `m = needle.length()`.
+2. If `m > n`, return `-1`.
+3. For each index `i` from `0` to `n-m`:
+   - Compare characters of `haystack[i…i+m-1]` with `needle`.
+   - If all match → return `i`.
+4. If no match → return `-1`.
+
+#### Method 2: Substring Comparison
+
+- For each index `i`:
+  - Extract substring `haystack.substring(i, i+m)`.
+  - Compare with `needle`.
+  - If equal → return `i`.
+
+#### Method 3: Built-in Function
+
+- Directly use `haystack.indexOf(needle)`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+haystack = "sadbutsad", needle = "sad"
+
+→ Check substrings:
+   "sad" at index 0 → match → return 0 ✅
+```
+
+```text
+haystack = "leetcode", needle = "leeto"
+
+→ Check substrings:
+   No match found → return -1 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                 |
+| --------- | ------------------------------------- |
+| Time      | O(n·m) worst case (manual comparison) |
+| Space     | O(1) (constant extra space)           |
+| Technique | Substring search                      |
+
+---
+
+### 🔁 Pattern
+
+- Classic substring search problem
+- Variants: naive search, KMP algorithm, Rabin-Karp
+- Useful in text processing and pattern matching
+
+---
+
+### 🚀 Alternative Approaches
+
+- **KMP Algorithm**: O(n+m), efficient for large strings.
+- **Rabin-Karp**: Hash-based substring search.
+- **Built-in indexOf**: Simplest, optimized internally.
+
+---
+
+### ⚠️ Edge Cases
+
+- `needle` longer than `haystack` → return `-1`.
+- `needle` empty → usually return `0` (but here constraints ensure length ≥ 1).
+- Multiple occurrences → return first index only.
+
+🔗 [LeetCode – Find the Index of the First Occurrence in a String](https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string)
+
+---
