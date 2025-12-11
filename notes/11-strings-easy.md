@@ -1513,3 +1513,333 @@ haystack = "leetcode", needle = "leeto"
 🔗 [LeetCode – Find the Index of the First Occurrence in a String](https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string)
 
 ---
+
+## 15. Long Pressed Name
+
+**Problem**:  
+You are given two strings:
+
+- `name` → the intended string.
+- `typed` → the actual typed string (may contain long-pressed characters).
+
+Return `true` if `typed` could be produced from `name` by long-pressing some characters, otherwise `false`.
+
+---
+
+### 🔍 Core Idea: Two-Pointer Traversal
+
+- Use two pointers:
+  - `i` → index for `name`.
+  - `j` → index for `typed`.
+- Traverse `typed`:
+  - If `name[i] == typed[j]` → move both pointers forward.
+  - Else if `typed[j] == typed[j-1]` → long press detected → move `j` forward only.
+  - Else → mismatch → return `false`.
+- At the end, check if all characters in `name` were matched (`i == n`).
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Length Check
+
+- If `name.length() > typed.length()` → impossible → return `false`.
+
+#### Step 2: Traverse with Two Pointers
+
+- While `j < typed.length()`:
+  - Case 1: Characters match → increment both `i` and `j`.
+  - Case 2: Long press → `typed[j] == typed[j-1]` → increment `j`.
+  - Case 3: Mismatch → return `false`.
+
+#### Step 3: Final Validation
+
+- Return `true` only if `i == name.length()` (all characters matched).
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+name = "alex", typed = "aaleex"
+
+→ Compare:
+   'a' vs 'a' → match → i=1, j=1
+   'l' vs 'a' → long press → j=2
+   'l' vs 'l' → match → i=2, j=3
+   'e' vs 'e' → match → i=3, j=4
+   'x' vs 'e' → long press → j=5
+   'x' vs 'x' → match → i=4, j=6
+
+→ i == n → true ✅
+```
+
+```text
+name = "saeed", typed = "ssaaedd"
+
+→ Compare:
+   's' vs 's' → match
+   'a' vs 's' → long press
+   'a' vs 'a' → match
+   'e' vs 'a' → long press
+   'e' vs 'e' → match
+   'e' vs 'd' → mismatch → false ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                       |
+| --------- | --------------------------- |
+| Time      | O(m) (scan through `typed`) |
+| Space     | O(1) (constant extra space) |
+| Technique | Two-pointer traversal       |
+
+---
+
+### 🔁 Pattern
+
+- Two-pointer matching problems
+- Handling duplicates or extended sequences (long press, repeated chars)
+- Validation by consuming both strings in sync
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Group comparison**: Compare consecutive character groups in `name` and `typed`.
+- **Regex-based**: Build regex from `name` allowing repeats, match against `typed` (less efficient).
+
+---
+
+### ⚠️ Edge Cases
+
+- `typed` shorter than `name` → always false.
+- Exact match → true.
+- All characters long pressed → still valid.
+- Different characters → false immediately.
+
+🔗 [LeetCode – Long Pressed Name](https://leetcode.com/problems/long-pressed-name)
+
+---
+
+## 16. Valid Palindrome
+
+**Problem**:  
+Given a string `s`, determine if it is a palindrome after:
+
+- Converting all uppercase letters to lowercase.
+- Removing all non-alphanumeric characters.  
+  Return `true` if the cleaned string reads the same forward and backward.
+
+---
+
+### 🔍 Core Idea: Two-Pointer Check
+
+- Palindrome check requires comparing characters from both ends.
+- Skip non-alphanumeric characters.
+- Compare lowercase versions of valid characters.
+- If mismatch → return `false`.
+- If all match → return `true`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Method 1: Two-Pointer Traversal (Efficient)
+
+1. Initialize two pointers: `i = 0`, `j = s.length()-1`.
+2. While `i < j`:
+   - Skip non-alphanumeric characters using `Character.isLetterOrDigit()`.
+   - Compare lowercase characters at `i` and `j`.
+   - If mismatch → return `false`.
+   - Move inward (`i++`, `j--`).
+3. Return `true` if all pairs matched.
+
+#### Method 2: String Filtering + Reverse (Simpler)
+
+1. Convert string to lowercase.
+2. Build a new string with only alphanumeric characters.
+3. Compare the string with its reverse.
+4. Return `true` if equal, else `false`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "A man, a plan, a canal: Panama"
+
+→ Cleaned: "amanaplanacanalpanama"
+→ Compare forward/backward → same → true ✅
+```
+
+```text
+s = "race a car"
+
+→ Cleaned: "raceacar"
+→ Compare forward/backward → mismatch → false ✅
+```
+
+```text
+s = " "
+
+→ Cleaned: "" (empty string)
+→ Empty string is palindrome → true ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                                  |
+| --------- | ------------------------------------------------------ |
+| Time      | O(n) (scan through string once)                        |
+| Space     | O(1) for two-pointer method, O(n) for filtering method |
+| Technique | Two-pointer traversal / string reverse                 |
+
+---
+
+### 🔁 Pattern
+
+- Palindrome checking with preprocessing
+- Two-pointer technique for efficiency
+- Filtering + reverse for simplicity
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Regex filtering**: `s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase()` then check palindrome.
+- **Recursive check**: Compare ends recursively (less efficient).
+
+---
+
+### ⚠️ Edge Cases
+
+- Empty string → always palindrome.
+- String with only non-alphanumeric characters → palindrome (becomes empty).
+- Mixed case letters → handled by lowercase conversion.
+- Very long string (up to 200,000 chars) → efficient with O(n).
+
+🔗 [LeetCode – Valid Palindrome](https://leetcode.com/problems/valid-palindrome)
+
+---
+
+## 17. Valid Palindrome II
+
+**Problem**:  
+Given a string `s`, return `true` if it can be a palindrome after deleting **at most one character**.  
+Otherwise, return `false`.
+
+---
+
+### 🔍 Core Idea: Two-Pointer Check with One Skip
+
+- Use two pointers (`i` at start, `j` at end).
+- Traverse inward:
+  - If characters match → move both pointers.
+  - If mismatch → try deleting one character:
+    - Either skip `s[i]` or skip `s[j]`.
+    - Check if the remaining substring is a palindrome.
+- If either option works → return `true`.
+- Else → return `false`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `i = 0`, `j = s.length()-1`.
+
+#### Step 2: Traverse
+
+- While `i < j`:
+  - If `s[i] == s[j]` → move inward (`i++`, `j--`).
+  - Else → check two cases:
+    - `isPalin(s, i, j-1)` (skip right char).
+    - `isPalin(s, i+1, j)` (skip left char).
+  - If either is true → return `true`.
+  - Otherwise → return `false`.
+
+#### Step 3: Helper Function
+
+- `isPalin(s, start, end)` → standard palindrome check between indices.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "aba"
+
+→ Compare:
+   'a' == 'a' → ok
+   'b' → center → palindrome
+→ Result = true ✅
+```
+
+```text
+s = "abca"
+
+→ Compare:
+   'a' == 'a' → ok
+   'b' != 'c' → mismatch
+   Check skip:
+      isPalin("abc", i=1, j=2) → "bc" → false
+      isPalin("aca", i=0, j=2) → "aca" → true
+→ Result = true ✅
+```
+
+```text
+s = "abc"
+
+→ Compare:
+   'a' != 'c' → mismatch
+   Check skip:
+      isPalin("ab") → false
+      isPalin("bc") → false
+→ Result = false ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                                   |
+| --------- | ------------------------------------------------------- |
+| Time      | O(n) (single pass + at most one extra palindrome check) |
+| Space     | O(1) (constant extra space)                             |
+| Technique | Two-pointer traversal with conditional skip             |
+
+---
+
+### 🔁 Pattern
+
+- Palindrome validation with tolerance (skip one mismatch).
+- Two-pointer technique for efficiency.
+- Generalizable to problems like "valid palindrome after k deletions".
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Recursive check**: On mismatch, recurse with one deletion allowed.
+- **Dynamic programming**: Check longest palindromic subsequence, but overkill here.
+- **Greedy two-pointer**: Most efficient and simplest.
+
+---
+
+### ⚠️ Edge Cases
+
+- Single character → always true.
+- Already a palindrome → true.
+- One mismatch → true if skipping fixes it.
+- Multiple mismatches → false.
+- Very long string (up to 100,000 chars) → efficient with O(n).
+
+🔗 [LeetCode – Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii)
+
+---
