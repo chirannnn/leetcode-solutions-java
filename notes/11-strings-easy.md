@@ -1843,3 +1843,210 @@ s = "abc"
 🔗 [LeetCode – Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii)
 
 ---
+
+## 18. Longest Common Prefix
+
+**Problem**:  
+Given an array of strings `strs`, return the longest common prefix among them.  
+If no common prefix exists, return `""`.
+
+---
+
+### 🔍 Core Idea: Iterative Prefix Shrinking
+
+- Start with the first string as the initial prefix.
+- For each subsequent string:
+  - While it doesn’t start with the current prefix, shrink the prefix by removing its last character.
+- If prefix becomes empty → return `""`.
+- Otherwise, return the final prefix.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `prefix = strs[0]`
+
+#### Step 2: Compare with Each String
+
+- For each string in `strs[1…n-1]`:
+  - While `!strs[i].startsWith(prefix)`:
+    - Shrink prefix → `prefix = prefix.substring(0, prefix.length()-1)`
+  - If prefix becomes empty → return `""`.
+
+#### Step 3: Return Result
+
+- After loop, return `prefix`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+strs = ["flower","flow","flight"]
+
+→ prefix = "flower"
+→ Compare with "flow":
+   "flower" not prefix → shrink → "flowe" → "flow" → match
+→ Compare with "flight":
+   "flow" not prefix → shrink → "flo" → "fl" → match
+→ Result = "fl" ✅
+```
+
+```text
+strs = ["dog","racecar","car"]
+
+→ prefix = "dog"
+→ Compare with "racecar":
+   shrink → "do" → "d" → "" → stop
+→ Result = "" ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                                         |
+| --------- | ------------------------------------------------------------- |
+| Time      | O(n·m) (n = number of strings, m = length of shortest string) |
+| Space     | O(1) (prefix string only)                                     |
+| Technique | Iterative prefix shrinking                                    |
+
+---
+
+### 🔁 Pattern
+
+- Common prefix problems → shrink until match.
+- Similar to string matching in trie-based solutions.
+- Useful in problems involving shared substrings.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Vertical scanning**: Compare characters column by column across all strings.
+- **Divide and conquer**: Split array, find prefix in halves, merge results.
+- **Trie-based solution**: Insert all strings into a trie, traverse until mismatch.
+
+---
+
+### ⚠️ Edge Cases
+
+- Single string → return itself.
+- Empty array → return `""`.
+- No common prefix → return `""`.
+- All identical strings → return that string.
+
+🔗 [LeetCode – Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix)
+
+---
+
+## 19. Maximum Repeating Substring
+
+**Problem**:  
+For a given string `sequence` and a string `word`:
+
+- A string is **k-repeating** if `word` concatenated `k` times is a substring of `sequence`.
+- The maximum k-repeating value is the largest `k` for which this holds true.
+- If `word` is not a substring at all → return `0`.
+
+---
+
+### 🔍 Core Idea: Count Consecutive Repetitions
+
+- Traverse `sequence` and check for consecutive occurrences of `word`.
+- For each starting index, count how many times `word` repeats continuously.
+- Track the maximum repetition count.
+- Return the maximum.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Method 1: Substring Scanning (Preferred)
+
+1. Initialize `maxRepeat = 0`.
+2. For each index `i` in `sequence`:
+   - Start from `j = i`.
+   - While substring `sequence[j…j+m] == word`:
+     - Increment `temp` (repetition count).
+     - Move `j += m`.
+   - Update `maxRepeat = max(maxRepeat, temp)`.
+3. Return `maxRepeat`.
+
+#### Method 2: Incremental Concatenation (Simpler but less efficient)
+
+1. Start with `repeat = word`.
+2. While `sequence.contains(repeat)`:
+   - Increment `k`.
+   - Append another `word` to `repeat`.
+3. Return `k`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+sequence = "ababc", word = "ab"
+
+→ Check:
+   "ab" at index 0 → repeat once
+   "abab" at index 0 → repeat twice
+   "ababc" contains "abab" → maxRepeat = 2
+→ Result = 2 ✅
+```
+
+```text
+sequence = "ababc", word = "ba"
+
+→ Check:
+   "ba" at index 1 → repeat once
+   "baba" not found
+→ Result = 1 ✅
+```
+
+```text
+sequence = "ababc", word = "ac"
+
+→ "ac" not found anywhere
+→ Result = 0 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Method         | Time Complexity   | Space Complexity | Notes                       |
+| -------------- | ----------------- | ---------------- | --------------------------- |
+| Substring scan | O(n·m) worst case | O(1)             | Efficient for small strings |
+| Concatenation  | O(k·n)            | O(k·m)           | Simpler but less efficient  |
+
+---
+
+### 🔁 Pattern
+
+- Repetition detection in strings
+- Substring scanning with sliding window
+- Useful in problems involving repeated patterns or periodic substrings
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Regex matching**: Build pattern `(word)+` and check longest match.
+- **KMP algorithm**: Efficient substring search for larger inputs.
+- **Dynamic programming**: Track repetition counts, though overkill here.
+
+---
+
+### ⚠️ Edge Cases
+
+- `word` not in `sequence` → return `0`.
+- `sequence` shorter than `word` → return `0`.
+- `word` repeats partially but not fully → only full matches count.
+- Multiple overlapping matches → only consecutive repetition counts matter.
+
+🔗 [LeetCode – Maximum Repeating Substring](https://leetcode.com/problems/maximum-repeating-substring)
+
+---
