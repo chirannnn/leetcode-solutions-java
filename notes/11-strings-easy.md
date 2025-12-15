@@ -2050,3 +2050,520 @@ sequence = "ababc", word = "ac"
 🔗 [LeetCode – Maximum Repeating Substring](https://leetcode.com/problems/maximum-repeating-substring)
 
 ---
+
+## 20. Check If Binary String Has At Most One Segment of Ones
+
+**Problem**:  
+Given a binary string `s` (without leading zeros), return `true` if it contains **at most one contiguous segment of ones**. Otherwise, return `false`.
+
+---
+
+### 🔍 Core Idea: Detect Multiple Segments of Ones
+
+- A valid string can have:
+  - One continuous block of `'1'`s (e.g., `"111000"`).
+  - Or no `'1'`s at all (though here `s[0] = '1'`, so at least one `'1'`).
+- If another `'1'` appears **after a `'0'`**, that means a second segment exists → return `false`.
+- Otherwise → return `true`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Method 1: Direct Scan (Implemented)
+
+1. Traverse string from index `1` to `n-1`.
+2. If `s[i] == '1'` and `s[i-1] == '0'`:
+   - Found a new segment → return `false`.
+3. If loop completes → return `true`.
+
+#### Method 2: Substring Check (Simpler)
+
+- If string contains `"01"` followed by another `'1'`, then multiple segments exist.
+- Equivalent check: `return !s.contains("01");`
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "1001"
+
+→ Traverse:
+   '1' → start segment
+   '0' → break
+   '0' → continue
+   '1' after '0' → new segment → false ✅
+```
+
+```text
+s = "110"
+
+→ Traverse:
+   '1' → continue
+   '1' → continue
+   '0' → break
+→ No second segment → true ✅
+```
+
+```text
+s = "1101"
+
+→ Traverse:
+   '1' → continue
+   '1' → continue
+   '0' → break
+   '1' after '0' → new segment → false ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                       |
+| --------- | --------------------------- |
+| Time      | O(n) (scan once)            |
+| Space     | O(1) (constant extra space) |
+| Technique | Segment detection           |
+
+---
+
+### 🔁 Pattern
+
+- Detecting contiguous segments in binary strings
+- Similar to problems involving runs of characters or substring grouping
+- Can generalize to checking multiple segments of any character
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Regex check**: `s.matches("1+0*")` → ensures only one segment of ones.
+- **Substring method**: `!s.contains("01")` → quick one-liner.
+
+---
+
+### ⚠️ Edge Cases
+
+- `"1"` → single segment → true.
+- `"111"` → single segment → true.
+- `"101"` → two segments → false.
+- Length up to 100 → efficient with O(n).
+
+🔗 [LeetCode – Check If Binary String Has At Most One Segment of Ones](https://leetcode.com/problems/check-if-binary-string-has-at-most-one-segment-of-ones)
+
+---
+
+## 21. Merge Strings Alternately
+
+**Problem**:  
+Given two strings `word1` and `word2`, merge them by alternating characters starting with `word1`.  
+If one string is longer, append the remaining characters at the end.  
+Return the merged string.
+
+---
+
+### 🔍 Core Idea: Two-Pointer Alternation
+
+- Use two pointers (`i` for `word1`, `j` for `word2`).
+- Append characters alternately from both strings.
+- If one string ends earlier, append the remaining characters from the other.
+- Return the merged result.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Method 1: Min-Length Approach
+
+1. Find `min = Math.min(word1.length(), word2.length())`.
+2. Append characters alternately up to `min`.
+3. Append leftover substring from the longer word.
+4. Return result.
+
+#### Method 2: Two-Pointer Loop (Implemented)
+
+1. Initialize `i = 0`, `j = 0`.
+2. While either pointer is within bounds:
+   - If `i < word1.length()` → append `word1[i]`.
+   - If `j < word2.length()` → append `word2[j]`.
+   - Increment pointers accordingly.
+3. Return merged string.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+word1 = "abc", word2 = "pqr"
+
+→ Merge:
+   a p b q c r
+→ Result = "apbqcr" ✅
+```
+
+```text
+word1 = "ab", word2 = "pqrs"
+
+→ Merge:
+   a p b q rs
+→ Result = "apbqrs" ✅
+```
+
+```text
+word1 = "abcd", word2 = "pq"
+
+→ Merge:
+   a p b q cd
+→ Result = "apbqcd" ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                |
+| --------- | ------------------------------------ |
+| Time      | O(n+m) (process each character once) |
+| Space     | O(n+m) (StringBuilder result)        |
+| Technique | Two-pointer alternation              |
+
+---
+
+### 🔁 Pattern
+
+- Alternating merge of two sequences
+- Two-pointer traversal
+- Useful in problems involving interleaving or weaving strings
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Recursive merge**: Append first chars, recurse on remaining substrings.
+- **Stream-based (Java 8)**: Zip characters into pairs, then flatten.
+- **Manual substring slicing**: Use `substring` for leftovers after min length.
+
+---
+
+### ⚠️ Edge Cases
+
+- One string empty → result is the other string.
+- Both strings equal length → perfect alternation.
+- Different lengths → leftover appended at end.
+- Max length 100 → efficient with O(n+m).
+
+🔗 [LeetCode – Merge Strings Alternately](https://leetcode.com/problems/merge-strings-alternately)
+
+---
+
+## 22. Reverse Prefix of Word
+
+**Problem**:  
+Given a string `word` and a character `ch`, reverse the segment of `word` starting at index `0` and ending at the **first occurrence** of `ch` (inclusive).  
+If `ch` does not exist in `word`, return the original string.
+
+---
+
+### 🔍 Core Idea: Reverse Substring up to First Occurrence
+
+- Find the index of the first occurrence of `ch`.
+- If found: reverse substring from `0` to `index`.
+- Concatenate reversed prefix with the rest of the string.
+- If not found: return original string unchanged.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Find Index
+
+- `int index = word.indexOf(ch);`
+- If `index == -1` → `ch` not found → return `word`.
+
+#### Step 2: Reverse Prefix
+
+- Convert string to `char[]`.
+- Swap characters between `start=0` and `end=index`.
+- Continue until `start >= end`.
+
+#### Step 3: Return Result
+
+- Build new string from modified array.
+- Return it.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+word = "abcdefd", ch = 'd'
+
+→ index = 3
+→ Reverse substring [0…3] → "dcba"
+→ Append rest → "dcbaefd"
+→ Result = "dcbaefd" ✅
+```
+
+```text
+word = "xyxzxe", ch = 'z'
+
+→ index = 3
+→ Reverse substring [0…3] → "zxyx"
+→ Append rest → "zxyxxe"
+→ Result = "zxyxxe" ✅
+```
+
+```text
+word = "abcd", ch = 'z'
+
+→ index = -1 (not found)
+→ Return original → "abcd" ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                            |
+| --------- | -------------------------------- |
+| Time      | O(n) (scan + reverse)            |
+| Space     | O(n) (char array)                |
+| Technique | Index lookup + in-place reversal |
+
+---
+
+### 🔁 Pattern
+
+- Substring reversal problems
+- In-place swapping with two pointers
+- Useful in string manipulation tasks (prefix/suffix operations)
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Substring + StringBuilder**:
+  - Reverse prefix using `new StringBuilder(word.substring(0, index+1)).reverse()`.
+  - Append remainder.
+- **Manual concatenation**:
+  - Build result directly without converting to char array.
+
+---
+
+### ⚠️ Edge Cases
+
+- `ch` not found → return original string.
+- `ch` at index `0` → only first character reversed → string unchanged.
+- `word` length = 1 → always unchanged.
+- Max length 250 → efficient with O(n).
+
+🔗 [LeetCode – Reverse Prefix of Word](https://leetcode.com/problems/reverse-prefix-of-word)
+
+---
+
+## 23. Roman to Integer
+
+**Problem**:  
+Convert a Roman numeral string `s` into its integer value.  
+Roman numerals use additive notation (e.g., `XII = 10 + 1 + 1 = 12`) and subtractive notation (e.g., `IV = 5 - 1 = 4`).  
+Valid range: `1 ≤ s ≤ 3999`.
+
+---
+
+### 🔍 Core Idea: Subtraction Rule + Value Mapping
+
+- Roman numerals are usually written largest to smallest.
+- Exception: subtractive cases (e.g., `IV`, `IX`, `XL`, `XC`, `CD`, `CM`).
+- Traverse string left to right:
+  - If next numeral is larger than current → subtract current from next.
+  - Else → add current value.
+- Use helper function `intValue(ch)` to map Roman symbols to integers.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Mapping
+
+- `I → 1`, `V → 5`, `X → 10`, `L → 50`, `C → 100`, `D → 500`, `M → 1000`.
+
+#### Step 2: Traverse String
+
+- For each character `ch`:
+  - If next character exists and `intValue(next) > intValue(ch)` → subtractive case.
+    - Add `(next - current)` to result.
+    - Skip next character (`i++`).
+  - Else → add current value.
+
+#### Step 3: Return Result
+
+- After traversal, return accumulated sum.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "III"
+→ I=1, I=1, I=1
+→ Sum = 3 ✅
+```
+
+```text
+s = "LVIII"
+→ L=50, V=5, I=1, I=1, I=1
+→ Sum = 58 ✅
+```
+
+```text
+s = "MCMXCIV"
+→ M=1000
+→ CM = 900 (100 before 1000)
+→ XC = 90 (10 before 100)
+→ IV = 4 (1 before 5)
+→ Sum = 1994 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                       |
+| --------- | --------------------------- |
+| Time      | O(n) (scan once)            |
+| Space     | O(1) (constant extra space) |
+| Technique | Subtraction rule + mapping  |
+
+---
+
+### 🔁 Pattern
+
+- String parsing with conditional subtraction.
+- Common in numeral conversion problems.
+- Similar to base conversion but with special subtractive rules.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **HashMap lookup**: Store Roman → integer mapping in a map instead of `switch`.
+- **Right-to-left traversal**: Compare current with previous, subtract if smaller.
+- **Regex replacement**: Replace subtractive pairs first, then sum.
+
+---
+
+### ⚠️ Edge Cases
+
+- Smallest input `"I"` → 1.
+- Largest input `"MMMCMXCIX"` → 3999.
+- Valid subtractive cases only (guaranteed by constraints).
+- No invalid Roman numerals (problem guarantees validity).
+
+🔗 [LeetCode – Roman to Integer](https://leetcode.com/problems/roman-to-integer)
+
+---
+
+## 24. Length of Last Word
+
+**Problem**:  
+Given a string `s` consisting of words and spaces, return the length of the **last word**.  
+A word is defined as a maximal substring of non-space characters.
+
+---
+
+### 🔍 Core Idea: Backward Scan
+
+- Start scanning from the end of the string.
+- Skip trailing spaces.
+- Count characters until the next space (or start of string).
+- Return the count.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `i = s.length() - 1` (last index).
+- `len = 0` (length of last word).
+
+#### Step 2: Skip Trailing Spaces
+
+- While `s[i] == ' '` → move `i--`.
+
+#### Step 3: Count Last Word
+
+- While `s[i] != ' '` → increment `len`, move `i--`.
+
+#### Step 4: Return Result
+
+- Return `len`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "Hello World"
+
+→ Start at last index
+→ Skip trailing spaces (none)
+→ Count "World" → length = 5
+→ Result = 5 ✅
+```
+
+```text
+s = "   fly me   to   the moon  "
+
+→ Skip trailing spaces
+→ Count "moon" → length = 4
+→ Result = 4 ✅
+```
+
+```text
+s = "luffy is still joyboy"
+
+→ Skip trailing spaces (none)
+→ Count "joyboy" → length = 6
+→ Result = 6 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                       |
+| --------- | --------------------------- |
+| Time      | O(n) (scan once from end)   |
+| Space     | O(1) (constant extra space) |
+| Technique | Backward traversal          |
+
+---
+
+### 🔁 Pattern
+
+- Backward traversal for last element detection
+- Useful in problems involving trailing spaces or suffix processing
+- Efficient since only one pass is needed
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Split method**: `s.trim().split(" ")` → take last word length.
+- **Regex**: Use regex to match last word.
+- **StringTokenizer**: Iterate tokens, track last.
+
+---
+
+### ⚠️ Edge Cases
+
+- String with trailing spaces → handled by skipping.
+- Single word → returns its length.
+- Multiple spaces between words → still works.
+- Very long string (up to 10,000 chars) → efficient with O(n).
+
+🔗 [LeetCode – Length of Last Word](https://leetcode.com/problems/length-of-last-word)
+
+---
