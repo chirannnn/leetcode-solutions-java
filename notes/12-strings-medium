@@ -1,0 +1,110 @@
+## 1. Jump Game VII
+
+**Problem**:  
+You are given a binary string `s` and integers `minJump`, `maxJump`.
+
+- Start at index `0` (always `'0'`).
+- You can jump from index `i` to index `j` if:
+  - \(i + \text{minJump} \leq j \leq \min(i + \text{maxJump}, s.length - 1)\)
+  - and `s[j] == '0'`.  
+    Return `true` if you can reach the last index, else `false`.
+
+---
+
+### 🔍 Core Idea: Dynamic Programming with Sliding Window
+
+- Use a boolean array `db[]` to track reachable indices.
+- For each reachable index `i`:
+  - Mark all valid positions `j` in range `[i+minJump … i+maxJump]` as reachable if `s[j] == '0'`.
+- Optimize by maintaining a sliding window (`start`, `end`) to avoid redundant checks.
+- Stop early if last index becomes reachable.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialization
+
+- `db[0] = true` (starting point).
+- `start = 0`, `end = 0`.
+
+#### Step 2: Traverse String
+
+- For each index `i`:
+  - If `db[i] == false` → skip.
+  - Update window:
+    - `start = max(i + minJump, end + 1)`
+    - `end = min(i + maxJump, n-1)`
+  - For each `j` in `[start…end]`:
+    - If `s[j] == '0'` → mark `db[j] = true`.
+  - If `db[n-1] == true` → return `true`.
+
+#### Step 3: Return Result
+
+- After loop, return `db[n-1]`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "011010", minJump = 2, maxJump = 3
+
+→ Start at index 0
+   From 0 → can jump to [2,3]
+   Index 3 reachable
+   From 3 → can jump to [5,6]
+   Index 5 reachable
+→ Last index (5) reachable → true ✅
+```
+
+```text
+s = "01101110", minJump = 2, maxJump = 3
+
+→ Start at index 0
+   From 0 → can jump to [2,3]
+   Index 2 is '1' → not valid
+   Index 3 is '0' → reachable
+   From 3 → can jump to [5,6]
+   Both are '1' → blocked
+→ Last index unreachable → false ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                                |
+| --------- | ---------------------------------------------------- |
+| Time      | O(n) (each index processed once with sliding window) |
+| Space     | O(n) (boolean array for reachability)                |
+| Technique | Dynamic programming + sliding window                 |
+
+---
+
+### 🔁 Pattern
+
+- Reachability problems with constraints
+- Similar to BFS/DP on string indices
+- Sliding window optimization to avoid redundant checks
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Breadth-First Search (BFS)**: Treat indices as graph nodes, explore reachable positions.
+- **Greedy + Queue**: Maintain frontier of reachable indices.
+- **Segment Tree / Fenwick Tree**: For larger constraints, optimize range updates.
+
+---
+
+### ⚠️ Edge Cases
+
+- `s = "0"` → trivially true.
+- `s` with all `'0'` → always reachable.
+- `s` with blocking `'1'` at critical positions → false.
+- Large input (`10^5`) → efficient with O(n).
+
+🔗 [LeetCode – Jump Game VII](https://leetcode.com/problems/jump-game-vii)
+
+---
