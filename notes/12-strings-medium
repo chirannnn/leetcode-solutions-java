@@ -108,3 +108,117 @@ s = "01101110", minJump = 2, maxJump = 3
 🔗 [LeetCode – Jump Game VII](https://leetcode.com/problems/jump-game-vii)
 
 ---
+
+## 2. Split Two Strings to Make Palindrome
+
+**Problem**:  
+Given two strings `a` and `b` of equal length, choose an index and split both strings at that index:
+
+- `a = aprefix + asuffix`
+- `b = bprefix + bsuffix`
+
+Check if either `aprefix + bsuffix` or `bprefix + asuffix` forms a palindrome.  
+Return `true` if possible, else `false`.
+
+---
+
+### 🔍 Core Idea: Two-Pointer Matching + Palindrome Check
+
+- Traverse from both ends (`i` from start, `j` from end).
+- Compare characters from `a` (prefix) and `b` (suffix).
+- Stop when mismatch occurs.
+- At mismatch, check if the remaining substring in either `a` or `b` is a palindrome.
+- If yes → return `true`.
+- Otherwise → return `false`.
+- Repeat the process swapping roles of `a` and `b`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Main Function
+
+- `checkPalindromeFormation(a, b)` → returns `check(a, b) || check(b, a)`.
+
+#### Step 2: Check Function
+
+- Initialize `i = 0`, `j = a.length()-1`.
+- While `i < j` and `a[i] == b[j]`: move inward (`i++`, `j--`).
+- If pointers cross (`i >= j`) → palindrome possible → return `true`.
+- Else → check if substring `a[i…j]` or `b[i…j]` is palindrome.
+
+#### Step 3: Palindrome Helper
+
+- `isPalin(s, start, end)` → standard two-pointer palindrome check.
+- Return `true` if substring is palindrome, else `false`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+a = "x", b = "y"
+
+→ aprefix = "", asuffix = "x"
+→ bprefix = "", bsuffix = "y"
+→ "" + "y" = "y" → palindrome
+→ Result = true ✅
+```
+
+```text
+a = "xbdef", b = "xecab"
+
+→ Compare from ends:
+   mismatch leads to substrings "bdef" and "xecab"
+   neither forms palindrome
+→ Result = false ✅
+```
+
+```text
+a = "ulacfd", b = "jizalu"
+
+→ Split at index 3:
+   aprefix = "ula", asuffix = "cfd"
+   bprefix = "jiz", bsuffix = "alu"
+→ aprefix + bsuffix = "ulaalu" → palindrome
+→ Result = true ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                      |
+| --------- | ------------------------------------------ |
+| Time      | O(n) (two-pointer scan + palindrome check) |
+| Space     | O(1) (constant extra space)                |
+| Technique | Two-pointer + palindrome validation        |
+
+---
+
+### 🔁 Pattern
+
+- Palindrome problems with conditional splits
+- Two-pointer traversal for efficiency
+- Similar to "Valid Palindrome II" (allowing one mismatch)
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Brute force**: Try all split indices → O(n²).
+- **Optimized two-pointer**: Current approach → O(n).
+- **String reversal**: Compare prefix with reversed suffix, but less clean.
+
+---
+
+### ⚠️ Edge Cases
+
+- Single-character strings → always palindrome.
+- Already palindrome strings → return `true`.
+- No valid split → return `false`.
+- Large strings (up to 100,000 chars) → efficient with O(n).
+
+🔗 [LeetCode – Split Two Strings to Make Palindrome](https://leetcode.com/problems/split-two-strings-to-make-palindrome)
+
+---
