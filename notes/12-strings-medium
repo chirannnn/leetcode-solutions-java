@@ -222,3 +222,117 @@ a = "ulacfd", b = "jizalu"
 🔗 [LeetCode – Split Two Strings to Make Palindrome](https://leetcode.com/problems/split-two-strings-to-make-palindrome)
 
 ---
+
+## 3. Number of Ways to Split a String
+
+**Problem**:  
+Given a binary string `s`, split it into 3 non-empty parts `s1`, `s2`, `s3` such that each part has the **same number of ones**.  
+Return the number of valid splits modulo \(10^9 + 7\).
+
+---
+
+### 🔍 Core Idea: Count Ones + Combinatorics
+
+- Total number of ones in `s` determines feasibility.
+- If total ones = 0 → all zeros → choose any two split points → combinatorial formula.
+- If total ones not divisible by 3 → impossible → return 0.
+- Otherwise:
+  - Each part must contain exactly `totalOnes / 3`.
+  - Count possible split positions where prefix sum equals `onceInBlock` and `2 * onceInBlock`.
+  - Multiply counts → total ways.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Count Total Ones
+
+- Traverse `s`, count total ones → `once`.
+
+#### Step 2: Handle Special Cases
+
+- If `once == 0`:
+  - All zeros → number of ways = \(\binom{n-1}{2} = \frac{(n-1)(n-2)}{2}\).
+- If `once % 3 != 0`:
+  - Not divisible → return 0.
+
+#### Step 3: Count Split Positions
+
+- `onceInBlock = once / 3`.
+- Traverse string again, maintain running count of ones.
+- When running count = `onceInBlock` → increment `way1`.
+- When running count = `2 * onceInBlock` → increment `way2`.
+
+#### Step 4: Compute Result
+
+- Result = `(way1 * way2) % MOD`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "10101"
+
+→ Total ones = 3
+→ onceInBlock = 1
+→ Traverse:
+   prefix ones = 1 → way1++
+   prefix ones = 2 → way2++
+   prefix ones = 3 → done
+→ way1 = 2, way2 = 2
+→ Result = 2 * 2 = 4 ✅
+```
+
+```text
+s = "1001"
+
+→ Total ones = 2
+→ Not divisible by 3 → Result = 0 ✅
+```
+
+```text
+s = "0000"
+
+→ Total ones = 0
+→ Ways = (n-1)(n-2)/2 = 3 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                               |
+| --------- | ----------------------------------- |
+| Time      | O(n) (two passes over string)       |
+| Space     | O(1) (constant extra space)         |
+| Technique | Prefix sum counting + combinatorics |
+
+---
+
+### 🔁 Pattern
+
+- Prefix sum counting for substring constraints
+- Combinatorial formula for zero-case
+- Multiplicative counting for independent choices
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Prefix array**: Precompute prefix sums, then scan for split points.
+- **Mathematical formula**: Directly compute based on positions of ones.
+- **Sliding window**: Track partitions dynamically.
+
+---
+
+### ⚠️ Edge Cases
+
+- All zeros → combinatorial case.
+- Total ones not divisible by 3 → return 0.
+- Very large string (up to \(10^5\)) → efficient with O(n).
+- Minimum length (3) → only one possible split.
+
+🔗 [LeetCode – Number of Ways to Split a String](https://leetcode.com/problems/number-of-ways-to-split-a-string)
+
+---
