@@ -336,3 +336,242 @@ s = "0000"
 🔗 [LeetCode – Number of Ways to Split a String](https://leetcode.com/problems/number-of-ways-to-split-a-string)
 
 ---
+
+## 4. Sentence Similarity III
+
+**Problem**:  
+Two sentences `sentence1` and `sentence2` are considered similar if you can insert an arbitrary sentence (possibly empty) into one of them so that they become equal.  
+The inserted sentence must be separated by spaces.  
+Return `true` if they are similar, else `false`.
+
+---
+
+### 🔍 Core Idea: Match Prefix and Suffix
+
+- Split both sentences into arrays of words.
+- Ensure `sentence2` is the longer one (swap if needed).
+- Compare words from the start (prefix) until mismatch.
+- Compare words from the end (suffix) until mismatch.
+- If the matched prefix and suffix together cover all words of the shorter sentence → return `true`.
+- Otherwise → return `false`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Split Sentences
+
+- `s1 = sentence1.split(" ")`
+- `s2 = sentence2.split(" ")`
+
+#### Step 2: Ensure `s2` is Longer
+
+- If `s2.length < s1.length` → swap roles.
+
+#### Step 3: Match Prefix
+
+- Start from index `0`.
+- While words match → increment `i`.
+
+#### Step 4: Match Suffix
+
+- Start from end (`j = s1.length-1`, `k = s2.length-1`).
+- While words match → decrement both.
+
+#### Step 5: Final Check
+
+- If `i > j` → all words in shorter sentence are covered by prefix + suffix matches → return `true`.
+- Else → return `false`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+sentence1 = "My name is Haley"
+sentence2 = "My Haley"
+
+→ s1 = ["My","name","is","Haley"]
+→ s2 = ["My","Haley"]
+
+→ Prefix match: "My"
+→ Suffix match: "Haley"
+→ Covered all words in s2 → true ✅
+```
+
+```text
+sentence1 = "of"
+sentence2 = "A lot of words"
+
+→ s1 = ["of"]
+→ s2 = ["A","lot","of","words"]
+
+→ Prefix match: none
+→ Suffix match: "of" vs "words" → mismatch
+→ Not covered → false ✅
+```
+
+```text
+sentence1 = "Eating right now"
+sentence2 = "Eating"
+
+→ s1 = ["Eating","right","now"]
+→ s2 = ["Eating"]
+
+→ Prefix match: "Eating"
+→ Suffix match: none needed
+→ Covered all words in s2 → true ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                             |
+| --------- | --------------------------------- |
+| Time      | O(n+m) (scan both sentences once) |
+| Space     | O(n+m) (arrays of words)          |
+| Technique | Prefix + suffix matching          |
+
+---
+
+### 🔁 Pattern
+
+- Prefix and suffix matching problems
+- Similar to string overlap checks
+- Useful in text similarity and sentence alignment tasks
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Two-pointer scan without splitting**: Compare directly on characters.
+- **Deque approach**: Pop words from front and back until mismatch.
+- **Regex-based**: Match prefix and suffix patterns.
+
+---
+
+### ⚠️ Edge Cases
+
+- One sentence is a prefix of the other → true.
+- One sentence is a suffix of the other → true.
+- Completely different sentences → false.
+- Single-word sentences → handled correctly.
+- Case sensitivity → exact match required.
+
+🔗 [LeetCode – Sentence Similarity III](https://leetcode.com/problems/sentence-similarity-iii)
+
+---
+
+## 5. Repeated String Match
+
+**Problem**:  
+Given two strings `a` and `b`, return the minimum number of times you must repeat `a` so that `b` becomes a substring of the repeated string.  
+If impossible, return `-1`.
+
+---
+
+### 🔍 Core Idea: Build Until Length ≥ b
+
+- Keep repeating `a` until the repeated string length is at least the length of `b`.
+- Check if `b` is a substring.
+- If not, append one more `a` (to cover overlap cases) and check again.
+- If still not found → return `-1`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `count = 0`
+- `StringBuilder sb = new StringBuilder()`
+
+#### Step 2: Build Until Length ≥ b
+
+- While `sb.length() < b.length()`:
+  - Append `a`
+  - Increment `count`
+
+#### Step 3: Check Substring
+
+- If `sb.contains(b)` → return `count`.
+- Else append one more `a` and check again:
+  - If found → return `count+1`.
+  - Else → return `-1`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+a = "abcd", b = "cdabcdab"
+
+→ Repeat "abcd" until length ≥ 8:
+   "abcdabcd" (count=2)
+→ Check: contains "cdabcdab"? No
+→ Append one more "abcd" → "abcdabcdabcd" (count=3)
+→ Contains "cdabcdab"? Yes
+→ Result = 3 ✅
+```
+
+```text
+a = "a", b = "aa"
+
+→ Repeat "a" until length ≥ 2:
+   "aa" (count=2)
+→ Contains "aa"? Yes
+→ Result = 2 ✅
+```
+
+```text
+a = "abc", b = "cab"
+
+→ Repeat "abc" until length ≥ 3:
+   "abc" (count=1)
+→ Contains "cab"? No
+→ Append one more "abc" → "abcabc" (count=2)
+→ Contains "cab"? No
+→ Result = -1 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                                  |
+| --------- | ------------------------------------------------------ |
+| Time      | O(n·m) worst case (string building + substring search) |
+| Space     | O(n+m) (StringBuilder storage)                         |
+| Technique | Iterative string building + substring check            |
+
+---
+
+### 🔁 Pattern
+
+- Problems involving repeated concatenation until condition met.
+- Substring search with overlap handling.
+- Similar to "minimum repetitions to cover substring".
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Mathematical bound**:
+  - Minimum repeats = `ceil(b.length / a.length)`
+  - Check that many repeats and one extra.
+- **KMP algorithm**: Efficient substring search in repeated string.
+- **Regex**: Match `b` against repeated `a`.
+
+---
+
+### ⚠️ Edge Cases
+
+- `b` shorter than `a` → may still require multiple repeats.
+- `b` not possible → return `-1`.
+- Large strings (up to 10,000 chars) → StringBuilder efficient.
+- Exact overlap at boundary → requires one extra repeat.
+
+🔗 [LeetCode – Repeated String Match](https://leetcode.com/problems/repeated-string-match)
+
+---
