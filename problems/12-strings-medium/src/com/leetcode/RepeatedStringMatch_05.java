@@ -21,7 +21,7 @@ package com.leetcode;
 
 public class RepeatedStringMatch_05 {
     public static void main(String[] args) {
-        String a = "abcd", b = "cdabcdab";
+        String a = "a", b = "aa";
 
         System.out.println(repeatedStringMatch(a, b));
     }
