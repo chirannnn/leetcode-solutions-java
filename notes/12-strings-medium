@@ -575,3 +575,114 @@ a = "abc", b = "cab"
 🔗 [LeetCode – Repeated String Match](https://leetcode.com/problems/repeated-string-match)
 
 ---
+
+## 6. Next Greater Element III
+
+**Problem**:  
+Given a positive integer `n`, find the smallest integer that:
+
+- Uses exactly the same digits as `n`.
+- Is greater than `n`.
+- Fits within a 32-bit signed integer.  
+  If no such integer exists, return `-1`.
+
+---
+
+### 🔍 Core Idea: Next Permutation
+
+This problem is essentially asking for the **next lexicographical permutation** of the digits of `n`.  
+Steps:
+
+1. Find the first decreasing digit from the right.
+2. Swap it with the next larger digit to its right.
+3. Reverse the suffix to get the smallest possible arrangement.
+4. Convert back to integer and check 32-bit limit.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Convert to Char Array
+
+- `arr = String.valueOf(n).toCharArray()`
+- Work with digits directly.
+
+#### Step 2: Find Pivot
+
+- Traverse from right to left.
+- Find index `i` where `arr[i] < arr[i+1]`.
+- If none found → digits are in descending order → no greater permutation → return `-1`.
+
+#### Step 3: Find Next Larger Digit
+
+- From rightmost end, find smallest digit greater than `arr[index]`.
+- Swap them.
+
+#### Step 4: Reverse Suffix
+
+- Reverse digits from `index+1` to end → ensures smallest arrangement after pivot.
+
+#### Step 5: Convert Back
+
+- Parse result into `long`.
+- If > `Integer.MAX_VALUE` → return `-1`.
+- Else return result.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+n = 12
+→ arr = ['1','2']
+→ Pivot at index 0 ('1' < '2')
+→ Swap '1' and '2' → ['2','1']
+→ Reverse suffix (only one digit) → ['2','1']
+→ Result = 21 ✅
+```
+
+```text
+n = 21
+→ arr = ['2','1']
+→ Digits in descending order → no greater permutation
+→ Result = -1 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                       |
+| --------- | --------------------------- |
+| Time      | O(d) (d = number of digits) |
+| Space     | O(d) (char array)           |
+| Technique | Next permutation            |
+
+---
+
+### 🔁 Pattern
+
+- Classic **next permutation** algorithm.
+- Same logic used in problems like "Next Permutation" (LeetCode #31).
+- Useful in generating ordered sequences.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Use arrays directly**: Avoid string conversion, work with integer digits.
+- **Library functions**: Some languages have built-in next permutation utilities.
+- **Heap-based approach**: Overkill, but possible to generate all permutations and pick next.
+
+---
+
+### ⚠️ Edge Cases
+
+- Already largest permutation (e.g., `987654`) → return `-1`.
+- Single-digit numbers → return `-1`.
+- Result exceeds 32-bit integer → return `-1`.
+- Smallest valid case: `n = 12 → 21`.
+
+🔗 [LeetCode – Next Greater Element III](https://leetcode.com/problems/next-greater-element-iii)
+
+---
