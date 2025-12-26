@@ -686,3 +686,120 @@ n = 21
 🔗 [LeetCode – Next Greater Element III](https://leetcode.com/problems/next-greater-element-iii)
 
 ---
+
+## 7. Maximum Number of Removable Characters
+
+**Problem**:  
+Given strings `s` and `p` (where `p` is a subsequence of `s`) and an array `removable` of indices, find the maximum integer `k` such that after removing the first `k` indices from `s`, `p` is still a subsequence of the modified `s`.
+
+---
+
+### 🔍 Core Idea: Binary Search on k
+
+- We want the **maximum k**.
+- Instead of checking every possible `k` (which is inefficient), use **binary search**:
+  - Try a mid-point `k`.
+  - Remove first `k` indices.
+  - Check if `p` is still a subsequence.
+  - If yes → move right (increase `k`).
+  - If no → move left (decrease `k`).
+- Continue until maximum valid `k` is found.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Binary Search Setup
+
+- `start = 0`, `end = removable.length`.
+- `k = 0` (answer).
+
+#### Step 2: Midpoint Check
+
+- For each `mid`:
+  - Mark first `mid` indices in `removed[]`.
+  - Check if `p` is subsequence of modified `s`.
+
+#### Step 3: Subsequence Validation
+
+- Traverse `s` with two pointers (`i` for `s`, `j` for `p`).
+- Skip removed indices.
+- If `s[i] == p[j]` → move `j`.
+- At end, if `j == p.length` → `p` is subsequence.
+
+#### Step 4: Update Binary Search
+
+- If subsequence valid → `k = mid`, move `start = mid+1`.
+- Else → move `end = mid-1`.
+
+#### Step 5: Return Result
+
+- Return `k`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "abcacb", p = "ab", removable = [3,1,0]
+
+→ Binary search range: [0…3]
+→ mid=1 → remove index 3 → "abcab" → "ab" subsequence → valid
+→ mid=2 → remove indices [3,1] → "accb" → "ab" subsequence → valid
+→ mid=3 → remove indices [3,1,0] → "ccb" → "ab" not subsequence → invalid
+→ Maximum k = 2 ✅
+```
+
+```text
+s = "abcbddddd", p = "abcd", removable = [3,2,1,4,5,6]
+
+→ mid=1 → remove index 3 → "abcddddd" → "abcd" subsequence → valid
+→ mid=2 → remove indices [3,2] → "abddddd" → "abcd" not subsequence → invalid
+→ Maximum k = 1 ✅
+```
+
+```text
+s = "abcab", p = "abc", removable = [0,1,2,3,4]
+
+→ mid=1 → remove index 0 → "bcab" → "abc" not subsequence → invalid
+→ Maximum k = 0 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                                 |
+| --------- | ----------------------------------------------------- |
+| Time      | O(n log m) (n = length of s, m = length of removable) |
+| Space     | O(n) (boolean array for removed indices)              |
+| Technique | Binary search + subsequence check                     |
+
+---
+
+### 🔁 Pattern
+
+- **Binary search on answer**: Instead of brute force, search for maximum valid `k`.
+- **Subsequence validation**: Classic two-pointer technique.
+- Common in problems where you maximize/minimize under constraints.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Linear scan**: Try all `k` from 0…m → O(n·m), too slow for large inputs.
+- **HashSet for removals**: Instead of boolean array, use set for faster marking.
+- **Greedy**: Not sufficient here, since removals must be checked systematically.
+
+---
+
+### ⚠️ Edge Cases
+
+- `p` already equals `s` → maximum removals possible.
+- Removing any index breaks subsequence → answer = 0.
+- Large input sizes (up to 100,000) → binary search ensures efficiency.
+- Distinct indices in `removable` → no duplicates to handle.
+
+🔗 [LeetCode – Maximum Number of Removable Characters](https://leetcode.com/problems/maximum-number-of-removable-characters)
+
+---
