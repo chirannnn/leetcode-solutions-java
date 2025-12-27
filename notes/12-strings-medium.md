@@ -803,3 +803,117 @@ s = "abcab", p = "abc", removable = [0,1,2,3,4]
 🔗 [LeetCode – Maximum Number of Removable Characters](https://leetcode.com/problems/maximum-number-of-removable-characters)
 
 ---
+
+## 8. Swap Adjacent in LR String
+
+**Problem**:  
+Given two strings `start` and `result` composed of `'L'`, `'R'`, and `'X'`, determine if `start` can be transformed into `result` using valid moves:
+
+- Replace `"XL"` → `"LX"` (move `L` left).
+- Replace `"RX"` → `"XR"` (move `R` right).  
+  Return `true` if transformation is possible, else `false`.
+
+---
+
+### 🔍 Core Idea: Two-Pointer Matching with Movement Rules
+
+- Ignore `'X'` characters (they act as placeholders).
+- Align non-`X` characters in both strings.
+- Ensure characters match (`L` with `L`, `R` with `R`).
+- Apply movement rules:
+  - `'L'` can only move **left** → its position in `result` must be ≤ position in `start`.
+  - `'R'` can only move **right** → its position in `result` must be ≥ position in `start`.
+- If all checks pass → return `true`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize Pointers
+
+- `i = 0` for `start`, `j = 0` for `result`.
+
+#### Step 2: Skip X’s
+
+- Move `i` forward until `start[i] != 'X'`.
+- Move `j` forward until `result[j] != 'X'`.
+
+#### Step 3: Compare Characters
+
+- If both pointers reach end → return `true`.
+- If characters differ → return `false`.
+
+#### Step 4: Apply Movement Rules
+
+- If character is `'L'` and `j > i` → invalid (L cannot move right).
+- If character is `'R'` and `j < i` → invalid (R cannot move left).
+- Otherwise → valid, move both pointers.
+
+#### Step 5: Final Check
+
+- If both pointers exhausted simultaneously → return `true`.
+- Else → return `false`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+start = "RXXLRXRXL"
+result = "XRLXXRRLX"
+
+→ Skip X’s, align characters:
+   start: R L R L
+   result: R L R L
+→ Movement rules:
+   R moves right → valid
+   L moves left → valid
+→ All matched → true ✅
+```
+
+```text
+start = "X"
+result = "L"
+
+→ start has no L
+→ Characters mismatch → false ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                           |
+| --------- | ----------------------------------------------- |
+| Time      | O(n) (single pass with two pointers)            |
+| Space     | O(1) (constant extra space)                     |
+| Technique | Two-pointer traversal with movement constraints |
+
+---
+
+### 🔁 Pattern
+
+- Two-pointer alignment ignoring placeholders.
+- Movement constraints applied to specific characters.
+- Similar to problems involving string transformation with rules.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Greedy simulation**: Actually perform swaps step by step (less efficient).
+- **Queue-based approach**: Track positions of `L` and `R` separately.
+- **Mathematical check**: Compare indices directly without traversal.
+
+---
+
+### ⚠️ Edge Cases
+
+- Strings with only `'X'` → always true if lengths match.
+- Single-character mismatch → false.
+- Large strings (up to 10,000) → efficient with O(n).
+- Misaligned `L` or `R` → false.
+
+🔗 [LeetCode – Swap Adjacent in LR String](https://leetcode.com/problems/swap-adjacent-in-lr-string)
+
+---
