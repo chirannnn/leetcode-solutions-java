@@ -917,3 +917,113 @@ result = "L"
 🔗 [LeetCode – Swap Adjacent in LR String](https://leetcode.com/problems/swap-adjacent-in-lr-string)
 
 ---
+
+## 9. Multiply Strings
+
+**Problem**:  
+Given two non-negative integers `num1` and `num2` represented as strings, return their product as a string.  
+Constraints:
+
+- No use of built-in `BigInteger`.
+- No direct integer conversion.
+- Length up to 200 digits.
+
+---
+
+### 🔍 Core Idea: Manual Multiplication (Like Pen-and-Paper)
+
+- Reverse both strings to simplify multiplication from least significant digit.
+- Use an integer array `res[]` to store partial results.
+- Multiply each digit pair and add to the correct position.
+- Handle carry propagation.
+- Build final string from result array, skipping leading zeros.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Handle Zero Case
+
+- If either number is `"0"` → return `"0"`.
+
+#### Step 2: Reverse Strings
+
+- Reverse `num1` and `num2` for easier multiplication.
+
+#### Step 3: Multiply Digits
+
+- For each digit pair `(i, j)`:
+  - Multiply → `digit = (num1[i]-'0') * (num2[j]-'0')`.
+  - Add to `res[i+j]`.
+  - Handle carry → `res[i+j+1] += res[i+j] / 10`.
+  - Reduce → `res[i+j] %= 10`.
+
+#### Step 4: Build Result String
+
+- Skip leading zeros in `res[]`.
+- Append digits in reverse order to `StringBuilder`.
+- Return final string.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+num1 = "123", num2 = "456"
+
+→ Reverse: "321", "654"
+→ Multiply:
+   3*6 → add to res[0]
+   2*6 → add to res[1]
+   1*6 → add to res[2]
+   … continue for all pairs
+→ Result array = [8,8,0,6,5]
+→ Skip leading zeros → "56088"
+→ Result = "56088" ✅
+```
+
+```text
+num1 = "2", num2 = "3"
+→ Reverse: "2", "3"
+→ Multiply: 2*3 = 6
+→ Result = "6" ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                           |
+| --------- | ----------------------------------------------- |
+| Time      | O(n·m) (n = length of num1, m = length of num2) |
+| Space     | O(n+m) (result array)                           |
+| Technique | Manual digit multiplication                     |
+
+---
+
+### 🔁 Pattern
+
+- Classic **big integer multiplication** simulation.
+- Similar to grade-school multiplication algorithm.
+- Useful in problems requiring arbitrary precision arithmetic.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Karatsuba multiplication**: Faster for very large numbers (divide-and-conquer).
+- **FFT-based multiplication**: Used in competitive programming for huge inputs.
+- **StringBuilder optimization**: Avoid reversing by careful index placement.
+
+---
+
+### ⚠️ Edge Cases
+
+- Either input = `"0"` → return `"0"`.
+- Leading zeros in result → must be trimmed.
+- Very large inputs (200 digits each) → handled efficiently with O(n·m).
+- Single-digit multiplication → straightforward.
+
+🔗 [LeetCode – Multiply Strings](https://leetcode.com/problems/multiply-strings)
+
+---
