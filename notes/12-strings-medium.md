@@ -1027,3 +1027,120 @@ num1 = "2", num2 = "3"
 🔗 [LeetCode – Multiply Strings](https://leetcode.com/problems/multiply-strings)
 
 ---
+
+## 10. Minimum Length of String After Deleting Similar Ends
+
+**Problem**:  
+Given a string `s` consisting only of `'a'`, `'b'`, and `'c'`, repeatedly perform the following operation:
+
+- Pick a non-empty prefix where all characters are equal.
+- Pick a non-empty suffix where all characters are equal.
+- Prefix and suffix must not overlap.
+- Characters of prefix and suffix must be the same.
+- Delete both.
+
+Return the minimum length of `s` after performing the operation any number of times.
+
+---
+
+### 🔍 Core Idea: Two-Pointer Shrinking
+
+- Use two pointers (`i` at start, `j` at end).
+- If `s[i] == s[j]`, shrink both sides inward:
+  - Skip consecutive identical characters at both ends.
+  - Move `i++` and `j--`.
+- If `s[i] != s[j]`, stop — return remaining length.
+- Continue until pointers meet or cross.
+- Handle empty string case (return 0).
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `i = 0`, `j = s.length()-1`.
+
+#### Step 2: While Loop
+
+- While `i < j`:
+  - If `s[i] == s[j]`:
+    - Record character `ch = s[i]`.
+    - Skip duplicates at left (`i++`).
+    - Skip duplicates at right (`j--`).
+    - Move inward (`i++`, `j--`).
+  - Else → break and return `j - i + 1`.
+
+#### Step 3: Final Result
+
+- If pointers cross → return 0.
+- Else → return `j - i + 1`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "ca"
+→ i=0 ('c'), j=1 ('a')
+→ Different → stop
+→ Remaining length = 2 ✅
+```
+
+```text
+s = "cabaabac"
+→ i=0 ('c'), j=7 ('c') → match
+→ Remove prefix 'c' and suffix 'c' → "abaaba"
+→ Next: prefix 'a', suffix 'a' → remove → "baab"
+→ Next: prefix 'b', suffix 'b' → remove → "aa"
+→ Next: prefix 'a', suffix 'a' → remove → ""
+→ Result = 0 ✅
+```
+
+```text
+s = "aabccabba"
+→ i=0 ('a'), j=8 ('a') → match
+→ Remove → "bccabb"
+→ i=0 ('b'), j=5 ('b') → match
+→ Remove → "cca"
+→ Remaining length = 3 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                           |
+| --------- | ------------------------------- |
+| Time      | O(n) (scan from both ends once) |
+| Space     | O(1) (constant extra space)     |
+| Technique | Two-pointer shrinking           |
+
+---
+
+### 🔁 Pattern
+
+- Two-pointer technique for symmetric operations.
+- Similar to palindrome checking or string trimming problems.
+- Efficient for problems with prefix-suffix constraints.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Recursive trimming**: Repeatedly trim prefix/suffix until mismatch.
+- **Stack-based approach**: Overkill, but possible to simulate deletions.
+- **Greedy shrink**: Always shrink as much as possible from both ends.
+
+---
+
+### ⚠️ Edge Cases
+
+- Single-character string → cannot delete → return 1.
+- Entire string deletable → return 0.
+- Different prefix/suffix characters → return full length.
+- Large input (up to 100,000) → efficient with O(n).
+
+🔗 [LeetCode – Minimum Length of String After Deleting Similar Ends](https://leetcode.com/problems/minimum-length-of-string-after-deleting-similar-ends)
+
+---
