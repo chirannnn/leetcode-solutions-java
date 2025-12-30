@@ -1144,3 +1144,229 @@ s = "aabccabba"
 🔗 [LeetCode – Minimum Length of String After Deleting Similar Ends](https://leetcode.com/problems/minimum-length-of-string-after-deleting-similar-ends)
 
 ---
+
+## 11. Number of Substrings With Only 1’s
+
+**Problem**:  
+Given a binary string `s`, return the number of substrings that consist entirely of `'1'`.  
+Since the answer may be very large, return it modulo \(10^9 + 7\).
+
+---
+
+### 🔍 Core Idea: Count Consecutive Segments of 1’s
+
+- Substrings of only `'1'`s come from **consecutive blocks of 1’s**.
+- For a block of length `k`, the number of substrings is:
+
+\[
+\frac{k \cdot (k+1)}{2}
+\]
+
+- Traverse the string, count lengths of consecutive `'1'` segments, and sum their contributions.
+- Apply modulo at the end.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `k = 0` → length of current consecutive 1’s.
+- `count = 0` → total substrings.
+
+#### Step 2: Traverse String
+
+- For each character:
+  - If `'1'` → increment `k`.
+  - If `'0'` → add contribution of current block: \((k \cdot (k+1))/2\), reset `k=0`.
+
+#### Step 3: Final Contribution
+
+- After loop, add contribution of last block (if any).
+
+#### Step 4: Return Result
+
+- Return `count % MOD`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "0110111"
+
+→ Blocks of 1’s:
+   "1" → length 1 → substrings = 1
+   "11" → length 2 → substrings = 3
+   "111" → length 3 → substrings = 6
+→ Total = 1 + 3 + 6 = 9 ✅
+```
+
+```text
+s = "101"
+
+→ Blocks:
+   "1" → substrings = 1
+   "1" → substrings = 1
+→ Total = 2 ✅
+```
+
+```text
+s = "111111"
+
+→ Block length = 6
+→ Substrings = 6*7/2 = 21 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                            |
+| --------- | -------------------------------- |
+| Time      | O(n) (single pass)               |
+| Space     | O(1) (constant extra space)      |
+| Technique | Segment counting + combinatorics |
+
+---
+
+### 🔁 Pattern
+
+- Counting substrings in consecutive segments.
+- Formula \(\frac{k(k+1)}{2}\) is common in substring problems.
+- Similar to problems involving longest runs or consecutive character counts.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Mathematical accumulation**: Instead of resetting, add `k` directly each time you see `'1'`.
+  - Each new `'1'` extends all previous substrings by 1.
+  - Equivalent but more elegant.
+- **Prefix sums**: Track cumulative counts of substrings.
+
+---
+
+### ⚠️ Edge Cases
+
+- All zeros → result = 0.
+- Single `'1'` → result = 1.
+- Very large string (up to \(10^5\)) → efficient with O(n).
+- Large counts → modulo ensures safe result.
+
+🔗 [LeetCode – Number of Substrings With Only 1’s](https://leetcode.com/problems/number-of-substrings-with-only-1s)
+
+---
+
+## 12. Count Number of Homogenous Substrings
+
+**Problem**:  
+Given a string `s`, return the number of substrings that are **homogenous** (all characters are the same).  
+Since the answer may be very large, return it modulo \(10^9 + 7\).
+
+---
+
+### 🔍 Core Idea: Count Consecutive Runs
+
+- Homogenous substrings come from **consecutive runs of identical characters**.
+- For a run of length `k`, the number of homogenous substrings is:
+
+\[
+\frac{k \cdot (k+1)}{2}
+\]
+
+- Traverse the string, count lengths of consecutive runs, and sum their contributions.
+- Apply modulo at the end.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `k = 1` → length of current run.
+- `count = 0` → total substrings.
+
+#### Step 2: Traverse String
+
+- For each character from index 1 onward:
+  - If same as previous → increment `k`.
+  - Else → add contribution of run: \((k \cdot (k+1))/2\), reset `k=1`.
+
+#### Step 3: Final Contribution
+
+- After loop, add contribution of last run.
+
+#### Step 4: Return Result
+
+- Return `count % MOD`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "abbcccaa"
+
+→ Runs:
+   "a" length 1 → 1
+   "bb" length 2 → 3
+   "ccc" length 3 → 6
+   "aa" length 2 → 3
+→ Total = 1 + 3 + 6 + 3 = 13 ✅
+```
+
+```text
+s = "xy"
+
+→ Runs:
+   "x" length 1 → 1
+   "y" length 1 → 1
+→ Total = 2 ✅
+```
+
+```text
+s = "zzzzz"
+
+→ Run length = 5
+→ Substrings = 5*6/2 = 15 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                            |
+| --------- | -------------------------------- |
+| Time      | O(n) (single pass)               |
+| Space     | O(1) (constant extra space)      |
+| Technique | Segment counting + combinatorics |
+
+---
+
+### 🔁 Pattern
+
+- Counting substrings in consecutive runs.
+- Formula \(\frac{k(k+1)}{2}\) is common in substring problems.
+- Similar to problems involving consecutive character counts or runs.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Direct accumulation**: Instead of computing at run boundaries, add `k` each time you see a repeated character.
+  - Each new character extends all previous substrings by 1.
+- **Prefix sums**: Track cumulative counts of substrings.
+
+---
+
+### ⚠️ Edge Cases
+
+- Single-character string → result = 1.
+- All identical characters → maximum substrings.
+- Large string (up to \(10^5\)) → efficient with O(n).
+- Large counts → modulo ensures safe result.
+
+🔗 [LeetCode – Count Number of Homogenous Substrings](https://leetcode.com/problems/count-number-of-homogenous-substrings)
+
+---
