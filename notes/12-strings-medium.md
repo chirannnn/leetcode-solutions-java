@@ -1370,3 +1370,216 @@ s = "zzzzz"
 🔗 [LeetCode – Count Number of Homogenous Substrings](https://leetcode.com/problems/count-number-of-homogenous-substrings)
 
 ---
+
+## 14. Shifting Letters
+
+**Problem**:  
+You are given a string `s` and an integer array `shifts`. For each `shifts[i] = x`, shift the first `i+1` letters of `s` forward in the alphabet `x` times (wrapping around so `'z' → 'a'`).  
+Return the final string after all shifts.
+
+---
+
+### 🔍 Core Idea: Reverse Cumulative Shifts
+
+- Directly applying each shift would be inefficient (O(n²)).
+- Instead, process from **right to left**:
+  - Maintain a running sum of shifts.
+  - At position `i`, total shift = sum of all `shifts[j]` for `j ≥ i`.
+  - Apply modulo 26 to avoid overflow.
+- Update each character accordingly.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Convert to Char Array
+
+- Work with `char[]` for in-place updates.
+
+#### Step 2: Traverse from Right to Left
+
+- Maintain `sum = 0`.
+- For each index `i`:
+  - Add `shifts[i] % 26` to `sum`.
+  - Compute new character:  
+    \[
+    \text{newChar} = ((s[i] - 'a' + sum) \% 26) + 'a'
+    \]
+  - Update `ch[i]`.
+
+#### Step 3: Return Result
+
+- Convert `char[]` back to string.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "abc", shifts = [3,5,9]
+
+→ Start from right:
+   i=2: sum=9 → 'c' → 'l'
+   i=1: sum=14 → 'b' → 'p'
+   i=0: sum=17 → 'a' → 'r'
+→ Result = "rpl" ✅
+```
+
+```text
+s = "aaa", shifts = [1,2,3]
+
+→ i=2: sum=3 → 'a' → 'd'
+→ i=1: sum=5 → 'a' → 'f'
+→ i=0: sum=6 → 'a' → 'g'
+→ Result = "gfd" ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                  |
+| --------- | ---------------------- |
+| Time      | O(n) (single pass)     |
+| Space     | O(n) (char array)      |
+| Technique | Reverse cumulative sum |
+
+---
+
+### 🔁 Pattern
+
+- Prefix/suffix cumulative operations.
+- Similar to problems where multiple updates are applied efficiently.
+- Avoids repeated work by aggregating shifts.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Prefix sum array**: Precompute cumulative shifts for each index.
+- **In-place accumulation**: Add shifts directly while traversing.
+- **Modulo optimization**: Always reduce shifts by `% 26`.
+
+---
+
+### ⚠️ Edge Cases
+
+- Large shift values (up to \(10^9\)) → handled with `% 26`.
+- Single-character string → always valid.
+- All zeros in `shifts` → string unchanged.
+- Very large string (up to \(10^5\)) → efficient with O(n).
+
+🔗 [LeetCode – Shifting Letters](https://leetcode.com/problems/shifting-letters)
+
+---
+
+## 15. Minimum Time Difference
+
+**Problem**:  
+Given a list of time points in `"HH:MM"` format (24-hour clock), return the minimum difference in minutes between any two time points.
+
+---
+
+### 🔍 Core Idea: Convert to Minutes + Sort
+
+- Each time point is converted into total minutes from midnight (`hour * 60 + min`).
+- Sort all time points.
+- Compute differences between consecutive times.
+- Also check the circular difference between the last and first time (wrap-around at midnight).
+- Return the minimum difference.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Handle Edge Case
+
+- If number of time points > 1440 (total minutes in a day), return `0` immediately.
+  - By pigeonhole principle, duplicates must exist → minimum difference = 0.
+
+#### Step 2: Convert to Minutes
+
+- Parse each `"HH:MM"` string into integer minutes.
+- Store in array `minutes[]`.
+
+#### Step 3: Sort
+
+- Sort `minutes[]` in ascending order.
+
+#### Step 4: Compute Differences
+
+- Traverse sorted array:
+  - Compute difference between consecutive elements.
+  - Track minimum difference.
+- Compute wrap-around difference:  
+  \[
+  (minutes[0] + 1440) - minutes[n-1]
+  \]
+
+#### Step 5: Return Result
+
+- Return the minimum difference.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+timePoints = ["23:59","00:00"]
+
+→ Convert: [1439, 0]
+→ Sort: [0, 1439]
+→ Differences:
+   1439 - 0 = 1439
+   Wrap-around: (0+1440) - 1439 = 1
+→ Minimum = 1 ✅
+```
+
+```text
+timePoints = ["00:00","23:59","00:00"]
+
+→ Convert: [0, 1439, 0]
+→ Sort: [0, 0, 1439]
+→ Differences:
+   0 - 0 = 0
+→ Minimum = 0 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                    |
+| --------- | ---------------------------------------- |
+| Time      | O(n log n) (sorting)                     |
+| Space     | O(n) (minutes array)                     |
+| Technique | Conversion + sorting + wrap-around check |
+
+---
+
+### 🔁 Pattern
+
+- Convert structured input (HH:MM) into numeric form for easier computation.
+- Sorting + consecutive difference is a common technique for minimum gap problems.
+- Wrap-around handling is key in circular problems (like clocks).
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Bucket array of size 1440**: Mark each minute → O(n) time, O(1440) space.
+- **Direct duplicate check**: If duplicates exist → return 0 immediately.
+- **Priority queue**: Less efficient than sorting.
+
+---
+
+### ⚠️ Edge Cases
+
+- Duplicate times → minimum difference = 0.
+- Times across midnight → handled by wrap-around.
+- Large input size (up to 20,000) → efficient with O(n log n).
+- Single duplicate check optimization → O(1) if n > 1440.
+
+🔗 [LeetCode – Minimum Time Difference](https://leetcode.com/problems/minimum-time-difference)
+
+---
