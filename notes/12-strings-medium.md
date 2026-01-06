@@ -1583,3 +1583,237 @@ timePoints = ["00:00","23:59","00:00"]
 🔗 [LeetCode – Minimum Time Difference](https://leetcode.com/problems/minimum-time-difference)
 
 ---
+
+## 16. Camelcase Matching
+
+**Problem**:  
+Given an array of strings `queries` and a string `pattern`, return a boolean array where `answer[i] = true` if `queries[i]` matches `pattern`.
+
+A query matches the pattern if you can insert lowercase letters into the pattern so that it equals the query.  
+Uppercase letters must align exactly with the pattern.
+
+---
+
+### 🔍 Core Idea: Two-Pointer Scan
+
+- Traverse each query character by character.
+- Use a pointer `i` for the pattern.
+- If query character matches `pattern[i]` → move `i`.
+- If query character is uppercase but doesn’t match → invalid.
+- At the end, if `i == pattern.length` → valid match.
+- Otherwise → false.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Iterate Queries
+
+- For each query string `qc`:
+  - Initialize `i = 0` (pattern pointer).
+  - Set `match = true`.
+
+#### Step 2: Traverse Query
+
+- For each character `ch` in query:
+  - If `ch == pattern[i]` → increment `i`.
+  - Else if `ch` is uppercase → mismatch → `match = false`.
+
+#### Step 3: Final Check
+
+- If `i != pattern.length` → not all pattern matched → `match = false`.
+- Add result to list.
+
+#### Step 4: Return Results
+
+- Return list of booleans.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+queries = ["FooBar","FooBarTest","FootBall","FrameBuffer","ForceFeedBack"]
+pattern = "FB"
+
+→ "FooBar" → F matches, B matches → true
+→ "FooBarTest" → extra T unmatched → false
+→ "FootBall" → F matches, B matches → true
+→ "FrameBuffer" → F matches, B matches → true
+→ "ForceFeedBack" → extra F unmatched → false
+→ Result = [true,false,true,true,false] ✅
+```
+
+```text
+pattern = "FoBa"
+
+→ "FooBar" → Fo matches, Ba matches → true
+→ "FootBall" → Fo matches, Ba matches → true
+→ Others fail → [true,false,true,false,false] ✅
+```
+
+```text
+pattern = "FoBaT"
+
+→ Only "FooBarTest" matches → [false,true,false,false,false] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                         |
+| --------- | --------------------------------------------- |
+| Time      | O(n·m) (n = queries length, m = query length) |
+| Space     | O(n) (boolean results)                        |
+| Technique | Two-pointer scan with uppercase validation    |
+
+---
+
+### 🔁 Pattern
+
+- Two-pointer matching problems.
+- Uppercase letters act as anchors that must align with the pattern.
+- Similar to subsequence matching with constraints.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Regex construction**: Build regex from pattern with `.*` for lowercase insertions.
+- **Dynamic programming**: Check subsequence match with case sensitivity.
+- **Greedy scan**: Current approach is simplest and efficient.
+
+---
+
+### ⚠️ Edge Cases
+
+- Pattern longer than query → always false.
+- Query with extra uppercase letters → false.
+- Exact match → true.
+- All lowercase insertions → allowed.
+- Multiple queries → handled independently.
+
+🔗 LeetCode – Camelcase Matching [(leetcode.com)](https://leetcode.com/problems/camelcase-matching/description/")
+
+---
+
+## 17. Print Words Vertically
+
+**Problem**:  
+Given a string `s` of words separated by spaces, return all words printed **vertically** in the same order they appear.
+
+- Each column corresponds to one character position across all words.
+- Spaces are used where words are shorter.
+- Trailing spaces must be trimmed.
+
+---
+
+### 🔍 Core Idea: Column-wise Construction
+
+- Split the sentence into words.
+- Find the maximum word length → determines number of vertical rows.
+- For each character index `i` (column):
+  - Collect the `i`-th character from each word.
+  - If word is shorter → append space.
+- Trim trailing spaces from each constructed string.
+- Add to result list.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Split Words
+
+- `words = s.split(" ")`.
+
+#### Step 2: Find Max Length
+
+- `maxLen = max(word.length())`.
+
+#### Step 3: Build Vertical Strings
+
+- For `i = 0 … maxLen-1`:
+  - Initialize `StringBuilder str`.
+  - For each word:
+    - If `i < word.length()` → append `word[i]`.
+    - Else → append space.
+  - Trim trailing spaces.
+  - Add to result list.
+
+#### Step 4: Return Result
+
+- Return list of vertical strings.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "HOW ARE YOU"
+
+→ words = ["HOW","ARE","YOU"]
+→ maxLen = 3
+→ i=0: "HAY"
+→ i=1: "ORO"
+→ i=2: "WEU"
+→ Result = ["HAY","ORO","WEU"] ✅
+```
+
+```text
+s = "TO BE OR NOT TO BE"
+
+→ words = ["TO","BE","OR","NOT","TO","BE"]
+→ maxLen = 3
+→ i=0: "TBONTB"
+→ i=1: "OEROOE"
+→ i=2: "   T"
+→ Result = ["TBONTB","OEROOE","   T"] ✅
+```
+
+```text
+s = "CONTEST IS COMING"
+
+→ words = ["CONTEST","IS","COMING"]
+→ maxLen = 7
+→ Result = ["CIC","OSO","N M","T I","E N","S G","T"] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                             |
+| --------- | ------------------------------------------------- |
+| Time      | O(n·m) (n = number of words, m = max word length) |
+| Space     | O(n·m) (result list)                              |
+| Technique | Column-wise construction                          |
+
+---
+
+### 🔁 Pattern
+
+- Matrix-style traversal (row → column transformation).
+- Similar to problems involving transposing text or printing diagonally.
+- Requires careful trimming of trailing spaces.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Character matrix**: Fill a 2D array with words, then read column by column.
+- **Stream-based**: Use functional programming to map columns.
+- **Regex trimming**: Instead of manual loop, use `replaceAll("\\s+$","")`.
+
+---
+
+### ⚠️ Edge Cases
+
+- Single word → return each character as a row.
+- Different word lengths → spaces must fill gaps.
+- Trailing spaces → must be trimmed.
+- Maximum length up to 200 → efficient with O(n·m).
+
+🔗 LeetCode – Print Words Vertically [(leetcode.com)](https://leetcode.com/problems/print-words-vertically/description/")
+
+---
