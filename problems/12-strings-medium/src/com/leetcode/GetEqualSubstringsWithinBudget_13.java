@@ -33,12 +33,33 @@ package com.leetcode;
 public class GetEqualSubstringsWithinBudget_13 {
     public static void main(String[] args) {
         String s = "abcd", t = "acde";
-        int maxCost = 0;
+        int maxCost = 3;
 
         System.out.println(equalSubstring(s, t, maxCost));
     }
 
     static int equalSubstring(String s, String t, int maxCost) {
-        return 1;
+        int n = s.length();
+
+        char[] s1 = s.toCharArray();
+        char[] t1 = t.toCharArray();
+
+        int l = 0, r = 0, usedCost = 0, maxLen = 0;
+        while (r < n) {
+            int cost = Math.abs(s1[r] - t1[r]);
+            usedCost += cost;
+
+            while (usedCost > maxCost) {
+                int removeCost = Math.abs(s1[l] - t1[l]);
+                usedCost -= removeCost;
+                l++;
+            }
+
+            if (usedCost <= maxCost) {
+                maxLen = Math.max(maxLen, r - l + 1);
+            }
+            r++;
+        }
+        return maxLen;
     }
 }
