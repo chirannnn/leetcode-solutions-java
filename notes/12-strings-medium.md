@@ -1371,6 +1371,123 @@ s = "zzzzz"
 
 ---
 
+## 13. Get Equal Substrings Within Budget
+
+**Problem**:  
+Given two strings `s` and `t` of equal length and an integer `maxCost`, find the maximum length of a substring of `s` that can be changed into the corresponding substring of `t` with a total cost ≤ `maxCost`.
+
+- Cost of changing character `s[i]` → `t[i]` = \(|s[i] - t[i]|\).
+- Return maximum possible substring length.
+
+---
+
+### 🔍 Core Idea: Sliding Window
+
+- Use two pointers (`l` and `r`) to represent a window in `s` and `t`.
+- Expand `r` to include more characters, adding their cost.
+- If total cost exceeds `maxCost`, shrink window from left (`l++`) until cost ≤ `maxCost`.
+- Track maximum window size during traversal.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `l = 0`, `r = 0` → window boundaries.
+- `usedCost = 0` → current window cost.
+- `maxLen = 0` → result.
+
+#### Step 2: Expand Window
+
+- For each `r`:
+  - Compute cost = \(|s[r] - t[r]|\).
+  - Add to `usedCost`.
+
+#### Step 3: Shrink Window if Needed
+
+- While `usedCost > maxCost`:
+  - Remove cost of `s[l] → t[l]`.
+  - Increment `l`.
+
+#### Step 4: Update Result
+
+- If `usedCost ≤ maxCost`:
+  - Update `maxLen = max(maxLen, r - l + 1)`.
+
+#### Step 5: Return Result
+
+- After traversal, return `maxLen`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "abcd", t = "bcdf", maxCost = 3
+
+→ Costs: [1,1,1,1]
+→ Window expands:
+   r=0 → cost=1 → length=1
+   r=1 → cost=2 → length=2
+   r=2 → cost=3 → length=3
+   r=3 → cost=4 → exceeds → shrink
+→ Max length = 3 ✅
+```
+
+```text
+s = "abcd", t = "cdef", maxCost = 3
+
+→ Costs: [2,2,2,2]
+→ Only one character fits (cost=2 ≤ 3)
+→ Max length = 1 ✅
+```
+
+```text
+s = "abcd", t = "acde", maxCost = 0
+
+→ Costs: [0,1,1,1]
+→ Only substrings with cost=0 fit
+→ Max length = 1 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                  |
+| --------- | -------------------------------------- |
+| Time      | O(n) (single pass with sliding window) |
+| Space     | O(1) (constant extra space)            |
+| Technique | Sliding window                         |
+
+---
+
+### 🔁 Pattern
+
+- Sliding window for substring problems with constraints.
+- Similar to problems like "Longest Substring with K replacements" or "Max consecutive ones with budget".
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Prefix sums + binary search**: Precompute costs, then find longest valid window using binary search.
+- **Greedy expansion**: Current sliding window approach is optimal and simpler.
+
+---
+
+### ⚠️ Edge Cases
+
+- `maxCost = 0` → only exact matches allowed.
+- Large strings (up to \(10^5\)) → efficient with O(n).
+- All costs ≤ maxCost → entire string length returned.
+- No valid substring → return 0.
+
+🔗 LeetCode – Get Equal Substrings Within Budget [(leetcode.com)](https://leetcode.com/problems/get-equal-substrings-within-budget/description/)
+
+---
+
 ## 14. Shifting Letters
 
 **Problem**:  
