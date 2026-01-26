@@ -206,6 +206,218 @@ s = "pwwkew"
 - All same characters → return 1.
 - Large input (up to 50,000) → efficient with O(n).
 
+🔗 LeetCode – Longest Substring Without Repeating Characters: [(leetcode.com)](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+
 ---
 
-🔗 LeetCode – Longest Substring Without Repeating Characters: [(leetcode.com)](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+## 3. Max Consecutive Ones III
+
+**Problem**:  
+Given a binary array `nums` and an integer `k`, return the maximum number of consecutive `1`s in the array if you can flip at most `k` zeros.
+
+---
+
+### 🔍 Core Idea: Sliding Window with Zero Count
+
+- Use two pointers (`l` and `r`) to maintain a window.
+- Expand `r` to include more elements.
+- Count zeros inside the window.
+- If zero count exceeds `k`, shrink window from left (`l++`) until valid.
+- Track maximum window size during traversal.
+
+This ensures we always maintain a valid window with at most `k` flips.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `l = 0`, `r = 0` → window boundaries.
+- `zeroCount = 0` → number of zeros in current window.
+- `maxLen = 0` → result.
+
+#### Step 2: Expand Window
+
+- For each `r`:
+  - If `nums[r] == 0` → increment `zeroCount`.
+  - If `zeroCount > k`:
+    - Shrink window from left until `zeroCount ≤ k`.
+
+#### Step 3: Update Result
+
+- `maxLen = max(maxLen, r - l + 1)`.
+
+#### Step 4: Return Result
+
+- After traversal, return `maxLen`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
+
+→ Expand window:
+   [1,1,1,0,0,1,1,1,1,1,1]
+→ Longest valid window length = 6 ✅
+```
+
+```text
+nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3
+
+→ Expand window:
+   Flip 3 zeros → longest window length = 10 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                       |
+| --------- | --------------------------- |
+| Time      | O(n) (single pass)          |
+| Space     | O(1) (constant extra space) |
+| Technique | Sliding window              |
+
+---
+
+### 🔁 Pattern
+
+- Classic sliding window problem with constraint.
+- Similar to "Longest substring with at most K replacements".
+- Zero count acts as the constraint tracker.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Prefix sums**: Precompute zero counts, then use binary search to find longest valid window.
+- **Deque approach**: Track indices of zeros, slide window accordingly.
+- Current sliding window is simplest and optimal.
+
+---
+
+### ⚠️ Edge Cases
+
+- All ones → return length of array.
+- k = 0 → longest run of consecutive ones without flips.
+- All zeros with k ≥ length → return length of array.
+- Large input (up to \(10^5\)) → efficient with O(n).
+
+🔗 LeetCode – Max Consecutive Ones III: [(leetcode.com)](https://leetcode.com/problems/max-consecutive-ones-iii/)
+
+---
+
+## 4. Fruit Into Baskets
+
+**Problem**:  
+You are given an array `fruits` where each element represents the type of fruit a tree produces. You have two baskets, each holding only one type of fruit but unlimited quantity. Starting from any tree, you must pick one fruit per tree moving right, and stop when a tree produces a fruit that doesn’t fit into your baskets.  
+Return the maximum number of fruits you can collect.
+
+---
+
+### 🔍 Core Idea: Sliding Window with At Most Two Distinct Types
+
+- This is essentially the **Longest Subarray with at most 2 distinct elements** problem.
+- Use two pointers (`l` and `r`) to maintain a window.
+- Expand `r` to include more fruits.
+- Track the number of distinct fruit types in the window.
+- If distinct count exceeds 2, shrink window from left until valid.
+- Track maximum window size during traversal.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `hash[]` → frequency of fruit types.
+- `l = 0`, `r = 0` → window boundaries.
+- `count = 0` → distinct fruit types.
+- `maxLen = 0` → result.
+
+#### Step 2: Expand Window
+
+- Add `fruits[r]` to hash.
+- If new type → increment `count`.
+- If `count > 2`:
+  - Shrink window from left (`l++`) until `count ≤ 2`.
+
+#### Step 3: Update Result
+
+- `maxLen = max(maxLen, r - l + 1)`.
+
+#### Step 4: Return Result
+
+- After traversal, return `maxLen`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+fruits = [1,2,1]
+
+→ Window expands:
+   [1,2,1] → 2 types → length = 3
+→ Result = 3 ✅
+```
+
+```text
+fruits = [0,1,2,2]
+
+→ Window expands:
+   [0,1] → 2 types → length = 2
+   [1,2,2] → 2 types → length = 3
+→ Result = 3 ✅
+```
+
+```text
+fruits = [1,2,3,2,2]
+
+→ Window expands:
+   [1,2] → length = 2
+   [2,3,2,2] → length = 4
+→ Result = 4 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                                           |
+| --------- | --------------------------------------------------------------- |
+| Time      | O(n) (single pass)                                              |
+| Space     | O(n) (hash array, though can be optimized to O(1) with HashMap) |
+| Technique | Sliding window                                                  |
+
+---
+
+### 🔁 Pattern
+
+- Sliding window with constraint on distinct elements.
+- Same as "Longest substring with at most K distinct characters" (here K=2).
+- Frequency tracking ensures valid window.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **HashMap**: More memory-efficient than array when fruit types are sparse.
+- **Two-pointer greedy**: Track last two fruit types and their counts.
+- Current sliding window is optimal and simple.
+
+---
+
+### ⚠️ Edge Cases
+
+- All fruits same → return length of array.
+- Only two distinct types → return length of array.
+- Large input (up to \(10^5\)) → efficient with O(n).
+- k=1 fruit type repeatedly → handled correctly.
+
+🔗 LeetCode – Fruit Into Baskets: [(leetcode.com)](https://leetcode.com/problems/fruit-into-baskets/)
+
+---
