@@ -421,3 +421,231 @@ fruits = [1,2,3,2,2]
 🔗 LeetCode – Fruit Into Baskets: [(leetcode.com)](https://leetcode.com/problems/fruit-into-baskets/)
 
 ---
+
+## 5. Longest Substring With At Most K Distinct Characters
+
+**Problem**:  
+Given a string `s` and integer `k`, return the length of the longest substring of `s` that contains at most `k` distinct characters.
+
+---
+
+### 🔍 Core Idea: Sliding Window + Frequency Tracking
+
+- Use two pointers (`l` and `r`) to maintain a window.
+- Expand `r` to include new characters.
+- Track distinct characters using a frequency array.
+- If distinct count exceeds `k`, shrink window from left until valid.
+- Track maximum window size during traversal.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `hash[]` → frequency of characters.
+- `l = 0`, `r = 0` → window boundaries.
+- `distinct = 0` → number of distinct characters.
+- `maxLen = 0` → result.
+
+#### Step 2: Expand Window
+
+- Add `s[r]` to hash.
+- If new character → increment `distinct`.
+- If `distinct > k`:
+  - Shrink window from left (`l++`) until `distinct ≤ k`.
+
+#### Step 3: Update Result
+
+- `maxLen = max(maxLen, r - l + 1)`.
+
+#### Step 4: Return Result
+
+- After traversal, return `maxLen`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "eceba", k = 2
+
+→ Expand window:
+   "ece" → 2 distinct → length = 3
+   "ceba" → 3 distinct → shrink
+→ Result = 3 ✅
+```
+
+```text
+s = "aa", k = 1
+
+→ Expand window:
+   "aa" → 1 distinct → length = 2
+→ Result = 2 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                              |
+| --------- | ---------------------------------- |
+| Time      | O(n) (single pass)                 |
+| Space     | O(26) → O(1) (fixed alphabet size) |
+| Technique | Sliding window                     |
+
+---
+
+### 🔁 Pattern
+
+- Classic sliding window problem with constraint on distinct characters.
+- Similar to "Fruit Into Baskets" (K=2).
+- Frequency tracking ensures valid window.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **HashMap**: More general solution for larger alphabets (digits, symbols, spaces).
+- **Optimized shrink**: Jump left pointer directly using last seen indices.
+- Current array-based approach works since input is lowercase letters.
+
+---
+
+### ⚠️ Edge Cases
+
+- k = 0 → return 0 (no valid substring).
+- k ≥ length of string → return full length.
+- All identical characters → return length of string.
+- Large input (up to 50,000) → efficient with O(n).
+
+🔗 LeetCode – Longest Substring With At Most K Distinct Characters: [(NeetCode)](https://neetcode.io/problems/longest-substring-with-at-most-k-distinct-characters/question)
+
+---
+
+## 6. Number of Substrings Containing All Three Characters
+
+**Problem**:  
+Given a string `s` consisting only of characters `a`, `b`, and `c`, return the number of substrings that contain at least one occurrence of all three characters.
+
+---
+
+### 🔍 Core Idea: Sliding Window / Index Tracking
+
+- We need substrings that contain **all three characters**.
+- Two main approaches:
+  1. **Sliding Window**: Expand right pointer until substring contains all three, then shrink left pointer while counting valid substrings.
+  2. **Index Tracking**: Track last seen positions of `a`, `b`, and `c`. Once all are seen, the minimum index among them determines how many substrings ending at current position are valid.
+
+---
+
+### 🧠 Algorithm Breakdown (Method 1: Sliding Window)
+
+#### Step 1: Initialize
+
+- `l = 0`, `r = 0` → window boundaries.
+- `hash[3]` → frequency of `a`, `b`, `c`.
+- `count = 0`.
+
+#### Step 2: Expand Window
+
+- Add `s[r]` to `hash`.
+- While all three counts > 0:
+  - Every substring starting at `l` and ending at ≥ `r` is valid.
+  - Add `n - r` to `count`.
+  - Shrink window from left (`l++`).
+
+#### Step 3: Return Result
+
+- After traversal, return `count`.
+
+---
+
+### 🧠 Algorithm Breakdown (Method 2: Index Tracking)
+
+#### Step 1: Initialize
+
+- `hash = {-1, -1, -1}` → last seen indices of `a`, `b`, `c`.
+- `count = 0`.
+
+#### Step 2: Traverse String
+
+- For each character at index `i`:
+  - Update `hash[ch - 'a'] = i`.
+  - If all three indices are valid (not -1):
+    - Add `1 + min(hash[0], hash[1], hash[2])` to `count`.
+    - This counts substrings ending at `i` that include all three.
+
+#### Step 3: Return Result
+
+- Return `count`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "abcabc"
+
+→ Sliding window:
+   "abc" → valid
+   "abca", "abcab", "abcabc" → valid
+   "bca", "bcab", "bcabc" → valid
+   "cab", "cabc" → valid
+   "abc" (second occurrence) → valid
+→ Total = 10 ✅
+```
+
+```text
+s = "aaacb"
+
+→ Valid substrings:
+   "aaacb", "aacb", "acb"
+→ Total = 3 ✅
+```
+
+```text
+s = "abc"
+
+→ Only "abc" → Total = 1 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Method         | Time | Space |
+| -------------- | ---- | ----- |
+| Sliding Window | O(n) | O(1)  |
+| Index Tracking | O(n) | O(1)  |
+
+Both are efficient for \(n \leq 5 \times 10^4\).
+
+---
+
+### 🔁 Pattern
+
+- Sliding window for substring problems with constraints.
+- Index tracking for "last seen" problems.
+- Both approaches are common in substring counting tasks.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Prefix sums**: Not efficient here.
+- **Brute force**: Generate all substrings → O(n²), too slow.
+- **Optimized index tracking**: Cleaner and faster in practice.
+
+---
+
+### ⚠️ Edge Cases
+
+- String length < 3 → return 0.
+- String with only one or two characters → return 0.
+- All identical characters → return 0.
+- Large input size → O(n) methods are efficient.
+
+🔗 LeetCode – Number of Substrings Containing All Three Characters: [(leetcode.com)](https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/)
+
+---
