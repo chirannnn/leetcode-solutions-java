@@ -649,3 +649,204 @@ Both are efficient for \(n \leq 5 \times 10^4\).
 🔗 LeetCode – Number of Substrings Containing All Three Characters: [(leetcode.com)](https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/)
 
 ---
+
+## 7. Longest Repeating Character Replacement
+
+**Problem**:  
+Given a string `s` (uppercase letters only) and integer `k`, you can replace at most `k` characters with any other uppercase letter.  
+Return the length of the longest substring that can be transformed into a substring of repeating characters.
+
+---
+
+### 🔍 Core Idea: Sliding Window + Max Frequency
+
+- Use a sliding window (`l` and `r`) to maintain a substring.
+- Track frequency of characters in the window using an array `hash[26]`.
+- `maxFreq` = maximum frequency of any character in the current window.
+- Condition:
+  - If `(window length - maxFreq) > k`, shrink window from left.
+  - This ensures at most `k` replacements are needed.
+- Track maximum window size during traversal.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `hash[26]` → frequency of characters.
+- `l = 0`, `r = 0` → window boundaries.
+- `maxFreq = 0` → highest frequency in current window.
+- `maxLen = 0` → result.
+
+#### Step 2: Expand Window
+
+- Add `s[r]` to frequency.
+- Update `maxFreq`.
+- If `(r - l + 1) - maxFreq > k`:
+  - Shrink window from left (`l++`).
+
+#### Step 3: Update Result
+
+- `maxLen = max(maxLen, r - l + 1)`.
+
+#### Step 4: Return Result
+
+- After traversal, return `maxLen`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "ABAB", k = 2
+
+→ Window expands:
+   "ABAB" → maxFreq = 2 ('A' or 'B')
+   Window length = 4, replacements = 2 → valid
+→ Result = 4 ✅
+```
+
+```text
+s = "AABABBA", k = 1
+
+→ Window expands:
+   Longest valid substring = "AABBBBA" (after 1 replacement)
+   Length = 4
+→ Result = 4 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                              |
+| --------- | ---------------------------------- |
+| Time      | O(n) (single pass)                 |
+| Space     | O(26) → O(1) (fixed alphabet size) |
+| Technique | Sliding window                     |
+
+---
+
+### 🔁 Pattern
+
+- Sliding window with constraint on replacements.
+- Similar to "Longest substring with at most K distinct characters".
+- `maxFreq` ensures we only replace the minimum required characters.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Dynamic programming**: Overkill, less efficient.
+- **Brute force**: Try all substrings → O(n²), too slow.
+- Current sliding window is optimal.
+
+---
+
+### ⚠️ Edge Cases
+
+- k = 0 → longest run of identical characters.
+- All identical characters → return length of string.
+- Large input (up to \(10^5\)) → efficient with O(n).
+- Multiple valid substrings → any maximum length is acceptable.
+
+🔗 LeetCode – Longest Repeating Character Replacement: [(leetcode.com)](https://leetcode.com/problems/longest-repeating-character-replacement/)
+
+---
+
+## 8. Binary Subarrays With Sum
+
+**Problem**:  
+Given a binary array `nums` and an integer `goal`, return the number of non-empty subarrays whose sum equals `goal`.
+
+---
+
+### 🔍 Core Idea: AtMost(k) Trick
+
+- Count subarrays with sum **exactly `goal`** by computing:  
+  \[
+  \text{exactly(goal)} = \text{atMost(goal)} - \text{atMost(goal - 1)}
+  \]
+- Why?
+  - `atMost(k)` counts subarrays with sum ≤ k.
+  - Subarrays with sum exactly `goal` = difference between ≤ goal and ≤ (goal-1).
+- Works efficiently because array is binary (0s and 1s).
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Define `atMost(nums, k)`
+
+- Sliding window with two pointers (`l`, `r`).
+- Maintain `sum` of current window.
+- If `sum > k`, shrink window from left.
+- Count valid subarrays ending at `r`:
+  - Add `(r - l + 1)` to `count`.
+
+#### Step 2: Use Formula
+
+- `numSubarraysWithSum(nums, goal) = atMost(nums, goal) - atMost(nums, goal - 1)`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+nums = [1,0,1,0,1], goal = 2
+
+→ atMost(2):
+   Count subarrays with sum ≤ 2
+→ atMost(1):
+   Count subarrays with sum ≤ 1
+→ Difference = exactly 2
+→ Result = 4 ✅
+```
+
+```text
+nums = [0,0,0,0,0], goal = 0
+
+→ atMost(0) = 15 (all subarrays sum to 0)
+→ atMost(-1) = 0
+→ Difference = 15 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                             |
+| --------- | --------------------------------- |
+| Time      | O(n) (single pass sliding window) |
+| Space     | O(1) (constant extra space)       |
+| Technique | Sliding window + prefix trick     |
+
+---
+
+### 🔁 Pattern
+
+- **Sliding window** for subarray problems.
+- **AtMost trick** is common in problems like "subarrays with sum exactly K" or "subarrays with at most K distinct elements".
+- Binary array simplifies handling since values are only 0 or 1.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Prefix sum + HashMap**: Count subarrays with sum = goal using prefix sums and frequency map.
+- More general (works for non-binary arrays), but O(n) with extra space.
+- Current `atMost` method is optimized for binary arrays.
+
+---
+
+### ⚠️ Edge Cases
+
+- `goal = 0` → only subarrays of all zeros.
+- `goal = n` → only full array if sum matches.
+- All 1s → subarrays count depends on goal.
+- Large input (up to \(3 \times 10^4\)) → efficient with O(n).
+
+🔗 LeetCode – Binary Subarrays With Sum: [(leetcode.com)](https://leetcode.com/problems/binary-subarrays-with-sum/)
+
+---
