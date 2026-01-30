@@ -850,3 +850,217 @@ nums = [0,0,0,0,0], goal = 0
 🔗 LeetCode – Binary Subarrays With Sum: [(leetcode.com)](https://leetcode.com/problems/binary-subarrays-with-sum/)
 
 ---
+
+## 9. Count Number of Nice Subarrays
+
+**Problem**:  
+Given an array `nums` and integer `k`, a continuous subarray is called _nice_ if it contains exactly `k` odd numbers.  
+Return the number of nice subarrays.
+
+---
+
+### 🔍 Core Idea: AtMost(k) Trick
+
+- To count subarrays with **exactly k odd numbers**, use:  
+  \[
+  \text{exactly(k)} = \text{atMost(k)} - \text{atMost(k - 1)}
+  \]
+- `atMost(k)` counts subarrays with at most `k` odd numbers.
+- Difference gives subarrays with exactly `k` odd numbers.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Define `atMost(nums, k)`
+
+- Sliding window with two pointers (`l`, `r`).
+- Maintain count of odd numbers in current window.
+- If odd count > k, shrink window from left.
+- Add `(r - l + 1)` to result → counts all valid subarrays ending at `r`.
+
+#### Step 2: Use Formula
+
+- `numberOfSubarrays(nums, k) = atMost(nums, k) - atMost(nums, k - 1)`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+nums = [1,1,2,1,1], k = 3
+
+→ atMost(3) counts subarrays with ≤ 3 odds
+→ atMost(2) counts subarrays with ≤ 2 odds
+→ Difference = exactly 3 odds
+→ Result = 2 ✅
+```
+
+```text
+nums = [2,4,6], k = 1
+
+→ No odd numbers
+→ Result = 0 ✅
+```
+
+```text
+nums = [2,2,2,1,2,2,1,2,2,2], k = 2
+
+→ Multiple subarrays with exactly 2 odds
+→ Result = 16 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                             |
+| --------- | --------------------------------- |
+| Time      | O(n) (single pass sliding window) |
+| Space     | O(1) (constant extra space)       |
+| Technique | Sliding window + atMost trick     |
+
+---
+
+### 🔁 Pattern
+
+- Same technique as **Binary Subarrays With Sum** (Sum = k).
+- Sliding window with constraint counting.
+- Works efficiently for large arrays.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Prefix sum + HashMap**: Track number of odds seen so far, count subarrays with difference = k.
+- More general but requires extra space.
+- Current `atMost` method is simpler and optimal.
+
+---
+
+### ⚠️ Edge Cases
+
+- k = 0 → return 0 (no subarray with 0 odds unless explicitly allowed).
+- All even numbers → return 0.
+- All odd numbers → number of subarrays depends on k.
+- Large input (up to 50,000) → efficient with O(n).
+
+🔗 LeetCode – Count Number of Nice Subarrays: [(leetcode.com)](https://leetcode.com/problems/count-number-of-nice-subarrays/)
+
+---
+
+## 10. Get Equal Substrings Within Budget
+
+**Problem**:  
+You are given two strings `s` and `t` of equal length and an integer `maxCost`.  
+Changing `s[i]` → `t[i]` costs \(|s[i] - t[i]|\) (absolute ASCII difference).  
+Return the maximum length of a substring of `s` that can be changed into the corresponding substring of `t` with total cost ≤ `maxCost`.
+
+---
+
+### 🔍 Core Idea: Sliding Window
+
+- Use two pointers (`l` and `r`) to maintain a window.
+- Expand `r` to include more characters, adding their cost.
+- If total cost exceeds `maxCost`, shrink window from left (`l++`) until cost ≤ `maxCost`.
+- Track maximum window size during traversal.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `l = 0`, `r = 0` → window boundaries.
+- `cost = 0` → current window cost.
+- `maxLen = 0` → result.
+
+#### Step 2: Expand Window
+
+- For each `r`:
+  - Compute `diff = |s[r] - t[r]|`.
+  - Add to `cost`.
+
+#### Step 3: Shrink Window if Needed
+
+- While `cost > maxCost`:
+  - Remove cost of `s[l] → t[l]`.
+  - Increment `l`.
+
+#### Step 4: Update Result
+
+- `maxLen = max(maxLen, r - l + 1)`.
+
+#### Step 5: Return Result
+
+- After traversal, return `maxLen`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "abcd", t = "bcdf", maxCost = 3
+
+→ Costs: [1,1,1,1]
+→ Window expands:
+   r=0 → cost=1 → length=1
+   r=1 → cost=2 → length=2
+   r=2 → cost=3 → length=3
+   r=3 → cost=4 → exceeds → shrink
+→ Max length = 3 ✅
+```
+
+```text
+s = "abcd", t = "cdef", maxCost = 3
+
+→ Costs: [2,2,2,2]
+→ Only one character fits (cost=2 ≤ 3)
+→ Max length = 1 ✅
+```
+
+```text
+s = "abcd", t = "acde", maxCost = 0
+
+→ Costs: [0,1,1,1]
+→ Only substrings with cost=0 fit
+→ Max length = 1 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                  |
+| --------- | -------------------------------------- |
+| Time      | O(n) (single pass with sliding window) |
+| Space     | O(1) (constant extra space)            |
+| Technique | Sliding window                         |
+
+---
+
+### 🔁 Pattern
+
+- Sliding window for substring problems with constraints.
+- Similar to "Longest substring with at most K replacements" or "Max consecutive ones with budget".
+- Cost acts as the constraint tracker.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Prefix sums + binary search**: Precompute costs, then find longest valid window using binary search.
+- **Greedy expansion**: Current sliding window approach is optimal and simpler.
+
+---
+
+### ⚠️ Edge Cases
+
+- `maxCost = 0` → only exact matches allowed.
+- Large strings (up to \(10^5\)) → efficient with O(n).
+- All costs ≤ maxCost → entire string length returned.
+- No valid substring → return 0.
+
+🔗 LeetCode – Get Equal Substrings Within Budget: [(leetcode.com)](https://leetcode.com/problems/get-equal-substrings-within-budget/)
+
+---
