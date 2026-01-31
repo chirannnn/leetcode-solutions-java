@@ -1064,3 +1064,95 @@ s = "abcd", t = "acde", maxCost = 0
 🔗 LeetCode – Get Equal Substrings Within Budget: [(leetcode.com)](https://leetcode.com/problems/get-equal-substrings-within-budget/)
 
 ---
+
+## 11. Subarrays With K Different Integers
+
+**Problem**:  
+Given an integer array `nums` and integer `k`, return the number of subarrays that contain **exactly k distinct integers**.
+
+---
+
+### 🔍 Core Idea: AtMost(k) Trick
+
+- To count subarrays with **exactly k distinct integers**, use:  
+  \[
+  \text{exactly(k)} = \text{atMost(k)} - \text{atMost(k - 1)}
+  \]
+- `atMost(k)` counts subarrays with at most `k` distinct integers.
+- Difference gives subarrays with exactly `k` distinct integers.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Define `atMost(nums, k)`
+
+- Sliding window with two pointers (`l`, `r`).
+- Maintain frequency of elements in current window using `hash[]`.
+- Track `distinct` count.
+- If `distinct > k`, shrink window from left until valid.
+- Add `(r - l + 1)` to result → counts all valid subarrays ending at `r`.
+
+#### Step 2: Use Formula
+
+- `subarraysWithKDistinct(nums, k) = atMost(nums, k) - atMost(nums, k - 1)`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+nums = [1,2,1,2,3], k = 2
+
+→ atMost(2) counts subarrays with ≤ 2 distinct
+→ atMost(1) counts subarrays with ≤ 1 distinct
+→ Difference = exactly 2 distinct
+→ Result = 7 ✅
+```
+
+```text
+nums = [1,2,1,3,4], k = 3
+
+→ Subarrays with exactly 3 distinct:
+   [1,2,1,3], [2,1,3], [1,3,4]
+→ Result = 3 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                             |
+| --------- | --------------------------------- |
+| Time      | O(n) (single pass sliding window) |
+| Space     | O(n) (hash array for frequencies) |
+| Technique | Sliding window + atMost trick     |
+
+---
+
+### 🔁 Pattern
+
+- Same technique as **Count Number of Nice Subarrays** and **Binary Subarrays With Sum**.
+- Sliding window with constraint counting.
+- Works efficiently for large arrays.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **HashMap**: More general solution for arbitrary integer ranges.
+- **Prefix sum + HashMap**: Track distinct counts, but less efficient.
+- Current `atMost` method is optimal.
+
+---
+
+### ⚠️ Edge Cases
+
+- k = 0 → return 0 (no valid subarray).
+- k = 1 → counts subarrays with only one distinct integer.
+- All elements same → result depends on k.
+- Large input (up to 20,000) → efficient with O(n).
+
+🔗 LeetCode – Subarrays With K Different Integers: [(leetcode.com)](https://leetcode.com/problems/subarrays-with-k-different-integers/)
+
+---
