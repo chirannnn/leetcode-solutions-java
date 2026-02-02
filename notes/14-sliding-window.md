@@ -1156,3 +1156,113 @@ nums = [1,2,1,3,4], k = 3
 🔗 LeetCode – Subarrays With K Different Integers: [(leetcode.com)](https://leetcode.com/problems/subarrays-with-k-different-integers/)
 
 ---
+
+## 12. Minimum Window Substring
+
+**Problem**:  
+Given two strings `s` and `t`, return the minimum window substring of `s` that contains all characters of `t` (including duplicates). If no such substring exists, return `""`.
+
+---
+
+### 🔍 Core Idea: Sliding Window + Frequency Hash
+
+- Use a sliding window (`l` and `r`) to expand and contract over `s`.
+- Maintain a frequency count of characters in `t`.
+- Expand `r` until all characters of `t` are covered.
+- Then shrink `l` to minimize the window while still covering all characters.
+- Track the smallest valid window.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- `hash[256]` → frequency of characters in `t`.
+- `count` → number of matched characters so far.
+- `stIdx` → start index of minimum window.
+- `minLen` → length of minimum window.
+
+#### Step 2: Expand Window
+
+- For each `r`:
+  - If `hash[s[r]] > 0`, increment `count`.
+  - Decrement `hash[s[r]]`.
+
+#### Step 3: Shrink Window
+
+- While `count == n` (all characters matched):
+  - Update minimum window if smaller.
+  - Increment `hash[s[l]]`.
+  - If `hash[s[l]] > 0`, decrement `count`.
+  - Move `l++`.
+
+#### Step 4: Return Result
+
+- If no valid window found → return `""`.
+- Else return substring from `stIdx` with length `minLen`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "ADOBECODEBANC", t = "ABC"
+
+→ Expand until "ADOBEC" covers A, B, C
+→ Shrink to "BANC" → smallest valid window
+→ Result = "BANC" ✅
+```
+
+```text
+s = "a", t = "a"
+
+→ Window covers 'a'
+→ Result = "a" ✅
+```
+
+```text
+s = "a", t = "aa"
+
+→ Only one 'a' in s, cannot cover both
+→ Result = "" ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                 |
+| --------- | ------------------------------------- |
+| Time      | O(m + n) (single pass sliding window) |
+| Space     | O(256) → O(1) (fixed character set)   |
+| Technique | Sliding window                        |
+
+---
+
+### 🔁 Pattern
+
+- Classic sliding window problem with coverage constraint.
+- Similar to "Longest substring with at most K distinct characters" but requires **exact coverage**.
+- Frequency tracking ensures duplicates are handled correctly.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **HashMap**: More general solution for arbitrary character sets.
+- **Two-pass prefix sums**: Less efficient.
+- Current sliding window is optimal (O(m+n)).
+
+---
+
+### ⚠️ Edge Cases
+
+- `t` longer than `s` → return `""`.
+- Exact match → return `s`.
+- Multiple valid windows → return shortest.
+- Large input (up to \(10^5\)) → efficient with O(m+n).
+
+🔗 LeetCode – Minimum Window Substring: [(leetcode.com)](https://leetcode.com/problems/minimum-window-substring/)
+
+---
