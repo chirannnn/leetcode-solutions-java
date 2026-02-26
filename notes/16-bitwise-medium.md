@@ -208,3 +208,214 @@ Result = [[], [0]] ✅
 🔗 LeetCode – Subsets II: [(leetcode.com)](https://leetcode.com/problems/subsets-ii/description/)
 
 ---
+
+## 3. Single Number II
+
+**Problem**:  
+Given an integer array `nums` where every element appears **three times** except for one, which appears exactly once, return that single element.  
+Constraints: linear runtime, constant extra space.
+
+---
+
+### 🔍 Core Idea: Bitwise State Machine
+
+- Maintain two bitmasks:
+  - `ones` → bits that have appeared once.
+  - `twos` → bits that have appeared twice.
+- For each number:
+  - Update `ones` and `twos` using XOR and masking.
+  - Ensure bits are cleared when they appear three times.
+- At the end, `ones` contains the unique number.
+
+---
+
+### 🧠 Algorithm Breakdown (Method 1: Bitwise State Tracking)
+
+#### Step 1: Initialize
+
+- `ones = 0`, `twos = 0`.
+
+#### Step 2: Traverse Array
+
+- For each `num`:
+  - `ones = (ones ^ num) & ~twos`
+  - `twos = (twos ^ num) & ~ones`
+
+#### Step 3: Return Result
+
+- Return `ones`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+nums = [2,2,3,2]
+
+→ num=2: ones=2, twos=0
+→ num=2: ones=0, twos=2
+→ num=3: ones=3, twos=2
+→ num=2: ones=3, twos=0
+→ Result = 3 ✅
+```
+
+```text
+nums = [0,1,0,1,0,1,99]
+
+→ All 0s and 1s cancel out in triples
+→ Result = 99 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                       |
+| --------- | --------------------------- |
+| Time      | O(n) (single pass)          |
+| Space     | O(1) (constant extra space) |
+| Technique | Bitwise state machine       |
+
+---
+
+### 🚀 Alternative Approach (Method 2: Bit Count)
+
+- Count occurrences of each bit across all numbers.
+- If count % 3 ≠ 0 → that bit belongs to the unique number.
+- Build result from these bits.
+- Time: O(32·n), Space: O(32).
+- More intuitive but less elegant.
+
+---
+
+### 🔁 Pattern
+
+- Extension of **Single Number I** (XOR trick).
+- Generalized to handle numbers appearing k times.
+- Uses bitwise logic to simulate finite state transitions.
+
+---
+
+### ⚠️ Edge Cases
+
+- Array length = 1 → return that element.
+- Negative numbers → handled correctly (bitwise operations work on signed ints).
+- Large input (up to \(3 \times 10^4\)) → efficient with O(n).
+
+🔗 LeetCode – Single Number II: [(leetcode.com)](https://leetcode.com/problems/single-number-ii/description/)
+
+---
+
+## 4. Single Number III
+
+**Problem**:  
+Given an integer array `nums` where exactly two elements appear once and all others appear twice, return those two unique elements.  
+Constraints: linear runtime, constant extra space.
+
+---
+
+### 🔍 Core Idea: XOR Partitioning
+
+- XOR of all numbers = `XOR = a ^ b` (where `a` and `b` are the two unique numbers).
+- Since `a ≠ b`, their XOR has at least one set bit.
+- Use the **rightmost set bit** to partition numbers into two groups:
+  - Group 1: numbers with that bit = 0.
+  - Group 2: numbers with that bit = 1.
+- Each group contains one unique number plus duplicates.
+- XOR within each group → isolates the unique number.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: XOR All Numbers
+
+- `XOR = a ^ b`.
+
+#### Step 2: Find Rightmost Set Bit
+
+- `rightMostSetBit = (XOR & (XOR - 1)) ^ XOR`.
+- Isolates the lowest set bit in `XOR`.
+
+#### Step 3: Partition and XOR
+
+- Initialize `n1 = 0`, `n2 = 0`.
+- For each `num`:
+  - If `(num & rightMostSetBit) == 0` → `n1 ^= num`.
+  - Else → `n2 ^= num`.
+
+#### Step 4: Return Result
+
+- Return `[n1, n2]`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+nums = [1,2,1,3,2,5]
+
+→ XOR = 3 ^ 5 = 6 (binary 110)
+→ rightMostSetBit = 2 (binary 010)
+
+Partition:
+Group 1 (bit=0): [1,1,5] → XOR = 5
+Group 2 (bit=1): [2,2,3] → XOR = 3
+
+Result = [5,3] ✅
+```
+
+```text
+nums = [-1,0]
+
+→ XOR = -1 ^ 0 = -1
+→ Partition → [-1], [0]
+→ Result = [-1,0] ✅
+```
+
+```text
+nums = [0,1]
+
+→ XOR = 1
+→ rightMostSetBit = 1
+→ Partition → [0], [1]
+→ Result = [0,1] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                       |
+| --------- | --------------------------- |
+| Time      | O(n) (single pass)          |
+| Space     | O(1) (constant extra space) |
+| Technique | XOR partitioning            |
+
+---
+
+### 🔁 Pattern
+
+- Extension of **Single Number I** (one unique) and **Single Number II** (one unique, others thrice).
+- Uses XOR to cancel duplicates and isolate unique values.
+- Partitioning trick is key when two uniques exist.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **HashMap/HashSet**: Track frequencies → O(n) time, O(n) space.
+- **Sorting**: Compare adjacent elements → O(n log n).
+- XOR partitioning is optimal (O(n), O(1)).
+
+---
+
+### ⚠️ Edge Cases
+
+- Array length = 2 → return both elements.
+- Negative numbers → handled correctly by bitwise operations.
+- Large input (up to \(3 \times 10^4\)) → efficient with O(n).
+
+🔗 LeetCode – Single Number III: [(leetcode.com)](https://leetcode.com/problems/single-number-iii/description/)
+
+---
