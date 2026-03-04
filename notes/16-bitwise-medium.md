@@ -419,3 +419,214 @@ nums = [0,1]
 🔗 LeetCode – Single Number III: [(leetcode.com)](https://leetcode.com/problems/single-number-iii/description/)
 
 ---
+
+## 5. Divide Two Integers
+
+**Problem**:  
+Given two integers `dividend` and `divisor`, divide them without using multiplication, division, or modulo operators.  
+The result should truncate toward zero.  
+Constraints: must handle 32-bit signed integer overflow.
+
+---
+
+### 🔍 Core Idea: Bitwise Long Division
+
+- Division can be simulated by repeated subtraction.
+- To optimize, subtract the largest possible multiple of divisor (using bit shifts).
+- Keep track of quotient by adding powers of two.
+- Handle signs and overflow explicitly.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Handle Special Case
+
+- If `dividend == divisor` → return `1`.
+
+#### Step 2: Determine Sign
+
+- Result is positive if both have same sign.
+- Negative otherwise.
+
+#### Step 3: Work with Absolute Values
+
+- Convert `dividend` and `divisor` to positive (`long` to avoid overflow).
+
+#### Step 4: Subtract Using Bit Shifts
+
+- While `n >= div`:
+  - Find largest shift `count` such that `(div << (count+1)) <= n`.
+  - Add `(1 << count)` to quotient.
+  - Subtract `(div << count)` from `n`.
+
+#### Step 5: Handle Overflow
+
+- If quotient exceeds 32-bit range, clamp to `Integer.MAX_VALUE` or `Integer.MIN_VALUE`.
+
+#### Step 6: Apply Sign
+
+- Return `ans` if positive, else `-ans`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+dividend = 10, divisor = 3
+
+→ n=10, div=3
+→ Largest shift: 3 << 1 = 6 ≤ 10 → count=1
+→ ans += 2, n -= 6 → n=4
+→ Largest shift: 3 << 0 = 3 ≤ 4 → count=0
+→ ans += 1, n -= 3 → n=1
+→ Result = 3 ✅
+```
+
+```text
+dividend = 7, divisor = -3
+
+→ n=7, div=3
+→ Largest shift: 3 << 1 = 6 ≤ 7 → count=1
+→ ans += 2, n -= 6 → n=1
+→ Result = -2 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                            |
+| --------- | ------------------------------------------------ |
+| Time      | O(log n) (bit shifting reduces dividend quickly) |
+| Space     | O(1)                                             |
+| Technique | Bitwise long division                            |
+
+---
+
+### 🔁 Pattern
+
+- Similar to **manual long division** but optimized with bit shifts.
+- Common in problems where multiplication/division operators are restricted.
+- Overflow handling is crucial.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Naive subtraction**: subtract divisor repeatedly → O(n), too slow.
+- **Binary search**: find quotient via search → O(log n).
+- Current bit-shift approach is optimal.
+
+---
+
+### ⚠️ Edge Cases
+
+- `divisor = 1` → return dividend.
+- `divisor = -1` → handle overflow when dividend = `Integer.MIN_VALUE`.
+- `dividend = 0` → return 0.
+- Overflow → clamp to 32-bit range.
+
+🔗 LeetCode – Divide Two Integers:[ (leetcode.com)](https://leetcode.com/problems/divide-two-integers/description/)
+
+---
+
+## 6. Gray Code
+
+**Problem**:  
+Given an integer `n`, return any valid n-bit Gray code sequence.  
+Gray code sequence rules:
+
+- Length = \(2^n\).
+- First integer = 0.
+- Each integer appears once.
+- Adjacent integers differ by exactly one bit.
+- First and last integers differ by exactly one bit.
+
+---
+
+### 🔍 Core Idea: Binary-to-Gray Conversion
+
+- Gray code can be generated directly using formula:  
+  \[
+  \text{Gray}(i) = i \oplus (i >> 1)
+  \]
+- Iterate `i` from `0` to \(2^n - 1\).
+- Apply formula to generate sequence.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Initialize
+
+- Create list `list = new ArrayList<>()`.
+
+#### Step 2: Generate Sequence
+
+- Loop `i` from `0` to `(1 << n) - 1`.
+- Compute `i ^ (i >> 1)`.
+- Add to list.
+
+#### Step 3: Return Result
+
+- Return list of integers.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+n = 2
+→ i=0 → 0 ^ 0 = 0
+→ i=1 → 1 ^ 0 = 1
+→ i=2 → 2 ^ 1 = 3
+→ i=3 → 3 ^ 1 = 2
+→ Result = [0,1,3,2] ✅
+```
+
+```text
+n = 1
+→ i=0 → 0 ^ 0 = 0
+→ i=1 → 1 ^ 0 = 1
+→ Result = [0,1] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                       |
+| --------- | --------------------------- |
+| Time      | O(2^n) (generate all codes) |
+| Space     | O(2^n) (store sequence)     |
+| Technique | Bitwise XOR                 |
+
+---
+
+### 🔁 Pattern
+
+- Gray code ensures only one bit changes between consecutive numbers.
+- Useful in digital circuits, error correction, and combinatorial problems.
+- Formula-based generation avoids recursion or backtracking.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Recursive construction**:
+  - Build (n-1)-bit sequence, then mirror and prefix with 1.
+- **Backtracking**: Generate sequence by flipping bits one at a time.
+- Current formula is optimal and concise.
+
+---
+
+### ⚠️ Edge Cases
+
+- n = 1 → [0,1].
+- n = 16 → sequence length = 65,536 (still feasible).
+- Large n → memory usage grows exponentially.
+
+🔗 LeetCode – Gray Code: [(leetcode.com)](https://leetcode.com/problems/gray-code/description/)
+
+---
