@@ -630,3 +630,229 @@ n = 1
 🔗 LeetCode – Gray Code: [(leetcode.com)](https://leetcode.com/problems/gray-code/description/)
 
 ---
+
+## 7. Repeated DNA Sequences
+
+**Problem**:  
+Given a DNA string `s`, return all 10-letter-long substrings that occur more than once.  
+DNA consists of nucleotides: `A`, `C`, `G`, `T`.
+
+---
+
+### 🔍 Core Idea: Sliding Window + HashSet
+
+- Use a sliding window of length 10.
+- Extract each substring of length 10.
+- Track substrings in a `seen` set.
+- If a substring is already in `seen`, add it to `repeated`.
+- Return all substrings in `repeated`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Handle Short Strings
+
+- If `s.length() < 10` → return empty list.
+
+#### Step 2: Initialize Sets
+
+- `seen = new HashSet<>()` → track substrings encountered.
+- `repeated = new HashSet<>()` → track duplicates.
+
+#### Step 3: Traverse String
+
+- For each index `i` from `0` to `s.length() - 10`:
+  - Extract substring `s.substring(i, i+10)`.
+  - If already in `seen` → add to `repeated`.
+  - Else add to `seen`.
+
+#### Step 4: Return Result
+
+- Convert `repeated` to list and return.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"
+
+→ Substrings of length 10:
+   "AAAAACCCCC", "AAAACCCCCA", "AAACCCCCAA", ...
+→ "AAAAACCCCC" appears twice
+→ "CCCCCAAAAA" appears twice
+→ Result = ["AAAAACCCCC","CCCCCAAAAA"] ✅
+```
+
+```text
+s = "AAAAAAAAAAAAA"
+
+→ Substrings of length 10:
+   "AAAAAAAAAA", "AAAAAAAAAA", "AAAAAAAAAA", ...
+→ "AAAAAAAAAA" repeats
+→ Result = ["AAAAAAAAAA"] ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                                 |
+| --------- | ------------------------------------- |
+| Time      | O(n) (scan with substring extraction) |
+| Space     | O(n) (sets store substrings)          |
+| Technique | Sliding window + HashSet              |
+
+---
+
+### 🔁 Pattern
+
+- Classic **duplicate substring detection** problem.
+- Similar to problems like "Find repeated sequences" or "Detect duplicate substrings with fixed length".
+- HashSet ensures uniqueness and efficient lookup.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Rolling hash (Rabin-Karp)**: Encode substrings as integers for faster comparison.
+- **Bit encoding**: Map `A,C,G,T` to 2 bits each → store substrings as 20-bit integers.
+- More memory-efficient for very large DNA strings.
+
+---
+
+### ⚠️ Edge Cases
+
+- String shorter than 10 → return empty list.
+- All characters same → only one repeated substring.
+- Large input (up to \(10^5\)) → efficient with O(n).
+
+🔗 LeetCode – Repeated DNA Sequences: [(leetcode.com)](https://leetcode.com/problems/repeated-dna-sequences/description/)
+
+---
+
+## 8. Pow(x, n)
+
+**Problem**:  
+Implement `pow(x, n)` which calculates \(x^n\).  
+Constraints:
+
+- No built-in power functions.
+- Must handle negative exponents.
+- Must truncate toward zero.
+- Must handle large values within 32-bit signed integer range.
+
+---
+
+### 🔍 Core Idea: Fast Exponentiation (Binary Exponentiation)
+
+- Instead of multiplying `x` repeatedly, use **divide-and-conquer**.
+- Represent `n` in binary.
+- If the current bit of `n` is set → multiply result by current base.
+- Square the base each step.
+- Shift `n` right until zero.
+- Handles negative exponents by inverting `x` and flipping sign of `n`.
+
+---
+
+### 🧠 Algorithm Breakdown
+
+#### Step 1: Handle Negative Exponent
+
+- If `n < 0`:
+  - Replace `x` with `1/x`.
+  - Replace `n` with `-n`.
+
+#### Step 2: Initialize
+
+- `ans = 1`.
+- `base = x`.
+- `pow = n`.
+
+#### Step 3: Binary Exponentiation Loop
+
+- While `pow > 0`:
+  - If `(pow & 1) == 1` → multiply `ans *= base`.
+  - Square `base *= base`.
+  - Shift `pow >>= 1`.
+
+#### Step 4: Return Result
+
+- Return `ans`.
+
+---
+
+### ✅ Example Walkthrough
+
+```text
+x = 2.00000, n = 10
+
+Binary of 10 = 1010
+→ ans=1, base=2
+→ pow bit=0 → base=4
+→ pow bit=1 → ans=4, base=16
+→ pow bit=0 → base=256
+→ pow bit=1 → ans=1024
+→ Result = 1024.00000 ✅
+```
+
+```text
+x = 2.10000, n = 3
+
+Binary of 3 = 11
+→ ans=1, base=2.1
+→ pow bit=1 → ans=2.1, base=4.41
+→ pow bit=1 → ans=9.261
+→ Result = 9.26100 ✅
+```
+
+```text
+x = 2.00000, n = -2
+
+→ Negative exponent → x=1/2=0.5, n=2
+→ Binary of 2 = 10
+→ ans=1, base=0.5
+→ pow bit=0 → base=0.25
+→ pow bit=1 → ans=0.25
+→ Result = 0.25 ✅
+```
+
+---
+
+### 📐 Complexity
+
+| Aspect    | Value                            |
+| --------- | -------------------------------- |
+| Time      | O(log n) (binary exponentiation) |
+| Space     | O(1)                             |
+| Technique | Fast exponentiation              |
+
+---
+
+### 🔁 Pattern
+
+- Same technique used in modular exponentiation (e.g., fast power in cryptography).
+- Efficient compared to naive multiplication.
+- Handles large exponents gracefully.
+
+---
+
+### 🚀 Alternative Approaches
+
+- **Naive multiplication**: O(n), too slow for large n.
+- **Recursive divide-and-conquer**: cleaner but uses stack space.
+- Current iterative binary exponentiation is optimal.
+
+---
+
+### ⚠️ Edge Cases
+
+- n = 0 → return 1.
+- x = 0 → return 0 (except when n=0, result=1).
+- Negative n → invert base.
+- Large n → handled efficiently with O(log n).
+
+🔗 LeetCode – Pow(x, n): [(leetcode.com)](https://leetcode.com/problems/powx-n/description/)
+
+---
